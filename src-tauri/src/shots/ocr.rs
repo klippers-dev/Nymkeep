@@ -377,9 +377,7 @@ impl LinuxOcr {
         let t = ort::value::TensorRef::from_array_view(&map).map_err(|_| "tensor failed")?;
         let boxes = {
             let mut det = self.det.lock().map_err(|_| "ocr busy")?;
-            let outputs = det
-                .run(ort::inputs![t])
-                .map_err(|_| "detection failed")?;
+            let outputs = det.run(ort::inputs![t]).map_err(|_| "detection failed")?;
             let value = if outputs.len() > 0 {
                 &outputs[0]
             } else {
