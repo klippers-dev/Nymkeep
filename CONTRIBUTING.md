@@ -24,7 +24,8 @@ Windows needs MSVC plus an actual Windows SDK. Never recreate a missing SDK usin
 the developer-only recovery documented in ADR-007. macOS needs Xcode tools and
 Linux needs WebKitGTK 4.1, AppIndicator, librsvg and patchelf.
 Linux CI uses Ubuntu 24.04 to match the current ONNX Runtime ABI. On Intel macOS
-13.3+, run `node scripts/build-intel-onnx.mjs` and export its printed `ORT_LIB_PATH`
+13.3+, install Git, Python 3.10+ and CMake 3.28+, then run
+`node scripts/build-intel-onnx.mjs` and export its printed `ORT_LIB_PATH`
 and `ORT_LIB_PROFILE` before Cargo; this builds the pinned official runtime because
 an Intel prebuilt is unavailable. Apple Silicon uses the normal verified prebuilt.
 This is development setup, rather than platform certification.
@@ -58,6 +59,7 @@ For macOS build the local Vision helper before native app checks:
 ```sh
 node scripts/build-macos-ocr.mjs aarch64-apple-darwin
 # Use x86_64-apple-darwin on an Intel Mac.
+export MACOSX_DEPLOYMENT_TARGET=13.3
 ```
 
 `npm run dev` previews the UI with no native processing. `npm run tauri dev`

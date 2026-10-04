@@ -15,7 +15,9 @@ different from a signed, device-certified public release.
    Model scripts verify SHA-256 even when cached; downloads are build-time only.
 4. On Mac: `node scripts/build-macos-ocr.mjs aarch64-apple-darwin` or
    `x86_64-apple-darwin`, matching the Rust target. Requires macOS 13.3+ and Xcode tools.
-   Intel Macs also run `node scripts/build-intel-onnx.mjs` in the original source
+   Export `MACOSX_DEPLOYMENT_TARGET=13.3` before Cargo; CI's helper step sets it.
+   Intel Macs need Git, Python 3.10+ and CMake 3.28+. Run
+   `node scripts/build-intel-onnx.mjs` in the original source
    checkout before Cargo. Export its printed `ORT_LIB_PATH` and `ORT_LIB_PROFILE`
    in the build shell; CI exports them automatically. This compiles the pinned
    official ONNX runtime into ignored build workspace. Apple Silicon uses the

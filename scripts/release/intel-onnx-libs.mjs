@@ -1,5 +1,5 @@
 import { access, readdir } from "node:fs/promises";
-import { resolve } from "node:path";
+import { basename, resolve } from "node:path";
 
 // A single archive avoids ort-sys selecting the wrong Unix _deps layout.
 export async function intelRuntimeArchives(build) {
@@ -26,11 +26,21 @@ export async function intelRuntimeArchives(build) {
         dependencies.push(path);
     }
   }
+  for (const item of await readdir(build, { withFileTypes: true })) {
+    const path = resolve(build, item.name);
+    if (item.isFile() && item.name.endsWith(".a") && !runtime.includes(path))
+      dependencies.push(path);
+    else if (item.isDirectory() && item.name === "model_package")
+      await visit(path);
+  }
   const deps = resolve(build, "_deps");
   for (const item of await readdir(deps, { withFileTypes: true }))
     if (item.isDirectory() && item.name.endsWith("-build"))
       await visit(resolve(deps, item.name));
   if (!dependencies.length)
     throw new Error("Intel runtime dependency archives are missing.");
+  for (const name of ["libre2.a", "libmodel_package.a"])
+    if (!dependencies.some((path) => basename(path) === name))
+      throw new Error(`Intel runtime dependency archive is missing: ${name}.`);
   return [...runtime, ...dependencies.sort()];
 }

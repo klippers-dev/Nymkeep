@@ -34,6 +34,8 @@ test("Intel archive collection includes Unix dependency outputs, not CMake probe
       "_deps/onnx-build/libonnx.a",
       "_deps/abseil_cpp-build/absl/base/libabsl_base.a",
       "_deps/protobuf-build/Release/libprotobuf-lite.a",
+      "_deps/re2-build/libre2.a",
+      "model_package/libmodel_package.a",
     ];
     for (const path of [
       ...outputs,
@@ -44,7 +46,7 @@ test("Intel archive collection includes Unix dependency outputs, not CMake probe
       await writeFile(resolve(root, path), "synthetic archive fixture");
     }
     const archives = await intelRuntimeArchives(root);
-    assert.equal(archives.length, 13);
+    assert.equal(archives.length, 15);
     for (const path of outputs)
       assert.ok(archives.includes(resolve(root, path)));
     assert.ok(

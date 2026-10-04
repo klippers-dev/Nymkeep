@@ -46,6 +46,8 @@ jobs:
         with:
           path: .release-work/onnxruntime-intel
           key: macos-15-intel-onnx-1.28.0-${{ hashFiles('scripts/build-intel-onnx.mjs', 'scripts/release/intel-onnx-libs.mjs') }}
+          # Migration cache: same pinned CPU sources; the builder reconfigures its recipe.
+          restore-keys: macos-15-intel-onnx-1.28.0-11832efa32e5fc4c2c8452e5231fbdcd8f0ba9bb7d59791f54fde962d39ca409
       - name: Build pinned Intel runtime
         if: matrix.target == 'x86_64-apple-darwin'
         run: node scripts/build-intel-onnx.mjs

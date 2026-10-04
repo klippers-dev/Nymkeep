@@ -33,8 +33,15 @@ Source inspection found ort-sys's Unix static dependency-layout ambiguity; the
 Intel builder now combines runtime/dependency archives with Apple's libtool,
 omits upstream test binaries and saves the completed runtime before Nymkeep
 checks. Two synthetic archive-layout/incomplete-build regressions pass locally;
-all Nymkeep Rust/model/native OCR checks remain required. Intel validation and
-protected PR promotion are pending. Nine
+all Nymkeep Rust/model/native OCR checks remain required. Run 37194485645 compiled
+and cached the Intel runtime, then exposed missing RE2/model-package archives at
+Rust link time. Packaging now requires both, explicitly builds upstream's excluded
+RE2 target and reconfigures restored caches when the build recipe changes. Rust
+and Swift deployment targets are aligned at 13.3. Tooling tests still pass (12).
+Intel validation and protected PR promotion are pending. Initial bootstrap may
+land the verified repair on main, then sync dev/stage through protected PRs to
+seed a default-branch runtime cache; normal contributions retain dev → stage → main.
+Nine
 unreviewed Dependabot runs were cancelled to prioritize validation; their PRs stay
 open. Future version PR volume reduced to one per ecosystem.
 
@@ -100,7 +107,7 @@ No Mac/Wayland supported claim has been added.
 - `node .tooling/package/bin/npm-cli.js test -- --maxWorkers=1`: **65/65 pass**
   (24 App + 13 ScreenshotView + 12 helpers + 16 website).
 - Final website copy: `node node_modules/vitest/vitest.mjs run tests/Site.test.ts
-  --pool=forks --maxWorkers=1`: **16/16 pass**.
+--pool=forks --maxWorkers=1`: **16/16 pass**.
 - `node .tooling/package/bin/npm-cli.js run build`: TypeScript/production build pass.
 - `cargo test -j 2 --offline --locked -- --include-ignored --test-threads=1`
   in clean staged `src-tauri/`: **69 units + 2 explicit native Windows checks pass**.
@@ -110,7 +117,7 @@ No Mac/Wayland supported claim has been added.
 - `node --test scripts/release/*.test.mjs`: **6/6 pass** (clean staging/lock/output
   checks and strict NSIS metadata comparison; arbitrary code changes are rejected).
 - Both `rustc --edition=2021 --crate-type=lib --emit=metadata --target
-  <aarch64-apple-darwin|x86_64-apple-darwin> src-tauri/src/platform/macos.rs`: pass.
+<aarch64-apple-darwin|x86_64-apple-darwin> src-tauri/src/platform/macos.rs`: pass.
   No full Mac/Swift application compilation is claimed.
 - `powershell -NoProfile -File scripts/download-model.ps1` and OCR equivalent:
   cached SHA-256 (and OCR sizes) verified. Prescribed model command also passed;
@@ -120,7 +127,7 @@ No Mac/Wayland supported claim has been added.
   with path validation and used via full official headers/libs/resource compiler.
   Registry vswhom-sys compiled; staged source has no recovery patch/config.
 - Tauri clean-stage `build --debug --config src-tauri/tauri.local-candidate.conf.json
-  -- --offline --locked -j 2`: pass, NSIS installer produced. Before-build disabled
+-- --offline --locked -j 2`: pass, NSIS installer produced. Before-build disabled
   only because frontend was already built and the local shell has no npm shim.
   Original debug Cargo directory reused for disk efficiency; source/config remain clean.
 - Official 7-Zip archive tools extracted (not installed), installer archive paths
@@ -279,7 +286,7 @@ Publishing/domain setup is deferred at the user's explicit request.
 - Changed frontend/site/test/workflow Prettier checks: **clean**.
 - Final website rerun: **13/13 pass** after native-verification copy.
 - `node node_modules/@tauri-apps/cli/tauri.js build --debug --no-bundle
-  --config .preview/tauri-review-build.json -- --offline --locked -j 2`: **pass**.
+--config .preview/tauri-review-build.json -- --offline --locked -j 2`: **pass**.
   Frontend had already been built; temporary config only disables the unavailable
   shell npm shim's redundant beforeBuild command. Initial build attempts using
   `CARGO_NET_OFFLINE=true`/manual `ORT_LIB_PATH` omitted prebuilt-runtime link
@@ -568,7 +575,7 @@ drift remains outside this website task. Signed release/download connection is n
   blocking; Linux PP-OCRv6 Small via ORT with manifest verify), word->pixel
   mapping, black-box redact, detect/redact pure functions with 9 unit tests.
 - `src-tauri/src/lib.rs`: `pub mod shots`, `shots_status/shots_detect/
-  shots_redact` commands, `Mutex<shots::ShotState>` managed state. Removed the
+shots_redact` commands, `Mutex<shots::ShotState>` managed state. Removed the
   duplicate `ShotState` (kept the one in `shots/mod.rs`).
 - `src-tauri/Cargo.toml`: `image`, `base64`, `windows` 0.62, `windows-future`
   0.3 deps. `src-tauri/tauri.conf.json`: `models/ocr/*` resources.
@@ -580,7 +587,7 @@ drift remains outside this website task. Signed release/download connection is n
 
 - `cargo check -j 1`, `cargo fmt`, `cargo test -j 1` (50/50) with the
   machine-recovery env (MSVC on PATH, INCLUDE/LIB/RC, `RUSTFLAGS="-C
-  debuginfo=1"` for link memory).
+debuginfo=1"` for link memory).
 
 ## Assumptions
 
