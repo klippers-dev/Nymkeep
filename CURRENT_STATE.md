@@ -99,6 +99,16 @@ registry vswhom-sys compiles successfully. The original recovery remains local;
 
 ## Known gaps and release checks
 
+- GitHub's medium `glib` 0.18.5 advisory (RUSTSEC-2024-0429) remains open in the
+  locked GTK graph. Dependabot's automatic update failed. No direct iterator
+  calls were found in Nymkeep source; transitive reachability/remediation still
+  needs review before a public Linux GUI package. See `SECURITY.md` (SP-037).
+
+- GitHub's medium `glib` 0.18.5 advisory (RUSTSEC-2024-0429) remains open in the
+  locked GTK graph. Dependabot's automatic update failed. No direct iterator
+  calls were found in Nymkeep source; transitive reachability/remediation still
+  needs review before a public Linux GUI package. See `SECURITY.md` (SP-037).
+
 - Per-span diff highlighting and its screen-reader alternative (SP-017).
 - Dismissible first-run onboarding and remaining native error taxonomy (SP-018).
 - macOS compilation/model/native OCR checks pass on both architectures; interactive

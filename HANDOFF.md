@@ -1,5 +1,22 @@
 # Nymkeep handoff — 2026-10-04 (SP-035)
 
+## Dependency security triage (SP-037)
+
+After protected PR #10 merged as 7658d59, GitHub reported medium advisory
+RUSTSEC-2024-0429 / GHSA-wrw7-89jp-8q8g for locked glib 0.18.5. Dependabot run
+37199998086 failed to generate a compatible automatic update. SECURITY.md,
+CURRENT_STATE.md, TASKS.md and the release checklist record the unresolved Linux
+GUI release gate. The alert remains enabled/open; no dependency override,
+suppression, runtime/privacy change or support claim was made.
+
+Checks: read authenticated dependency-alert and updater annotations; checked
+Cargo.lock's GTK/glib graph and searched application source for VariantStrIter
+(no direct calls). Verified the RustSec advisory and upstream fix. CI 37199379433
+passes all four native targets and both Vision fixtures for the final PR #10
+commit; 65 frontend + 12 tooling tests, build/fmt and public audit pass.
+Absence of direct calls does not prove transitive unreachability. Compatible
+remediation or independent reachability review remains open before Linux release.
+
 ## Public source and contributor setup (SP-035/036 native checks done)
 
 User authorized publication to klippers-dev/Nymkeep, dev/stage/main branches,
