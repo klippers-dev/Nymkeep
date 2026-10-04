@@ -1,6 +1,6 @@
 # Nymkeep handoff — 2026-10-04 (SP-035)
 
-## Public source and contributor setup (in progress)
+## Public source and contributor setup (SP-035 done; SP-036 in progress)
 
 User authorized publication to klippers-dev/Nymkeep, dev/stage/main branches,
 contribution guidance and repository protections. Existing MIT license retained.
@@ -12,12 +12,24 @@ source export/audit/protection scripts; .gitignore, package scripts, site source
 links/copy and ADR-014. Candidate/release actions pinned to actual commits;
 the nonexistent Tauri action v2 reference corrected to verified v1.0.0.
 
-Checks: 65 frontend tests and production build pass; 9 release/repository tests
+Checks: 65 frontend tests and production build pass; 10 release/repository tests
 pass; changed files pass Prettier. Initial clean export audit: 169 files,
 3,543,014 bytes, with recovery, credentials, downloaded models and generated
-installers excluded. Clean genuine-SDK Rust rerun is in progress.
-GitHub publication, protections and native CI results will be recorded after
-application/read-back. No signing credentials or user clipboard accessed.
+installers excluded. Clean genuine-SDK Rust rerun: 69 pass, fmt passes; two native
+device tests remain opt-in and were verified in SP-033. Commit c1f3abe published to
+main/dev/stage. All branch/tag rulesets verified active (24451248, 24451250,
+24451300), GitHub Actions app 15368 bound to Required checks. Private reporting,
+secret scanning/push protection, dependency alerts/security updates, read-only
+tokens and all-external workflow approval verified by authenticated read-back.
+CODEOWNERS reports no errors. No credentials or user clipboard accessed.
+
+First hosted CI 37191285143: frontend/audit, Windows and Apple Silicon Mac pass,
+including native Mac Vision fixture. Linux compile then runtime ABI and Intel
+runtime-distribution gaps caught. PR #10 corrects ONNX input/lifetime handling,
+uses Ubuntu 24.04 and adds pinned Microsoft ONNX 1.28.0 Intel source builds/cache
+with macOS 13.3 minimum (ADR-015). Latest hosted results still pending. Nine
+unreviewed Dependabot runs were cancelled to prioritize validation; their PRs stay
+open. Future version PR volume reduced to one per ecosystem.
 
 Assumptions/risks: sole-owner PR-only review bypass with separate mandatory CI;
 public installer/signing/device/license gates stay open. Hosting deferred.

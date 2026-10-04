@@ -141,3 +141,18 @@ is reported as active only after authenticated application and read-back.
 Release tags are maintainer-controlled; CI creates drafts and unsigned candidates
 remain internal. Website download URLs are enabled only for verified public
 installers, with plain installation instructions for users who do not use Git.
+
+## ADR-015: Pinned source runtime for Intel Mac builds
+The pinned ort rc.13 distribution provides no x86_64-apple-darwin binary. Intel
+Mac development/CI builds therefore compile Microsoft's ONNX Runtime 1.28.0
+from verified commit da9b5e364c465de65c49d91e696cd6485270757f, using CPU static
+libraries, release configuration and macOS 13.3 minimum. The existing Rust API,
+model hashes and offline inference contract remain unchanged. Generated vendor
+sources/libraries stay in ignored build workspace/cache and never enter public
+source. CI binds the build cache to the source revision and build script.
+No runtime fetch or substitute remote inference is added. Both Mac targets still
+need native build/model/OCR evidence and real-device permission/export/signing
+checks before a public support claim.
+Linux native CI/candidate builds use Ubuntu 24.04 so glibc/libstdc++ match the
+current prebuilt runtime's ABI. Older Linux distributions are not inferred
+supported; capture/compositor/device verification remains open.

@@ -2,6 +2,6 @@
   "bundle": {
     "targets": ["app", "dmg"],
     "externalBin": ["binaries/nymkeep-ocr"],
-    "macOS": { "minimumSystemVersion": "13.0" }
+    "macOS": { "minimumSystemVersion": "13.3" }
   }
 }

@@ -23,6 +23,11 @@ Follow [Tauri's OS prerequisites](https://v2.tauri.app/start/prerequisites/).
 Windows needs MSVC plus an actual Windows SDK. Never recreate a missing SDK using
 the developer-only recovery documented in ADR-007. macOS needs Xcode tools and
 Linux needs WebKitGTK 4.1, AppIndicator, librsvg and patchelf.
+Linux CI uses Ubuntu 24.04 to match the current ONNX Runtime ABI. On Intel macOS
+13.3+, run `node scripts/build-intel-onnx.mjs` and export its printed `ORT_LIB_PATH`
+and `ORT_LIB_PROFILE` before Cargo; this builds the pinned official runtime because
+an Intel prebuilt is unavailable. Apple Silicon uses the normal verified prebuilt.
+This is development setup, rather than platform certification.
 
 ```sh
 git clone https://github.com/YOUR-USERNAME/Nymkeep.git

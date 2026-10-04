@@ -3,6 +3,14 @@
 Updated: 2026-10-04. Clean Windows installer candidate and macOS implementation
 (SP-033/034), following screenshot/website verification (SP-030/031/032).
 
+SP-035: audited MIT source is public at https://github.com/klippers-dev/Nymkeep.
+main/dev/stage and owner-only release tags are protected; mandatory CI,
+CODEOWNERS/PR review, private reporting, secret push protection, dependency alerts
+and fork approval settings were applied and read back. Hosted Windows and Apple
+Silicon tests pass, including the native Mac Vision fixture. SP-036/PR #10
+addresses Linux compilation/runtime ABI and Intel runtime builds; device/public
+installer certification remains separate.
+
 ## What works (verified)
 
 - `cargo test -j 2`: 69/69 pass from clean staged source with the genuine Microsoft SDK,
@@ -29,7 +37,8 @@ Updated: 2026-10-04. Clean Windows installer candidate and macOS implementation
 - Mac AXSelectedText-only capture, explicit permission onboarding and bounded
   offline Swift/Vision OCR helper implemented. Standalone adapter Rust metadata
   checks pass for Apple Silicon/Intel; protocol and permission UI tests pass on
-  Windows. Native Mac app/Swift compilation, fixture and device checks remain unrun.
+  Windows. Hosted Apple Silicon Rust/Swift build and native Vision fixture now pass;
+  Intel builds and real-device permission/export/signing checks remain pending.
   Both native Mac CI jobs are prepared; SP-035 sets up the public GitHub repository
   and required native CI. Report the actual runs separately from device support.
 - Linux OCR now uses Tauri's installed resource directory and rejects missing,
