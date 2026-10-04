@@ -40,14 +40,21 @@ jobs:
       - name: Stage clean sources
         run: node scripts/release/prepare.mjs .release-work/candidate
       - name: Cache Intel runtime build
+        id: intel-runtime-cache
         if: matrix.target == 'x86_64-apple-darwin'
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         with:
           path: .release-work/onnxruntime-intel
-          key: macos-15-intel-onnx-1.28.0-${{ hashFiles('scripts/build-intel-onnx.mjs') }}
+          key: macos-15-intel-onnx-1.28.0-${{ hashFiles('scripts/build-intel-onnx.mjs', 'scripts/release/intel-onnx-libs.mjs') }}
       - name: Build pinned Intel runtime
         if: matrix.target == 'x86_64-apple-darwin'
         run: node scripts/build-intel-onnx.mjs
+      - name: Save completed Intel runtime
+        if: matrix.target == 'x86_64-apple-darwin' && steps.intel-runtime-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: .release-work/onnxruntime-intel
+          key: ${{ steps.intel-runtime-cache.outputs.cache-primary-key }}
       - name: Prepare official Windows runtime
         if: runner.os == 'Windows'
         working-directory: .release-work/candidate

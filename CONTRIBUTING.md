@@ -53,13 +53,6 @@ installed Visual Studio toolchain:
 pwsh -NoProfile -File scripts/release/windows-runtime.ps1
 ```
 
-Windows developers also prepare the verified app-local runtime from their
-installed Visual Studio toolchain:
-
-```sh
-pwsh -NoProfile -File scripts/release/windows-runtime.ps1
-```
-
 For macOS build the local Vision helper before native app checks:
 
 ```sh

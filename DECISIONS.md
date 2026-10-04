@@ -153,6 +153,10 @@ source. CI binds the build cache to the source revision and build script.
 No runtime fetch or substitute remote inference is added. Both Mac targets still
 need native build/model/OCR evidence and real-device permission/export/signing
 checks before a public support claim.
+The Intel build omits upstream test binaries and combines runtime/dependency
+archives with Apple's libtool, giving ort-sys a single static library rather than
+its ambiguous Unix dependency-directory detection. Nymkeep's actual Rust/model
+and native Vision checks remain required. No source dependency patch is used.
 Linux native CI/candidate builds use Ubuntu 24.04 so glibc/libstdc++ match the
 current prebuilt runtime's ABI. Older Linux distributions are not inferred
 supported; capture/compositor/device verification remains open.

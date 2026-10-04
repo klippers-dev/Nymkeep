@@ -31,8 +31,10 @@ installer certification remains separate.
   C++ runtime DLLs. Installer archive extraction/hashes and x64 PE are checked;
   installation is not run on the user's PC. The review candidate is unsigned and
   uses the debug profile; public signing and device certification remain pending.
-  Six release tests verify patch/lock sanitation, exclusions, fresh outputs and strict
-  Tauri NSIS metadata comparison. Final artifact:
+  Eight release tests verify patch/lock sanitation, exclusions, fresh outputs,
+  strict Tauri NSIS metadata comparison and complete Intel static archive collection.
+  Four repository tests verify source export/audit and mandatory protection policies.
+  Final artifact:
   `artifacts/windows-x64-review/Nymkeep_0.1.0_x64-setup.exe` (32,290,599 bytes).
 - Mac AXSelectedText-only capture, explicit permission onboarding and bounded
   offline Swift/Vision OCR helper implemented. Standalone adapter Rust metadata
@@ -43,7 +45,8 @@ installer certification remains separate.
   and required native CI. Report the actual runs separately from device support.
 - Linux OCR now uses Tauri's installed resource directory and rejects missing,
   empty, malformed, wrong-size or hash-mismatched packs. deb/AppImage resource
-  packaging is configured; Linux builds/capture/compositor certification remain pending.
+  packaging is configured; hosted Ubuntu 24.04 Rust/model checks pass. Actual Linux
+  OCR/export, capture/compositor and installer certification remain pending.
 - UI: five focused views (Protect, Restore, Session, Settings, Screenshot), responsive
   side-by-side review, manual correction for missed phrases, browser-preview
   honesty, accessible controls, and system light/dark themes.

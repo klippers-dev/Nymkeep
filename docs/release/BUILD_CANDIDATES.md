@@ -14,8 +14,15 @@ different from a signed, device-certified public release.
    `npm test -- --maxWorkers=1`, `node --test scripts/release/*.test.mjs`, `npm run build`.
    Model scripts verify SHA-256 even when cached; downloads are build-time only.
 4. On Mac: `node scripts/build-macos-ocr.mjs aarch64-apple-darwin` or
-   `x86_64-apple-darwin`, matching the Rust target. Requires macOS 13+ and Xcode tools.
-   On Linux: `pwsh -File scripts/download-ocr-models.ps1`.
+   `x86_64-apple-darwin`, matching the Rust target. Requires macOS 13.3+ and Xcode tools.
+   Intel Macs also run `node scripts/build-intel-onnx.mjs` in the original source
+   checkout before Cargo. Export its printed `ORT_LIB_PATH` and `ORT_LIB_PROFILE`
+   in the build shell; CI exports them automatically. This compiles the pinned
+   official ONNX runtime into ignored build workspace. Apple Silicon uses the
+   normal verified prebuilt runtime. See ADR-015.
+   On Linux: use Ubuntu 24.04 for the current prebuilt runtime ABI, install the
+   workflow's WebKitGTK/AppIndicator prerequisites, and run
+   `pwsh -File scripts/download-ocr-models.ps1`.
    On Windows: `pwsh -File scripts/release/windows-runtime.ps1`; app-local C++
    runtime DLLs are copied only from Visual Studio's signed redistributable folder.
 5. In staged `src-tauri`: `cargo fmt --check`, `cargo test --locked -j 2`.
@@ -49,9 +56,12 @@ config/patch. A debug candidate is for internal review; public builds use releas
 
 `.github/workflows/desktop-candidate.yml` is a manually dispatched workflow that
 uploads internal unsigned candidates, without release publishing or signing credentials.
-This checkout has no Git repository/remote, so it has not been dispatched here.
-The Mac adapters pass standalone Rust metadata checks for both targets on this
-Windows host. That does not compile the Swift helper or certify a Mac application.
+The public source repository is [klippers-dev/Nymkeep](https://github.com/klippers-dev/Nymkeep).
+Required CI validates four native targets before branch promotion. Hosted Windows,
+Apple Silicon and Ubuntu 24.04 Rust checks pass; the Apple Silicon Swift helper
+and native Vision fixture also pass. Intel runtime compilation is under validation
+in PR #10. The candidate workflow has not been dispatched. These checks do not
+certify installation, permissions, signing or a supported desktop environment.
 
 ## Public release gates
 
@@ -72,5 +82,5 @@ Connect `site/release.js` only to a verified public signed artifact after those 
 
 References: [Tauri Windows installer](https://v2.tauri.app/distribute/windows-installer/),
 [Tauri sidecars](https://v2.tauri.app/develop/sidecar/),
-[Apple Vision word bounds](https://developer.apple.com/documentation/vision/vnrecognizedtext/boundingbox(for:)),
+[Apple Vision word bounds](<https://developer.apple.com/documentation/vision/vnrecognizedtext/boundingbox(for:)>),
 [GitHub runner architectures](https://docs.github.com/en/actions/reference/runners/github-hosted-runners).

@@ -12,7 +12,7 @@ source export/audit/protection scripts; .gitignore, package scripts, site source
 links/copy and ADR-014. Candidate/release actions pinned to actual commits;
 the nonexistent Tauri action v2 reference corrected to verified v1.0.0.
 
-Checks: 65 frontend tests and production build pass; 10 release/repository tests
+Checks: 65 frontend tests and production build pass; 12 release/repository tests
 pass; changed files pass Prettier. Initial clean export audit: 169 files,
 3,543,014 bytes, with recovery, credentials, downloaded models and generated
 installers excluded. Clean genuine-SDK Rust rerun: 69 pass, fmt passes; two native
@@ -27,7 +27,14 @@ First hosted CI 37191285143: frontend/audit, Windows and Apple Silicon Mac pass,
 including native Mac Vision fixture. Linux compile then runtime ABI and Intel
 runtime-distribution gaps caught. PR #10 corrects ONNX input/lifetime handling,
 uses Ubuntu 24.04 and adds pinned Microsoft ONNX 1.28.0 Intel source builds/cache
-with macOS 13.3 minimum (ADR-015). Latest hosted results still pending. Nine
+with macOS 13.3 minimum (ADR-015). Run 37192712296 passes Windows, Apple Silicon
+and Linux (69 units each), plus Apple Silicon's explicit native Vision fixture.
+Source inspection found ort-sys's Unix static dependency-layout ambiguity; the
+Intel builder now combines runtime/dependency archives with Apple's libtool,
+omits upstream test binaries and saves the completed runtime before Nymkeep
+checks. Two synthetic archive-layout/incomplete-build regressions pass locally;
+all Nymkeep Rust/model/native OCR checks remain required. Intel validation and
+protected PR promotion are pending. Nine
 unreviewed Dependabot runs were cancelled to prioritize validation; their PRs stay
 open. Future version PR volume reduced to one per ecosystem.
 

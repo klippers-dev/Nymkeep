@@ -12,9 +12,10 @@ session; screenshot redaction permanently replaces selected pixels in the export
 ## Download and platform status
 
 **The first public installer has not been released.** Windows has an unsigned
-internal review candidate; macOS native capture/OCR is implemented but awaits
-native build and device evidence. Linux capture and Wayland support remain in
-development. Build targets do not establish supported platforms.
+internal review candidate. Hosted Windows, Apple Silicon Mac and Ubuntu 24.04
+checks pass, including the Apple Silicon native Vision OCR fixture. Intel Mac
+runtime compilation is being validated. macOS device/signing evidence and Linux
+capture/Wayland work remain pending. Build targets do not establish supported platforms.
 
 Public installers will appear on [GitHub Releases](https://github.com/klippers-dev/Nymkeep/releases)
 and, after hosting, the Nymkeep website. You will be able to download and run the
