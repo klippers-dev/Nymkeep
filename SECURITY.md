@@ -28,3 +28,25 @@ Read [PRIVACY.md](docs/PRIVACY.md) and [THREAT_MODEL.md](THREAT_MODEL.md). The a
 cannot protect content from a compromised OS, clipboard history, sync services,
 destination apps or information the detector misses. Review before sharing.
 Open source permits inspection; it is not proof of a completed audit.
+
+## Known dependency advisory
+
+The locked GTK dependency graph includes `glib` 0.18.5. GitHub reports the medium
+[RUSTSEC-2024-0429 / GHSA-wrw7-89jp-8q8g](https://rustsec.org/advisories/RUSTSEC-2024-0429.html)
+advisory for its string-variant iterator; the published fixed range starts at
+0.20.0. Dependabot's automatic update failed on 2026-10-04, and the alert remains
+open. No Nymkeep source directly calls `VariantStrIter`; this does not establish
+that dependency calls are unreachable. A reviewed compatible fix or documented
+reachability/remediation decision is required before a public Linux GUI release.
+Passing unit/build checks does not resolve this advisory.
+
+## Known dependency advisory
+
+The locked GTK dependency graph includes `glib` 0.18.5. GitHub reports the medium
+[RUSTSEC-2024-0429 / GHSA-wrw7-89jp-8q8g](https://rustsec.org/advisories/RUSTSEC-2024-0429.html)
+advisory for its string-variant iterator; the published fixed range starts at
+0.20.0. Dependabot's automatic update failed on 2026-10-04, and the alert remains
+open. No Nymkeep source directly calls `VariantStrIter`; this does not establish
+that dependency calls are unreachable. A reviewed compatible fix or documented
+reachability/remediation decision is required before a public Linux GUI release.
+Passing unit/build checks does not resolve this advisory.

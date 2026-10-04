@@ -3,6 +3,7 @@ import {
   repositoryName,
   protectionPolicies,
   requiredCheck,
+  assertAppliedPolicy,
 } from "./policy.mjs";
 
 // Uses the user's existing gh authentication. Never reads tokens or CI credentials.
@@ -93,33 +94,7 @@ try {
         : `${base}/rulesets`;
       const saved = api(endpoint, existing ? "PUT" : "POST", policy);
       const verified = api(`${base}/rulesets/${saved.id}`);
-      for (const key of [
-        "enforcement",
-        "target",
-        "conditions",
-        "bypass_actors",
-        "rules",
-      ])
-        if (JSON.stringify(verified[key]) !== JSON.stringify(policy[key])) {
-          // GitHub may reorder object keys. Compare canonical JSON before failing.
-          const canonical = (value) =>
-            Array.isArray(value)
-              ? value.map(canonical)
-              : value && typeof value === "object"
-                ? Object.fromEntries(
-                    Object.keys(value)
-                      .sort()
-                      .map((k) => [k, canonical(value[k])]),
-                  )
-                : value;
-          if (
-            JSON.stringify(canonical(verified[key])) !==
-            JSON.stringify(canonical(policy[key]))
-          )
-            throw new Error(
-              `Ruleset read-back mismatch: ${policy.name} (${key}).`,
-            );
-        }
+      assertAppliedPolicy(verified, policy, policy.name);
       configured.push({
         id: verified.id,
         name: verified.name,

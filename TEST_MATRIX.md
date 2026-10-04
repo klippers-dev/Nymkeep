@@ -2,7 +2,7 @@
 
 ## Automated (this machine, Windows 11 x64)
 
-- `cargo test -j 2 --offline --locked`: 65/65 pass (detectors, manual review terms, expiry and
+- `cargo test -j 2 --locked`: 69/69 pass from clean genuine-SDK source (detectors, manual review terms, expiry and
   session correctness, atomic failures, restore contract, rules, shortcuts, NER
   with real model inference, graceful NER-off, screenshot mapping, bounded image
   normalization/EXIF orientation, all five supported formats, GIF first-frame,
@@ -12,22 +12,34 @@
   masking → OCR reread, and native clipboard round-trip in an isolated child
   window station, including manual-only export and rejection preserving the prior
   safe image. Ordinary cross-device/CI runs skip the integration checks.
-- `vitest run`: 62/62 pass (21 App + 13 ScreenshotView + 12 image helpers +
+- `vitest run`: 65/65 pass (24 App + 13 ScreenshotView + 12 image helpers +
   16 website tests). Manual-only export, OCR error/re-detect, stale results,
   copy failure/save cancellation, keyboard coordinates and draft privacy covered.
 - Vite production build: passes; TypeScript `--noEmit`: passes.
 - `cargo fmt --check`: clean.
 - Prettier check for changed frontend, website, tests and workflow: clean.
+- `npm run test:tooling`: 12/12 release/repository checks pass, including clean
+  export, archive completeness and rejection of weakened GitHub CI policies.
+
+## Hosted native CI (SP-036)
+
+Windows x64, Apple Silicon macOS, Intel macOS and Ubuntu 24.04 x64 pass all 69 Rust
+tests with verified model inference. Both Mac architectures pass the explicit
+Swift/Vision redaction fixture. Intel uses the pinned source runtime and complete
+static archive. [CI run 37198309905](https://github.com/klippers-dev/Nymkeep/actions/runs/37198309905)
+passes every required check for PR #10.
+These build/model/OCR checks do not certify installation, interactive permissions,
+destination-app compatibility or compositor support.
 
 ## Manual app matrix (to run on a real device)
 
-| OS                   | Apps                                                       | Shortcut path             | Selection path                 | Result  |
-| -------------------- | ---------------------------------------------------------- | ------------------------- | ------------------------------ | ------- |
-| Windows 11           | Notepad, Word, Chrome/Edge, VS Code, Slack/Teams, terminal | RegisterHotKey via plugin | UI Automation + fallback       | pending |
-| macOS current        | TextEdit, Word, Chrome/Safari, VS Code, terminal           | global shortcut           | AX adapter pending -> fallback | pending |
-| Ubuntu GNOME Wayland | editor, Chrome/Firefox, VS Code, terminal                  | portal adapter pending    | AT-SPI pending -> fallback     | pending |
-| Ubuntu X11           | same set                                                   | native                    | AT-SPI pending -> fallback     | pending |
-| KDE Plasma Wayland   | browser, editor, terminal                                  | portal adapter pending    | AT-SPI pending -> fallback     | pending |
+| OS                   | Apps                                                       | Shortcut path             | Selection path             | Result  |
+| -------------------- | ---------------------------------------------------------- | ------------------------- | -------------------------- | ------- |
+| Windows 11           | Notepad, Word, Chrome/Edge, VS Code, Slack/Teams, terminal | RegisterHotKey via plugin | UI Automation + fallback   | pending |
+| macOS current        | TextEdit, Word, Chrome/Safari, VS Code, terminal           | global shortcut           | AXSelectedText + fallback  | pending |
+| Ubuntu GNOME Wayland | editor, Chrome/Firefox, VS Code, terminal                  | portal adapter pending    | AT-SPI pending -> fallback | pending |
+| Ubuntu X11           | same set                                                   | native                    | AT-SPI pending -> fallback | pending |
+| KDE Plasma Wayland   | browser, editor, terminal                                  | portal adapter pending    | AT-SPI pending -> fallback | pending |
 
 ## Wayland notes
 
@@ -41,14 +53,15 @@ automation was unavailable in this environment; no complete GUI device pass is
 claimed. Check choose/drop/paste, recognition unavailable, manual-only boxes,
 actual preview, Copy/paste into destination apps, Save dialog cancel/overwrite,
 keyboard/screen-reader review, High-DPI, rotation, formats and supported languages.
-Use fictional fixtures only. Mac/Linux native checks remain pending.
+Use fictional fixtures only. Mac/Linux interactive device checks remain pending.
 
 SP-033/034: 69 Rust units and both explicit native Windows checks pass on the
 genuine SDK from clean staged source. Mac permission UI (deny/request/check and
 no prompt on Settings open), bounded OCR response validation and fail-closed Linux
 model pack verification pass on Windows. Standalone AX adapter Rust metadata checks
-pass for Apple Silicon/Intel. Swift/app build, native Vision fixture, AX permission
-and destination-app Mac tests are prepared for native CI/device runs, not executed here.
+pass for Apple Silicon/Intel. Hosted Swift/Rust builds and native Vision fixtures
+pass on both architectures. AX permission and destination-app Mac checks remain
+pending; the Windows machine cannot establish these interactive device results.
 Windows NSIS payload extraction/model/runtime hashes are checked without installation;
 installer GUI, clean-device launch, uninstall and signing remain device/release gates.
 

@@ -3,6 +3,15 @@
 Updated: 2026-10-04. Clean Windows installer candidate and macOS implementation
 (SP-033/034), following screenshot/website verification (SP-030/031/032).
 
+SP-035: audited MIT source is public at https://github.com/klippers-dev/Nymkeep.
+main/dev/stage and owner-only release tags are protected; mandatory CI,
+CODEOWNERS/PR review, private reporting, secret push protection, dependency alerts
+and fork approval settings were applied and read back. SP-036/PR #10 closes Linux
+compilation/runtime ABI and Intel runtime-build gaps. Hosted Windows, Apple Silicon,
+Intel Mac and Ubuntu 24.04 each pass 69 Rust tests, with native Vision fixtures on
+both Mac architectures (run 37198309905). Protected PR #10 carries this baseline;
+device/public installer certification remains separate.
+
 ## What works (verified)
 
 - `cargo test -j 2`: 69/69 pass from clean staged source with the genuine Microsoft SDK,
@@ -23,18 +32,22 @@ Updated: 2026-10-04. Clean Windows installer candidate and macOS implementation
   C++ runtime DLLs. Installer archive extraction/hashes and x64 PE are checked;
   installation is not run on the user's PC. The review candidate is unsigned and
   uses the debug profile; public signing and device certification remain pending.
-  Six release tests verify patch/lock sanitation, exclusions, fresh outputs and strict
-  Tauri NSIS metadata comparison. Final artifact:
+  Eight release tests verify patch/lock sanitation, exclusions, fresh outputs,
+  strict Tauri NSIS metadata comparison and complete Intel static archive collection.
+  Four repository tests verify source export/audit and mandatory protection policies.
+  Final artifact:
   `artifacts/windows-x64-review/Nymkeep_0.1.0_x64-setup.exe` (32,290,599 bytes).
 - Mac AXSelectedText-only capture, explicit permission onboarding and bounded
   offline Swift/Vision OCR helper implemented. Standalone adapter Rust metadata
   checks pass for Apple Silicon/Intel; protocol and permission UI tests pass on
-  Windows. Native Mac app/Swift compilation, fixture and device checks remain unrun.
+  Windows. Hosted Apple Silicon and Intel Rust/Swift builds and native Vision fixtures
+  pass; real-device permission/export/signing checks remain pending.
   Both native Mac CI jobs are prepared; SP-035 sets up the public GitHub repository
   and required native CI. Report the actual runs separately from device support.
 - Linux OCR now uses Tauri's installed resource directory and rejects missing,
   empty, malformed, wrong-size or hash-mismatched packs. deb/AppImage resource
-  packaging is configured; Linux builds/capture/compositor certification remain pending.
+  packaging is configured; hosted Ubuntu 24.04 Rust/model checks pass. Actual Linux
+  OCR/export, capture/compositor and installer certification remain pending.
 - UI: five focused views (Protect, Restore, Session, Settings, Screenshot), responsive
   side-by-side review, manual correction for missed phrases, browser-preview
   honesty, accessible controls, and system light/dark themes.
@@ -86,9 +99,20 @@ registry vswhom-sys compiles successfully. The original recovery remains local;
 
 ## Known gaps and release checks
 
+- GitHub's medium `glib` 0.18.5 advisory (RUSTSEC-2024-0429) remains open in the
+  locked GTK graph. Dependabot's automatic update failed. No direct iterator
+  calls were found in Nymkeep source; transitive reachability/remediation still
+  needs review before a public Linux GUI package. See `SECURITY.md` (SP-037).
+
+- GitHub's medium `glib` 0.18.5 advisory (RUSTSEC-2024-0429) remains open in the
+  locked GTK graph. Dependabot's automatic update failed. No direct iterator
+  calls were found in Nymkeep source; transitive reachability/remediation still
+  needs review before a public Linux GUI package. See `SECURITY.md` (SP-037).
+
 - Per-span diff highlighting and its screen-reader alternative (SP-017).
 - Dismissible first-run onboarding and remaining native error taxonomy (SP-018).
-- macOS implementation needs actual Mac compile/link/permission/device evidence;
+- macOS compilation/model/native OCR checks pass on both architectures; interactive
+  permission, installer and device evidence remain open;
   Linux AT-SPI capture remains a stub.
 - Wayland portal shortcuts (contract only, needs real-compositor tests).
 - Release signing run + device-matrix pass (workflow and checklist ready).
@@ -100,6 +124,6 @@ registry vswhom-sys compiles successfully. The original recovery remains local;
 - Independent privacy review, Windows performance measurements and real app
   compatibility checks remain release gates. Public website hosting/domain setup
   is deferred at the user's request. Windows has an unsigned installer candidate;
-  Mac/Linux builds/device evidence remain pending. See `docs/release/PLATFORM_STATUS.md`
+  Mac/Linux installer/device evidence remain pending. See `docs/release/PLATFORM_STATUS.md`
   and `docs/release/BUILD_CANDIDATES.md`. Complete dependency license inventory and
   required license texts are still a public-redistribution gate.

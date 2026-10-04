@@ -1,5 +1,13 @@
 # Website final handoff: 2026-10-04, SP-032
 
+SP-035/036 follow-up: GitHub source/contribution links and independent-maintainer
+copy are added without changing the established visual system. Platform copy
+records passing hosted Windows, Apple Silicon, Intel Mac and Ubuntu 24.04 checks,
+with native Vision OCR fixtures on both Mac architectures (CI 37198309905).
+Site tests (16), production build and changed-file formatting pass.
+The live footer fits the review viewport without horizontal overflow. Direct
+installer links remain gated on a verified public release; hosting is deferred.
+
 SP-033/034 follow-up: platform copy now reports the genuine-SDK Windows installer
 candidate and implemented Mac AX/Vision/permission paths. Public Windows signing
 and installation/device gates, and unrun Mac builds/device verification, remain
