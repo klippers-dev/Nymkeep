@@ -1,6 +1,24 @@
 export const repositoryName = "klippers-dev/Nymkeep";
 export const requiredCheck = "Required checks";
 
+// GitHub adds server defaults. Every requested field must still match exactly;
+// arrays (including bypass actors, branches and required checks) cannot expand.
+export function assertAppliedPolicy(actual, expected, path = "policy") {
+  if (Array.isArray(expected)) {
+    if (!Array.isArray(actual) || actual.length !== expected.length)
+      throw new Error(`Ruleset read-back mismatch: ${path}.`);
+    expected.forEach((value, index) =>
+      assertAppliedPolicy(actual[index], value, `${path}[${index}]`),
+    );
+  } else if (expected && typeof expected === "object") {
+    if (!actual || typeof actual !== "object")
+      throw new Error(`Ruleset read-back mismatch: ${path}.`);
+    for (const [key, value] of Object.entries(expected))
+      assertAppliedPolicy(actual[key], value, `${path}.${key}`);
+  } else if (actual !== expected)
+    throw new Error(`Ruleset read-back mismatch: ${path}.`);
+}
+
 export function protectionPolicies(ownerId, actionsId) {
   if (
     !Number.isSafeInteger(ownerId) ||
@@ -69,10 +87,7 @@ export function protectionPolicies(ownerId, actionsId) {
       conditions: { ref_name: { include: ["refs/tags/v*"], exclude: [] } },
       rules: [
         { type: "creation" },
-        {
-          type: "update",
-          parameters: { update_allows_fetch_and_merge: false },
-        },
+        { type: "update" },
         { type: "deletion" },
         { type: "non_fast_forward" },
       ],

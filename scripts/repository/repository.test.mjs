@@ -12,7 +12,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { exportSource } from "./export.mjs";
 import { auditSource, forbiddenPath, inspectText } from "./audit.mjs";
-import { protectionPolicies } from "./policy.mjs";
+import { protectionPolicies, assertAppliedPolicy } from "./policy.mjs";
 
 test("public-source export preserves local recovery but publishes only official dependencies", async () => {
   const root = await mkdtemp(join(tmpdir(), "nymkeep-public-"));
@@ -121,4 +121,27 @@ test("owner review bypass cannot bypass CI/history protection and release tags r
   assert.equal(tags.bypass_actors[0].actor_id, 123);
   assert.ok(tags.rules.some((rule) => rule.type === "creation"));
   assert.throws(() => protectionPolicies(undefined, 456), /Verified owner/);
+});
+
+test("ruleset read-back accepts server defaults but rejects weakened CI or expanded bypass actors", () => {
+  const [ci, review] = protectionPolicies(123, 456);
+  const savedReview = structuredClone(review);
+  savedReview.rules[0].parameters.required_reviewers = [];
+  savedReview.rules[0].parameters.require_extra_approval_for_unattributed_changes = true;
+  assert.doesNotThrow(() => assertAppliedPolicy(savedReview, review));
+  savedReview.rules[0].parameters.required_approving_review_count = 0;
+  assert.throws(
+    () => assertAppliedPolicy(savedReview, review),
+    /required_approving_review_count/,
+  );
+  const savedCI = structuredClone(ci);
+  savedCI.bypass_actors.push({
+    actor_id: 123,
+    actor_type: "User",
+    bypass_mode: "always",
+  });
+  assert.throws(() => assertAppliedPolicy(savedCI, ci), /bypass_actors/);
+  savedCI.bypass_actors = [];
+  savedCI.rules[2].parameters.required_status_checks[0].integration_id = 999;
+  assert.throws(() => assertAppliedPolicy(savedCI, ci), /integration_id/);
 });

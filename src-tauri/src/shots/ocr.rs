@@ -375,18 +375,21 @@ impl LinuxOcr {
         let raw = img.into_raw();
         let (map, dw, dh, scale) = self.det_tensor(&raw, w, h).ok_or("bad image")?;
         let t = ort::value::TensorRef::from_array_view(&map).map_err(|_| "tensor failed")?;
-        let mut det = self.det.lock().map_err(|_| "ocr busy")?;
-        let outputs = det.run([t]).map_err(|_| "detection failed")?;
-        drop(det);
-        let value = if outputs.len() > 0 {
-            &outputs[0]
-        } else {
-            return Err("detection failed".to_string());
+        let boxes = {
+            let mut det = self.det.lock().map_err(|_| "ocr busy")?;
+            let outputs = det
+                .run(ort::inputs![t])
+                .map_err(|_| "detection failed")?;
+            let value = if outputs.len() > 0 {
+                &outputs[0]
+            } else {
+                return Err("detection failed".to_string());
+            };
+            let (_, data) = value
+                .try_extract_tensor::<f32>()
+                .map_err(|_| "detection failed")?;
+            det_boxes(data, dw, dh)
         };
-        let (_, data) = value
-            .try_extract_tensor::<f32>()
-            .map_err(|_| "detection failed")?;
-        let boxes = det_boxes(data, dw, dh);
         let mut words = Vec::new();
         for (bx, by, bw, bh) in boxes.into_iter().take(200) {
             let fx = ((bx as f32 / scale) as u32).min(w.saturating_sub(1));
@@ -440,8 +443,7 @@ impl LinuxOcr {
         let arr = ndarray::Array4::from_shape_vec((1, 3, 48, rw as usize), data).ok()?;
         let t = ort::value::TensorRef::from_array_view(&arr).ok()?;
         let mut rec = self.rec.lock().ok()?;
-        let outputs = rec.run([t]).ok()?;
-        drop(rec);
+        let outputs = rec.run(ort::inputs![t]).ok()?;
         let value = if outputs.len() > 0 {
             &outputs[0]
         } else {
