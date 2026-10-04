@@ -16,6 +16,12 @@ Use merge commits for dev → stage → main promotions to preserve ancestry; to
 PRs may be squashed. Do not automatically delete these three long-lived branches.
 Urgent fixes start as topic PRs, and are carried back through the same branches.
 
+Initial bootstrap only: if main/dev/stage still share the initial source commit,
+the first native CI repair may target main after all four targets pass. Sync that
+verified baseline to dev/stage through protected PRs before accepting contribution
+work. This seeds the default-branch runtime cache; normal changes continue through
+dev → stage → main. Required CI and history protections still apply (ADR-014).
+
 The committed configuration tool defines two separate branch rulesets. One
 requires the **Required checks** CI result from the verified GitHub Actions app,
 up-to-date validation, no force pushes and no deletion, with no bypass actors.

@@ -1,6 +1,6 @@
 # Nymkeep handoff — 2026-10-04 (SP-035)
 
-## Public source and contributor setup (in progress)
+## Public source and contributor setup (SP-035/036 native checks done)
 
 User authorized publication to klippers-dev/Nymkeep, dev/stage/main branches,
 contribution guidance and repository protections. Existing MIT license retained.
@@ -12,12 +12,43 @@ source export/audit/protection scripts; .gitignore, package scripts, site source
 links/copy and ADR-014. Candidate/release actions pinned to actual commits;
 the nonexistent Tauri action v2 reference corrected to verified v1.0.0.
 
-Checks: 65 frontend tests and production build pass; 9 release/repository tests
+Checks: 65 frontend tests and production build pass; 12 release/repository tests
 pass; changed files pass Prettier. Initial clean export audit: 169 files,
 3,543,014 bytes, with recovery, credentials, downloaded models and generated
-installers excluded. Clean genuine-SDK Rust rerun is in progress.
-GitHub publication, protections and native CI results will be recorded after
-application/read-back. No signing credentials or user clipboard accessed.
+installers excluded. Clean genuine-SDK Rust rerun: 69 pass, fmt passes; two native
+device tests remain opt-in and were verified in SP-033. Commit c1f3abe published to
+main/dev/stage. All branch/tag rulesets verified active (24451248, 24451250,
+24451300), GitHub Actions app 15368 bound to Required checks. Private reporting,
+secret scanning/push protection, dependency alerts/security updates, read-only
+tokens and all-external workflow approval verified by authenticated read-back.
+CODEOWNERS reports no errors. No credentials or user clipboard accessed.
+
+First hosted CI 37191285143: frontend/audit, Windows and Apple Silicon Mac pass,
+including native Mac Vision fixture. Linux compile then runtime ABI and Intel
+runtime-distribution gaps caught. PR #10 corrects ONNX input/lifetime handling,
+uses Ubuntu 24.04 and adds pinned Microsoft ONNX 1.28.0 Intel source builds/cache
+with macOS 13.3 minimum (ADR-015). Run 37192712296 passes Windows, Apple Silicon
+and Linux (69 units each), plus Apple Silicon's explicit native Vision fixture.
+Source inspection found ort-sys's Unix static dependency-layout ambiguity; the
+Intel builder now combines runtime/dependency archives with Apple's libtool,
+omits upstream test binaries and saves the completed runtime before Nymkeep
+checks. Two synthetic archive-layout/incomplete-build regressions pass locally;
+all Nymkeep Rust/model/native OCR checks remain required. Run 37194485645 compiled
+and cached the Intel runtime, then exposed missing RE2/model-package archives at
+Rust link time. Packaging now requires both, explicitly builds upstream's excluded
+RE2 target and reconfigures restored caches when the build recipe changes. Rust
+and Swift deployment targets are aligned at 13.3. Tooling tests still pass (12).
+CI 37198309905 now passes all four targets (69 Rust/model tests each), native
+Vision fixtures on Apple Silicon and Intel, frontend/audit and Required checks.
+The complete Intel runtime cache was saved; code/export formatting and 31 local
+documentation links are verified. README, current state, task/test/platform
+records and website copy reflect the passing checks without a support claim.
+Protected PR #10 carries this tested baseline. Initial bootstrap may
+land the verified repair on main, then sync dev/stage through protected PRs to
+seed a default-branch runtime cache; normal contributions retain dev → stage → main.
+Nine
+unreviewed Dependabot runs were cancelled to prioritize validation; their PRs stay
+open. Future version PR volume reduced to one per ecosystem.
 
 Assumptions/risks: sole-owner PR-only review bypass with separate mandatory CI;
 public installer/signing/device/license gates stay open. Hosting deferred.
@@ -81,7 +112,7 @@ No Mac/Wayland supported claim has been added.
 - `node .tooling/package/bin/npm-cli.js test -- --maxWorkers=1`: **65/65 pass**
   (24 App + 13 ScreenshotView + 12 helpers + 16 website).
 - Final website copy: `node node_modules/vitest/vitest.mjs run tests/Site.test.ts
-  --pool=forks --maxWorkers=1`: **16/16 pass**.
+--pool=forks --maxWorkers=1`: **16/16 pass**.
 - `node .tooling/package/bin/npm-cli.js run build`: TypeScript/production build pass.
 - `cargo test -j 2 --offline --locked -- --include-ignored --test-threads=1`
   in clean staged `src-tauri/`: **69 units + 2 explicit native Windows checks pass**.
@@ -91,7 +122,7 @@ No Mac/Wayland supported claim has been added.
 - `node --test scripts/release/*.test.mjs`: **6/6 pass** (clean staging/lock/output
   checks and strict NSIS metadata comparison; arbitrary code changes are rejected).
 - Both `rustc --edition=2021 --crate-type=lib --emit=metadata --target
-  <aarch64-apple-darwin|x86_64-apple-darwin> src-tauri/src/platform/macos.rs`: pass.
+<aarch64-apple-darwin|x86_64-apple-darwin> src-tauri/src/platform/macos.rs`: pass.
   No full Mac/Swift application compilation is claimed.
 - `powershell -NoProfile -File scripts/download-model.ps1` and OCR equivalent:
   cached SHA-256 (and OCR sizes) verified. Prescribed model command also passed;
@@ -101,7 +132,7 @@ No Mac/Wayland supported claim has been added.
   with path validation and used via full official headers/libs/resource compiler.
   Registry vswhom-sys compiled; staged source has no recovery patch/config.
 - Tauri clean-stage `build --debug --config src-tauri/tauri.local-candidate.conf.json
-  -- --offline --locked -j 2`: pass, NSIS installer produced. Before-build disabled
+-- --offline --locked -j 2`: pass, NSIS installer produced. Before-build disabled
   only because frontend was already built and the local shell has no npm shim.
   Original debug Cargo directory reused for disk efficiency; source/config remain clean.
 - Official 7-Zip archive tools extracted (not installed), installer archive paths
@@ -260,7 +291,7 @@ Publishing/domain setup is deferred at the user's explicit request.
 - Changed frontend/site/test/workflow Prettier checks: **clean**.
 - Final website rerun: **13/13 pass** after native-verification copy.
 - `node node_modules/@tauri-apps/cli/tauri.js build --debug --no-bundle
-  --config .preview/tauri-review-build.json -- --offline --locked -j 2`: **pass**.
+--config .preview/tauri-review-build.json -- --offline --locked -j 2`: **pass**.
   Frontend had already been built; temporary config only disables the unavailable
   shell npm shim's redundant beforeBuild command. Initial build attempts using
   `CARGO_NET_OFFLINE=true`/manual `ORT_LIB_PATH` omitted prebuilt-runtime link
@@ -549,7 +580,7 @@ drift remains outside this website task. Signed release/download connection is n
   blocking; Linux PP-OCRv6 Small via ORT with manifest verify), word->pixel
   mapping, black-box redact, detect/redact pure functions with 9 unit tests.
 - `src-tauri/src/lib.rs`: `pub mod shots`, `shots_status/shots_detect/
-  shots_redact` commands, `Mutex<shots::ShotState>` managed state. Removed the
+shots_redact` commands, `Mutex<shots::ShotState>` managed state. Removed the
   duplicate `ShotState` (kept the one in `shots/mod.rs`).
 - `src-tauri/Cargo.toml`: `image`, `base64`, `windows` 0.62, `windows-future`
   0.3 deps. `src-tauri/tauri.conf.json`: `models/ocr/*` resources.
@@ -561,7 +592,7 @@ drift remains outside this website task. Signed release/download connection is n
 
 - `cargo check -j 1`, `cargo fmt`, `cargo test -j 1` (50/50) with the
   machine-recovery env (MSVC on PATH, INCLUDE/LIB/RC, `RUSTFLAGS="-C
-  debuginfo=1"` for link memory).
+debuginfo=1"` for link memory).
 
 ## Assumptions
 
