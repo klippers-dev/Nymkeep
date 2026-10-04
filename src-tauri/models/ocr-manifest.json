@@ -1,0 +1,25 @@
+{
+  "source": "PP-OCRv6 Small (detection + recognition + 50-language dictionary)",
+  "origins": [
+    "https://huggingface.co/PaddlePaddle/PP-OCRv6_small_det_onnx",
+    "https://huggingface.co/PaddlePaddle/PP-OCRv6_small_rec_onnx"
+  ],
+  "license": "Apache-2.0",
+  "files": {
+    "ocr/det.onnx": {
+      "remote": "https://huggingface.co/PaddlePaddle/PP-OCRv6_small_det_onnx/resolve/main/inference.onnx",
+      "sha256": "D73E0058B7A8086BBD57F3D10B8BCD4FF95363F67E06E2762B5E814FE9C9410E",
+      "bytes": 9880512
+    },
+    "ocr/rec.onnx": {
+      "remote": "https://huggingface.co/PaddlePaddle/PP-OCRv6_small_rec_onnx/resolve/main/inference.onnx",
+      "sha256": "5435FD747C9E0EFE15A96D0B378D5BD157E9492ED8FD80EDF08F30D02FA24634",
+      "bytes": 21159378
+    },
+    "ocr/dict.txt": {
+      "remote": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/paddle/PP-OCRv6/rec/PP-OCRv6_rec_small/ppocrv6_dict.txt",
+      "sha256": "B5F2BFE2BDD9448429E3E82B51C789775D9B42F2403D082B00662EB77E401C5D",
+      "bytes": 74947
+    }
+  }
+}

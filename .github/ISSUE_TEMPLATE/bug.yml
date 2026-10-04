@@ -1,0 +1,40 @@
+name: Bug report
+description: Report a reproducible problem using fictional data.
+title: "[Bug]: "
+body:
+  - type: markdown
+    attributes:
+      value: Use synthetic data only. Security vulnerabilities follow SECURITY.md.
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      placeholder: Version number or commit SHA
+    validations:
+      required: true
+  - type: input
+    id: platform
+    attributes:
+      label: Operating system and architecture
+      placeholder: e.g. Windows 11 x64
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Give a minimal fictional example, expected behavior and observed result.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Additional evidence
+      description: Synthetic screenshots and generic errors only. No originals, private images, mappings or credentials.
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy check
+      options:
+        - label: I checked existing reports and used no real personal/confidential data.
+          required: true

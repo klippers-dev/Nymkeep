@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability privately
+    url: https://github.com/klippers-dev/Nymkeep/security/advisories/new
+    about: Follow SECURITY.md; never disclose private data or exploit details publicly.
+  - name: Download and platform status
+    url: https://github.com/klippers-dev/Nymkeep/blob/main/docs/INSTALLATION.md
+    about: Check installer availability and platform evidence.

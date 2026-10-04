@@ -1,0 +1,11 @@
+{
+  "bundle": {
+    "targets": ["deb", "appimage"],
+    "resources": {
+      "models/ocr/det.onnx": "models/ocr/det.onnx",
+      "models/ocr/rec.onnx": "models/ocr/rec.onnx",
+      "models/ocr/dict.txt": "models/ocr/dict.txt",
+      "models/ocr-manifest.json": "models/ocr/ocr-manifest.json"
+    }
+  }
+}

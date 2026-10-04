@@ -1,0 +1,29 @@
+Nymkeep development candidate
+
+The following major components are used by Nymkeep. This candidate's full
+dependency license inventory must be checked before public redistribution.
+
+Tauri and its Rust/JavaScript plugins: MIT OR Apache-2.0
+https://github.com/tauri-apps/tauri
+https://github.com/tauri-apps/plugins-workspace
+
+React and React DOM: MIT, copyright Meta Platforms, Inc. and affiliates
+https://github.com/facebook/react/blob/main/LICENSE
+
+ONNX Runtime: MIT, copyright Microsoft Corporation
+https://github.com/microsoft/onnxruntime/blob/main/LICENSE
+
+ort Rust bindings: MIT OR Apache-2.0
+https://github.com/pykeio/ort
+
+BERT-small PII detection model: Apache-2.0
+https://huggingface.co/onnx-community/bert-small-pii-detection-ONNX
+The model manifest records the source and SHA-256 for every bundled model file.
+
+Windows OCR, Microsoft Edge WebView2 and macOS Vision/Accessibility are vendor
+operating-system/runtime components; their vendor terms apply.
+The Windows candidate includes genuine app-local Microsoft Visual C++
+redistributable runtime DLLs, copyright Microsoft Corporation, under the
+Visual Studio redistributable terms. Their signatures/hashes are checked at build time.
+
+No signing keys, passwords, customer data or license credentials are bundled.

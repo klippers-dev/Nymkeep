@@ -1,0 +1,27 @@
+{
+  "source": "https://huggingface.co/onnx-community/bert-small-pii-detection-ONNX",
+  "revision": "main",
+  "license": "Apache-2.0",
+  "files": {
+    "pii-model.onnx": {
+      "remote": "onnx/model_quantized.onnx",
+      "sha256": "40E94266F077C088D3DDA3E12FE7BE8FAA1CAE862C3E3FE84B799439C509095A",
+      "bytes": 28748527
+    },
+    "tokenizer.json": {
+      "remote": "tokenizer.json",
+      "sha256": "D241A60D5E8F04CC1B2B3E9EF7A4921B27BF526D9F6050AB90F9267A1F9E5C66",
+      "bytes": 711396
+    },
+    "config.json": {
+      "remote": "config.json",
+      "sha256": "0E4A9201C26B524B3B406DCE8B2E1CCC178680775F9C579C351AF1D9E3CC0ED7",
+      "bytes": 2948
+    },
+    "vocab.txt": {
+      "remote": "vocab.txt",
+      "sha256": "07ECED375CEC144D27C900241F3E339478DEC958F92FDDBC551F295C992038A3",
+      "bytes": 231508
+    }
+  }
+}

@@ -1,0 +1,27 @@
+name: Feature proposal
+description: Propose a focused improvement and its privacy implications.
+title: "[Feature]: "
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem to solve
+      description: Describe who needs this and give a fictional example.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: Include alternatives, scope and effects on offline processing/storage/permissions.
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Before submitting
+      options:
+        - label: I read the roadmap and searched existing proposals.
+          required: true
+        - label: This report contains only fictional examples.
+          required: true

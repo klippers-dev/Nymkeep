@@ -1,0 +1,950 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <title>Nymkeep | Use AI. Keep your details.</title>
+    <meta
+      name="description"
+      content="Protect text with reversible placeholders and redact sensitive text in screenshots locally. Nymkeep is a Windows-first desktop privacy utility. Public release coming soon."
+    />
+    <link rel="icon" type="image/svg+xml" href="assets/nymkeep-mark.svg" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="release.js" defer></script>
+    <script src="site.js" defer></script>
+  </head>
+  <body id="top">
+    <svg
+      class="icon-definitions"
+      aria-hidden="true"
+      focusable="false"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <defs>
+        <symbol id="nk-arrow-right" viewBox="0 0 24 24">
+          <path d="M5 12h14m-6-6 6 6-6 6" />
+        </symbol>
+        <symbol id="nk-arrow-down" viewBox="0 0 24 24">
+          <path d="M12 5v14m-6-6 6 6 6-6" />
+        </symbol>
+        <symbol id="nk-arrow-up" viewBox="0 0 24 24">
+          <path d="M12 19V5m-6 6 6-6 6 6" />
+        </symbol>
+        <symbol id="nk-arrow-external" viewBox="0 0 24 24">
+          <path d="M6 18 18 6M6 6h12v12" />
+        </symbol>
+        <symbol id="nk-plus" viewBox="0 0 24 24">
+          <path d="M5 12h14M12 5v14" />
+        </symbol>
+        <symbol id="nk-check" viewBox="0 0 24 24">
+          <path d="m5 12 4 4L19 6" />
+        </symbol>
+        <symbol id="nk-moon" viewBox="0 0 24 24">
+          <path d="M20 15.3A8.5 8.5 0 0 1 8.7 4a8.5 8.5 0 1 0 11.3 11.3Z" />
+        </symbol>
+        <symbol id="nk-sun" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="4" />
+          <path
+            d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.4 1.4m11.2 11.2L19 19M5 19l1.4-1.4M17.6 6.4 19 5"
+          />
+        </symbol>
+        <symbol id="nk-device" viewBox="0 0 24 24">
+          <rect x="3" y="4" width="18" height="12" rx="2" />
+          <path d="M8 20h8m-4-4v4" />
+        </symbol>
+        <symbol id="nk-restore" viewBox="0 0 24 24">
+          <path d="M4 8h16m-4-4 4 4-4 4M20 16H4m4-4-4 4 4 4" />
+        </symbol>
+        <symbol id="nk-apps" viewBox="0 0 24 24">
+          <rect x="3" y="3" width="7" height="7" rx="1.5" />
+          <rect x="14" y="3" width="7" height="7" rx="1.5" />
+          <rect x="3" y="14" width="7" height="7" rx="1.5" />
+          <rect x="14" y="14" width="7" height="7" rx="1.5" />
+        </symbol>
+      </defs>
+    </svg>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="site-nav wrap">
+        <a class="nav-brand" href="#top" aria-label="Nymkeep home">
+          <img src="assets/nymkeep-mark.svg" width="32" height="32" alt="" />
+          <span>Nymkeep</span>
+        </a>
+        <button
+          class="theme-toggle"
+          type="button"
+          aria-label="Switch color theme"
+          aria-pressed="false"
+          hidden
+        >
+          <svg
+            class="icon"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <use data-theme-icon href="#nk-moon"></use>
+          </svg>
+        </button>
+        <button
+          class="menu-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="page-nav"
+          hidden
+        >
+          Menu
+          <svg
+            class="icon"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <use href="#nk-plus"></use>
+          </svg>
+        </button>
+        <nav id="page-nav" aria-label="Page sections">
+          <a href="#how">How it works</a>
+          <a href="#features">Features</a>
+          <a href="#screenshots">Images</a>
+          <a href="#roadmap">Roadmap</a>
+          <a href="#faq">FAQ</a>
+        </nav>
+        <a
+          class="btn btn-small btn-primary nav-cta"
+          href="#download"
+          data-release-cta
+          >Release status
+          <svg
+            class="icon"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <use href="#nk-arrow-external"></use></svg
+        ></a>
+      </div>
+    </header>
+
+    <main id="main" tabindex="-1">
+      <section class="hero wrap" aria-labelledby="hero-heading">
+        <div class="hero-copy">
+          <p class="eyebrow">A little privacy, built into your workflow.</p>
+          <h1 id="hero-heading">
+            Use AI.<br /><span>Keep your details.</span>
+          </h1>
+          <p class="lede">
+            Replace sensitive details with reversible placeholders. Share the
+            protected version, then restore the reply on your PC.
+          </p>
+          <div class="hero-cta">
+            <a class="btn btn-primary" href="#how"
+              >See how it works
+              <svg
+                class="icon"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <use href="#nk-arrow-down"></use></svg
+            ></a>
+            <a class="text-link" href="#screenshots"
+              >Explore image masking
+              <svg
+                class="icon"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <use href="#nk-arrow-down"></use></svg
+            ></a>
+          </div>
+          <p class="hero-capabilities">
+            Text you can restore. Images you can permanently redact.
+          </p>
+        </div>
+
+        <div
+          class="example"
+          id="example"
+          aria-label="Interactive walkthrough using fictional text"
+        >
+          <div class="example-heading">
+            <span class="example-title"
+              >A client email, with the details kept local.</span
+            >
+            <span class="sample-label">Fictional example</span>
+          </div>
+          <div
+            class="example-stages"
+            role="group"
+            aria-label="Choose an example stage"
+          >
+            <button type="button" data-stage="protect" aria-pressed="true">
+              <span class="stage-number">1</span> Protect
+            </button>
+            <button type="button" data-stage="reply" aria-pressed="false">
+              <span class="stage-number">2</span> AI reply
+            </button>
+            <button type="button" data-stage="restore" aria-pressed="false">
+              <span class="stage-number">3</span> Restore
+            </button>
+          </div>
+          <div class="example-content" aria-live="polite" aria-atomic="true">
+            <div class="example-source">
+              <p class="pane-label" data-source-label>
+                Your original, on your PC
+              </p>
+              <p class="sample-text" data-source-text>
+                Write a follow-up to <span class="original">Mira Sen</span> at
+                <span class="original">mira@example.com</span> about the
+                <span class="original">Juniper Studio</span> proposal.
+              </p>
+            </div>
+            <div class="example-bridge">
+              <span class="bridge-line"></span
+              ><span data-bridge-label>Protect &amp; copy</span
+              ><kbd data-bridge-key>Alt + C</kbd
+              ><span class="bridge-line"></span>
+            </div>
+            <div class="example-result">
+              <p class="pane-label" data-result-label>
+                Protected version, ready to share
+              </p>
+              <p class="sample-text" data-result-text>
+                Write a follow-up to <mark>PERSON_1</mark> at
+                <mark>EMAIL_1</mark> about the <mark>ORG_1</mark> proposal.
+              </p>
+            </div>
+          </div>
+          <div class="example-footer">
+            <p data-example-caption>
+              The context stays useful. The real details stay with you.
+            </p>
+            <button class="demo-next" type="button" data-next-stage>
+              <span data-next-stage-label>See the AI reply</span>
+              <svg
+                class="icon"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <use href="#nk-arrow-right"></use>
+              </svg>
+            </button>
+          </div>
+          <p class="example-disclaimer">
+            Illustrative walkthrough, not live detection. Your text is processed
+            in the desktop app.
+          </p>
+        </div>
+      </section>
+
+      <div class="principles wrap" aria-label="Designed around your privacy">
+        <div>
+          <svg
+            class="icon principle-symbol"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <use href="#nk-device"></use>
+          </svg>
+          <p>
+            <strong>Processed on your PC</strong
+            ><span>Protect and Restore work offline.</span>
+          </p>
+        </div>
+        <div>
+          <svg
+            class="icon principle-symbol"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <use href="#nk-restore"></use>
+          </svg>
+          <p>
+            <strong>Reversible by design</strong
+            ><span>Known placeholders return to originals.</span>
+          </p>
+        </div>
+        <div>
+          <svg
+            class="icon principle-symbol"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <use href="#nk-apps"></use>
+          </svg>
+          <p>
+            <strong>Your choice of AI</strong
+            ><span>Paste the reviewed text into your tool.</span>
+          </p>
+        </div>
+      </div>
+
+      <section class="how section wrap" id="how" aria-labelledby="how-heading">
+        <div class="section-heading">
+          <h2 id="how-heading">Same workflow.<br />Fewer exposed details.</h2>
+          <p>
+            A small step before you paste, and a shortcut to bring the originals
+            back.
+          </p>
+        </div>
+        <ol class="steps">
+          <li>
+            <div class="step-top">
+              <span class="step-number">01</span><kbd>Alt + C</kbd>
+            </div>
+            <h3>Select &amp; protect</h3>
+            <p>
+              Select text and press the shortcut. Review the protected copy and
+              correct anything missed before sharing.
+            </p>
+            <div class="step-example">
+              <span class="original">mira@example.com</span
+              ><svg
+                class="icon"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <use href="#nk-arrow-right"></use></svg
+              ><mark>EMAIL_1</mark>
+            </div>
+          </li>
+          <li>
+            <div class="step-top">
+              <span class="step-number">02</span
+              ><span class="step-note">Your AI tool</span>
+            </div>
+            <h3>Paste &amp; ask</h3>
+            <p>
+              Use the protected text in your usual AI tool. The placeholders
+              keep the context useful without the replaced details.
+            </p>
+            <div class="step-example">
+              <span>Draft a reply to</span><mark>PERSON_1</mark>
+            </div>
+          </li>
+          <li>
+            <div class="step-top">
+              <span class="step-number">03</span><kbd>Alt + R</kbd>
+            </div>
+            <h3>Restore the reply</h3>
+            <p>
+              Copy the answer and restore known placeholders locally. Finish in
+              the same session, before mappings expire or you quit.
+            </p>
+            <div class="step-example">
+              <mark>PERSON_1</mark
+              ><svg
+                class="icon"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <use href="#nk-arrow-right"></use></svg
+              ><span class="original">Mira Sen</span>
+            </div>
+          </li>
+        </ol>
+        <p class="workflow-note">
+          When an app cannot share its selection, copy the text first. Nymkeep
+          labels this clipboard fallback.
+        </p>
+        <p class="workflow-note">
+          Prefer one action? <kbd>Alt + J</kbd> copies and protects selected
+          text on Windows. Compatibility across apps is still being checked.
+        </p>
+      </section>
+
+      <section
+        class="features section wrap"
+        id="features"
+        aria-labelledby="features-heading"
+      >
+        <div class="section-heading">
+          <h2 id="features-heading">
+            Small utility.<br />Thoughtful controls.
+          </h2>
+          <p>
+            Review what changes, decide what matters, and keep using the tools
+            you already know.
+          </p>
+        </div>
+        <div class="feature-layout">
+          <article class="shortcut-feature">
+            <div class="feature-copy">
+              <h3>Two shortcuts.<br />One less thing to think about.</h3>
+              <p>
+                Protect with Alt+C. Restore with Alt+R. Rebind them in Settings
+                to fit the way you work.
+              </p>
+            </div>
+            <img
+              src="assets/shortcut-keys.jpg"
+              width="1536"
+              height="1024"
+              loading="lazy"
+              decoding="async"
+              alt="Graphite Alt key beside translucent cyan C and R keys, illustrating the Protect and Restore shortcuts."
+            />
+          </article>
+          <div class="feature-details">
+            <article>
+              <span class="feature-kicker">Review</span>
+              <h3>You get the final say.</h3>
+              <p>
+                Compare the original and protected text side by side. Select a
+                missed phrase to protect it just for that draft.
+              </p>
+              <div
+                class="review-mini"
+                aria-label="Example of a manual correction"
+              >
+                <span>Custom project name</span
+                ><svg
+                  class="icon"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <use href="#nk-arrow-right"></use></svg
+                ><mark>TERM_1</mark>
+              </div>
+            </article>
+            <article>
+              <span class="feature-kicker">Control</span>
+              <h3>Your terms. Your rules.</h3>
+              <p>
+                Set terms to always or never protect. Amounts and dates are
+                opt-in. Name detection clearly reports whether it is active.
+              </p>
+              <div class="rule-example">
+                <span>Always protect</span><strong>Juniper Studio</strong>
+              </div>
+            </article>
+            <article>
+              <span class="feature-kicker">Session</span>
+              <h3>Kept locally. Forgotten later.</h3>
+              <p>
+                Originals live in memory and stay hidden by default. Mappings
+                expire after 30 minutes without use, or clear when you quit.
+              </p>
+              <p class="session-meta">
+                <span class="session-time">30 min</span> without use
+              </p>
+            </article>
+          </div>
+        </div>
+        <div class="detection-strip">
+          <h3>More than email addresses.</h3>
+          <p>
+            Pattern checks for emails, phones, URLs, IP addresses, payment
+            cards, IBANs, UUIDs and supported secret formats, including API
+            keys. Local name detection for people, companies and places when the
+            model is available.
+          </p>
+          <ul class="kind-pills" aria-label="Detection examples">
+            <li>Email</li>
+            <li>Phone</li>
+            <li>API key</li>
+            <li>IP address</li>
+            <li>Person</li>
+            <li>Company</li>
+            <li>Custom term</li>
+          </ul>
+          <p class="review-reminder">
+            Detection is assistive. Always review the result before sharing.
+          </p>
+        </div>
+        <p class="utility-note">
+          Stay within reach: tray actions, optional launch at login, and
+          configurable shortcuts with conflict checks. Closing the window keeps
+          the app running; Quit ends your session.
+        </p>
+      </section>
+
+      <section
+        class="screenshots section wrap"
+        id="screenshots"
+        aria-labelledby="screenshots-heading"
+      >
+        <div class="screenshot-layout">
+          <div class="screenshot-copy">
+            <p class="eyebrow">
+              Screenshot mode
+              <span class="verified-label"
+                ><svg
+                  class="icon"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <use href="#nk-check"></use></svg
+                >Built &amp; verified</span
+              >
+            </p>
+            <h2 id="screenshots-heading">
+              A screenshot can<br />say too much.
+            </h2>
+            <p class="screenshot-intro">
+              Paste, drop or open an image. Let local text recognition suggest
+              sensitive details, or draw your own boxes. Review the image, then
+              copy it or save a PNG—all on your device.
+            </p>
+            <ol class="image-steps">
+              <li>
+                <span>01</span>
+                <div>
+                  <h3>Start with detection. Or draw.</h3>
+                  <p>
+                    OCR uses your text detectors and rules. Manual masking works
+                    even when recognition is unavailable. Protected OCR text can
+                    be copied separately.
+                  </p>
+                </div>
+              </li>
+              <li>
+                <span>02</span>
+                <div>
+                  <h3>Review every box.</h3>
+                  <p>
+                    Include or exclude suggestions, add boxes by dragging or
+                    with keyboard coordinates, and inspect the actual export
+                    preview. Faces and objects need manual marking.
+                  </p>
+                </div>
+              </li>
+              <li>
+                <span>03</span>
+                <div>
+                  <h3>Copy it. Or save a PNG.</h3>
+                  <p>
+                    Native image copy and an explicit PNG save dialog share only
+                    the redacted pixels. Solid black means permanent masking;
+                    text placeholders remain reversible.
+                  </p>
+                </div>
+              </li>
+            </ol>
+          </div>
+          <figure class="image-proof">
+            <div class="image-proof-header">
+              <span>One fictional project note</span>
+              <div
+                class="image-switch"
+                role="group"
+                aria-label="Compare the fictional screenshot"
+              >
+                <button
+                  type="button"
+                  data-image-stage="original"
+                  aria-pressed="false"
+                >
+                  Original
+                </button>
+                <button
+                  type="button"
+                  data-image-stage="redacted"
+                  aria-pressed="true"
+                >
+                  Redacted
+                </button>
+              </div>
+            </div>
+            <div class="image-proof-canvas">
+              <img
+                data-shot-example
+                src="assets/screenshot-redacted.png"
+                width="1120"
+                height="620"
+                loading="lazy"
+                decoding="async"
+                alt="Fictional project note with the email and server address permanently covered by solid black pixels."
+              />
+            </div>
+            <figcaption>
+              <strong data-image-caption aria-live="polite"
+                >Email and IP address redacted.</strong
+              >
+              <span
+                >Fixed synthetic example, processed by the desktop backend. This
+                website does not process your images.</span
+              >
+            </figcaption>
+          </figure>
+        </div>
+        <p class="screenshot-verification">
+          Verified on Windows: local OCR, permanent pixel masking, native image
+          clipboard round-trip and redacted PNG output, using fictional images.
+          Manual masking works without OCR. Public release checks are listed
+          below.
+        </p>
+      </section>
+
+      <section
+        class="roadmap section wrap"
+        id="roadmap"
+        aria-labelledby="roadmap-heading"
+      >
+        <div class="section-heading">
+          <h2 id="roadmap-heading">
+            Windows first.<br />Built carefully from here.
+          </h2>
+          <p>
+            The Windows development build includes text protection and image
+            redaction. Signed downloads come next; other platforms follow real
+            device verification.
+          </p>
+        </div>
+        <dl class="roadmap-list">
+          <div>
+            <dt>
+              <span class="roadmap-status">Built</span>Windows desktop core
+            </dt>
+            <dd>
+              Protect, Restore, Session and Settings views. Offline text
+              detection, stable placeholders, exact local restore, review
+              corrections, custom terms, session expiry, tray and shortcuts.
+            </dd>
+          </div>
+          <div>
+            <dt>
+              <span class="roadmap-status">Built</span>Screenshot &amp; image
+              redaction
+            </dt>
+            <dd>
+              Manual masking without OCR, local text detection, editable areas,
+              an actual export preview, native image copy and PNG save are built
+              and covered by automated checks. Windows OCR and native clipboard
+              workflows are also verified with fictional images.
+            </dd>
+          </div>
+          <div>
+            <dt>
+              <span class="roadmap-status next">Before release</span>Ready for
+              public download
+            </dt>
+            <dd>
+              Signed packaging, app and device compatibility, performance
+              measurements and an independent privacy review.
+            </dd>
+          </div>
+          <div>
+            <dt>
+              <span class="roadmap-status later">Planned</span>More ways to work
+            </dt>
+            <dd>
+              Policy presets, custom regex rules, Office capture, opt-in
+              auto-protection, history and team policies. macOS/Linux adapters
+              and Wayland support are not yet verified.
+            </dd>
+          </div>
+        </dl>
+        <div class="platform-progress" aria-label="Desktop platform status">
+          <article>
+            <h3>Windows</h3>
+            <p class="platform-state">Installer candidate built</p>
+            <p>
+              Local unsigned installer with bundled model and runtime files.
+              Signing, independent privacy review and installation/device checks
+              remain before public release.
+            </p>
+          </article>
+          <article>
+            <h3>macOS</h3>
+            <p class="platform-state">Native implementation added</p>
+            <p>
+              Selection capture, local Vision OCR and permission controls are
+              implemented. Mac builds, device checks, signing and notarization
+              remain before release.
+            </p>
+          </article>
+          <article>
+            <h3>Linux</h3>
+            <p class="platform-state">Platform work remains</p>
+            <p>
+              Selection capture, bundled OCR and X11/Wayland integration need
+              Linux builds and real compositor tests.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section
+        class="download section wrap"
+        id="download"
+        aria-labelledby="download-heading"
+      >
+        <div class="download-panel">
+          <div class="download-copy">
+            <p class="eyebrow">Nymkeep for Windows</p>
+            <h2 id="download-heading" data-release-heading>
+              Your next paste<br />could be a little more private.
+            </h2>
+            <p data-download-description>
+              We are preparing the first public desktop release. The verified
+              installer will be linked here when it is ready.
+            </p>
+            <div class="platform-label">
+              <span class="windows-mark" aria-hidden="true"
+                ><i></i><i></i><i></i><i></i></span
+              >Windows 11
+              <span class="platform-divider" aria-hidden="true">/</span> 64-bit
+            </div>
+          </div>
+          <div class="release-box">
+            <img src="assets/nymkeep-mark.svg" width="56" height="56" alt="" />
+            <p class="release-status" data-release-status>
+              Public release coming soon
+            </p>
+            <p class="release-description" data-release-note>
+              The Windows development build is ready. A signed public installer
+              will be linked after release checks.
+            </p>
+            <a
+              class="btn btn-primary btn-block"
+              href="mailto:contact.klippers@gmail.com?subject=Nymkeep%20release%20enquiry"
+              data-installer-link
+              >Ask about the release
+              <svg
+                class="icon"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <use href="#nk-arrow-external"></use></svg
+            ></a>
+            <p class="release-fine" data-release-meta>
+              Questions go straight to the Klippers team.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="faq section wrap" id="faq" aria-labelledby="faq-heading">
+        <div class="faq-intro">
+          <h2 id="faq-heading">A few things<br />worth knowing.</h2>
+          <p>Privacy tools should be easy to understand.</p>
+          <a class="text-link" href="mailto:contact.klippers@gmail.com"
+            >Talk to the team
+            <svg
+              class="icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <use href="#nk-arrow-external"></use></svg
+          ></a>
+        </div>
+        <div class="faq-list">
+          <details>
+            <summary>
+              Can it mask screenshots and images?<svg
+                class="icon"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <use href="#nk-plus"></use>
+              </svg>
+            </summary>
+            <p>
+              Yes, screenshot mode is built and verified in the Windows
+              development app. It uses local OCR to suggest sensitive text,
+              supports manual boxes even without OCR, previews the actual
+              redaction, and lets you copy the image or save a PNG. Selected
+              pixels become solid black. Faces and objects are not detected
+              automatically. Image pixels cannot be restored. The website's
+              image example is fixed fiction, not an upload tool.
+            </p>
+          </details>
+          <details>
+            <summary>
+              Does Nymkeep upload my text?<svg
+                class="icon"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <use href="#nk-plus"></use>
+              </svg>
+            </summary>
+            <p>
+              Protect and Restore run on your PC, including detection and the
+              session map. Those operations do not send your text over the
+              network. When you paste the reviewed version into an AI service,
+              that service receives what you paste.
+            </p>
+          </details>
+          <details>
+            <summary>
+              Can it catch every sensitive detail?<svg
+                class="icon"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <use href="#nk-plus"></use>
+              </svg>
+            </summary>
+            <p>
+              No. Detection is assistive, and names can be missed. Review the
+              result, protect missed phrases and use custom terms where needed.
+              Reversible placeholders are pseudonymization, not guaranteed
+              anonymity.
+            </p>
+          </details>
+          <details>
+            <summary>
+              How do I get my original details back?<svg
+                class="icon"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <use href="#nk-plus"></use>
+              </svg>
+            </summary>
+            <p>
+              Copy the AI reply and use Restore in the same app session. Known
+              placeholders return to their original values. Unknown placeholders
+              stay unchanged for review. Mappings expire after 30 minutes
+              without use; quitting ends the session.
+            </p>
+          </details>
+          <details>
+            <summary>
+              Which apps and platforms does it work with?<svg
+                class="icon"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <use href="#nk-plus"></use>
+              </svg>
+            </summary>
+            <p>
+              Windows is the first implementation target. Selection capture
+              works where apps expose selected text; other apps use a labeled
+              clipboard fallback. macOS, Linux and Wayland support still need
+              implementation and real-device verification.
+            </p>
+          </details>
+          <details>
+            <summary>
+              Is the Windows download available yet?<svg
+                class="icon"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <use href="#nk-plus"></use>
+              </svg>
+            </summary>
+            <p data-release-faq>
+              The public installer is not available yet. Signed packaging,
+              real-device checks and a privacy review come before the first
+              public release. The download will appear in the release section
+              above.
+            </p>
+          </details>
+          <details>
+            <summary>
+              What should I know about the clipboard?<svg
+                class="icon"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <use href="#nk-plus"></use>
+              </svg>
+            </summary>
+            <p>
+              Protect copies the protected version. Restore can put original
+              sensitive details back on the clipboard. Your operating system's
+              clipboard history or sync may retain copied text. Clear that
+              history when appropriate for your work.
+            </p>
+          </details>
+        </div>
+      </section>
+
+      <section class="support section wrap" aria-labelledby="support-heading">
+        <div class="maker-mark" aria-hidden="true">
+          K<svg
+            class="icon"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <use href="#nk-arrow-external"></use>
+          </svg>
+        </div>
+        <div>
+          <h2 id="support-heading">Made by Klippers.</h2>
+          <p>
+            Nymkeep is independently maintained by Klippers. The source is open
+            for inspection, and thoughtful contributions are welcome. We build
+            tools that give you more control over everyday AI work.
+          </p>
+          <a class="text-link" href="https://theklippers.com"
+            >Meet Klippers
+            <svg
+              class="icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <use href="#nk-arrow-external"></use></svg
+          ></a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer wrap">
+      <div class="footer-top">
+        <a class="nav-brand" href="#top"
+          ><img
+            src="assets/nymkeep-mark.svg"
+            width="28"
+            height="28"
+            alt=""
+          /><span>Nymkeep</span></a
+        >
+        <p>Your work. Your tools. Your details.</p>
+        <a href="mailto:contact.klippers@gmail.com"
+          >contact.klippers@gmail.com</a
+        >
+      </div>
+      <div class="footer-bottom">
+        <p>© <span data-year>2026</span> Klippers</p>
+        <p>
+          <a href="https://github.com/klippers-dev/Nymkeep">Source on GitHub</a>
+          ·
+          <a
+            href="https://github.com/klippers-dev/Nymkeep/blob/main/CONTRIBUTING.md"
+            >Contribute</a
+          >
+          · MIT licensed
+        </p>
+        <a href="#top"
+          >Back to top
+          <svg
+            class="icon"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <use href="#nk-arrow-up"></use></svg
+        ></a>
+      </div>
+    </footer>
+  </body>
+</html>

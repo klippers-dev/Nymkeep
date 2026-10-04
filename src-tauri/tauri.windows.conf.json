@@ -1,0 +1,22 @@
+{
+  "bundle": {
+    "resources": {
+      "runtime/windows/msvcp140.dll": "msvcp140.dll",
+      "runtime/windows/msvcp140_1.dll": "msvcp140_1.dll",
+      "runtime/windows/vcruntime140.dll": "vcruntime140.dll",
+      "runtime/windows/vcruntime140_1.dll": "vcruntime140_1.dll"
+    },
+    "targets": ["nsis"],
+    "windows": {
+      "webviewInstallMode": { "type": "downloadBootstrapper", "silent": true },
+      "nsis": {
+        "installMode": "currentUser",
+        "compression": "lzma",
+        "languages": ["English"],
+        "displayLanguageSelector": false,
+        "startMenuFolder": "Klippers",
+        "installerIcon": "icons/icon.ico"
+      }
+    }
+  }
+}

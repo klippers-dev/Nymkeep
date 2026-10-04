@@ -1,0 +1,53 @@
+[package]
+name = "nymkeep"
+version = "0.1.0"
+description = "Local, reversible protection for text shared with AI tools"
+authors = ["Klippers"]
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+# The `_lib` suffix may seem redundant but it is necessary
+# to make the lib name unique and wouldn't conflict with the bin name.
+# This seems to be only an issue on Windows, see https://github.com/rust-lang/cargo/issues/8519
+name = "nymkeep_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["tray-icon"] }
+tauri-plugin-opener = "2"
+regex = "1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tauri-plugin-clipboard-manager = "2"
+tauri-plugin-dialog = "=2.7.3"
+tauri-plugin-global-shortcut = "2"
+tauri-plugin-notification = "2"
+tauri-plugin-autostart = "2"
+tauri-plugin-updater = "2"
+ort = { version = "=2.0.0-rc.13", features = ["ndarray"] }
+ndarray = "0.17"
+unicode-normalization = "0.1"
+sha2 = "0.10"
+image = "0.25"
+base64 = "0.22"
+
+[target.'cfg(windows)'.dependencies]
+uiautomation = "0.25"
+windows = { version = "0.62", features = ["Media_Ocr", "Graphics_Imaging", "Storage_Streams", "Foundation", "Foundation_Collections", "Win32_Foundation", "Win32_UI_Input_KeyboardAndMouse"] }
+winapi = { version = "0.3", features = ["winuser"] }
+windows-future = "0.3"
+
+[dev-dependencies]
+tauri = { version = "2", features = ["test"] }
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = 3
+panic = "abort"
+strip = true

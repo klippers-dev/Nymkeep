@@ -1,0 +1,101 @@
+name: Signed release draft
+
+# Signing credentials exist only in CI secrets. Stage clean sources for every build.
+# Public updater metadata belongs in repository variables.
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  release:
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: windows-latest
+            target: x86_64-pc-windows-msvc
+          - runner: macos-15
+            target: aarch64-apple-darwin
+          - runner: macos-15-intel
+            target: x86_64-apple-darwin
+          - runner: ubuntu-22.04
+            target: x86_64-unknown-linux-gnu
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+      - uses: dtolnay/rust-toolchain@89b12181fb390509a0842a86cc55eeb8eb928c1d # stable
+        with:
+          targets: ${{ matrix.target }}
+      - name: Linux build dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+      - name: Stage clean sources
+        run: node scripts/release/prepare.mjs .release-work/candidate
+      - name: Validate public release configuration
+        working-directory: .release-work/candidate
+        env:
+          NYMKEEP_UPDATE_ENDPOINT: ${{ vars.NYMKEEP_UPDATE_ENDPOINT }}
+          NYMKEEP_UPDATE_PUBLIC_KEY: ${{ vars.NYMKEEP_UPDATE_PUBLIC_KEY }}
+        run: node scripts/release/public-config.mjs
+      - name: Prepare official Windows runtime
+        if: runner.os == 'Windows'
+        working-directory: .release-work/candidate
+        shell: pwsh
+        run: ./scripts/release/windows-runtime.ps1
+      - name: Verify bundled model
+        working-directory: .release-work/candidate
+        shell: pwsh
+        run: ./scripts/download-model.ps1
+      - name: Verify Linux OCR pack
+        if: runner.os == 'Linux'
+        working-directory: .release-work/candidate
+        shell: pwsh
+        run: ./scripts/download-ocr-models.ps1
+      - name: Build native Vision helper
+        if: runner.os == 'macOS'
+        working-directory: .release-work/candidate
+        run: node scripts/build-macos-ocr.mjs ${{ matrix.target }}
+      - name: Frontend checks
+        working-directory: .release-work/candidate
+        run: |
+          npm ci
+          npm test -- --maxWorkers=1
+          node --test scripts/release/*.test.mjs
+          npm run build
+      - name: Rust checks
+        working-directory: .release-work/candidate/src-tauri
+        run: |
+          cargo fmt --check
+          cargo test --locked -j 2 --target ${{ matrix.target }}
+      - name: Native Mac OCR fixture
+        if: runner.os == 'macOS'
+        working-directory: .release-work/candidate/src-tauri
+        run: cargo test --locked -j 2 --target ${{ matrix.target }} --test screenshot_workflow -- --ignored --test-threads=1
+      - uses: tauri-apps/tauri-action@1deb371b0cd8bd54025b384f1cd735e725c4060f # v1.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        with:
+          projectPath: .release-work/candidate
+          tagName: ${{ github.ref_name }}
+          releaseName: "Nymkeep ${{ github.ref_name }}"
+          releaseBody: "Internal draft only. Complete documented signing, license and device checks before publication."
+          releaseDraft: true
+          args: --target ${{ matrix.target }} --config src-tauri/tauri.public-release.conf.json -- --locked -j 2
