@@ -1,5 +1,5 @@
 import { spawnSync } from "node:child_process";
-import { mkdirSync } from "node:fs";
+import { appendFileSync, mkdirSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -13,8 +13,8 @@ if (!["aarch64-apple-darwin", "x86_64-apple-darwin"].includes(target))
   throw new Error("Unsupported macOS target.");
 const swiftTarget =
   target === "aarch64-apple-darwin"
-    ? "arm64-apple-macosx13.0"
-    : "x86_64-apple-macosx13.0";
+    ? "arm64-apple-macosx13.3"
+    : "x86_64-apple-macosx13.3";
 const folder = resolve(root, "src-tauri/binaries");
 mkdirSync(folder, { recursive: true });
 const result = spawnSync(
@@ -39,3 +39,6 @@ const result = spawnSync(
 if (result.error || result.status !== 0)
   throw new Error("Native Vision helper compilation failed.");
 console.log(`Built native OCR helper for ${target}.`);
+if (process.env.GITHUB_ENV)
+  appendFileSync(process.env.GITHUB_ENV, "MACOSX_DEPLOYMENT_TARGET=13.3\n");
+console.log("For Cargo, export MACOSX_DEPLOYMENT_TARGET=13.3.");

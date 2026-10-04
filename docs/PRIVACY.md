@@ -10,9 +10,10 @@ local OCR to produce text and coordinates, then the same rules/NER to propose
 sensitive regions. NER covers names, organizations and locations; deterministic
 validators cover supported structured identifiers. Manual review remains needed.
 
-Windows uses Windows OCR; macOS has an offline Swift/Vision implementation that
-awaits native validation; Linux has a hash-checked local OCR pack while capture
-adapters remain incomplete. See `FEATURE_VERIFICATION.md` for actual evidence.
+Windows uses Windows OCR; macOS uses offline Swift/Vision, with hosted Apple
+Silicon native OCR evidence and Intel validation pending. Linux has a hash-checked
+local OCR pack while capture adapters remain incomplete. See
+[feature evidence](FEATURE_VERIFICATION.md) for actual checks and device limits.
 
 No processing command uploads input, output, images or OCR text. Missing resources
 disable their feature rather than downloading them at runtime. Explicit developer
