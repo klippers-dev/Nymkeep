@@ -60,9 +60,9 @@ config/patch. A debug candidate is for internal review; public builds use releas
 uploads internal unsigned candidates, without release publishing or signing credentials.
 The public source repository is [klippers-dev/Nymkeep](https://github.com/klippers-dev/Nymkeep).
 Required CI validates four native targets before branch promotion. Hosted Windows,
-Apple Silicon and Ubuntu 24.04 Rust checks pass; the Apple Silicon Swift helper
-and native Vision fixture also pass. Intel runtime compilation is under validation
-in PR #10. The candidate workflow has not been dispatched. These checks do not
+Apple Silicon, Intel Mac and Ubuntu 24.04 each pass 69 Rust/model checks; both Mac
+Swift helpers and native Vision fixtures pass in run 37198309905 for PR #10.
+The candidate workflow has not been dispatched. These checks do not
 certify installation, permissions, signing or a supported desktop environment.
 
 ## Public release gates

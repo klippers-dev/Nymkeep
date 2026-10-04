@@ -72,12 +72,13 @@ See `docs/release/PLATFORM_STATUS.md` for Windows/macOS/Linux release dependenci
 
 The clean Windows SDK run passes 69 Rust units plus two explicit native Windows
 screenshot checks. Frontend passes 65 tests, including three Mac permission states;
-release tooling passes six staging/lock/output and strict PE comparison tests. Production build/fmt pass.
+release/repository tooling passes 12 staging, archive, strict PE comparison and
+repository policy checks. Production build/fmt pass.
 Windows NSIS candidate payload contains x64 app, verified NER resources and genuine
 Microsoft C++ runtime DLLs; archive extraction does not install or execute it.
 Mac AX capture and Swift/Vision implementation now exist. Hosted Apple Silicon
-Rust/Swift checks and the synthetic native Vision redaction fixture pass. Intel
-runtime compilation is under validation in PR #10. Real Mac permission, installer
+and Intel Rust/Swift/model checks and synthetic native Vision redaction fixtures
+pass in CI run 37198309905 for PR #10. Real Mac permission, installer
 and export device checks remain open.
 Linux installed-resource lookup and fail-closed checksum validation are implemented;
 hosted Ubuntu 24.04 Rust/model checks pass. Actual OCR/export and capture/compositor

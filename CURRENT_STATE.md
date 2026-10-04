@@ -6,10 +6,11 @@ Updated: 2026-10-04. Clean Windows installer candidate and macOS implementation
 SP-035: audited MIT source is public at https://github.com/klippers-dev/Nymkeep.
 main/dev/stage and owner-only release tags are protected; mandatory CI,
 CODEOWNERS/PR review, private reporting, secret push protection, dependency alerts
-and fork approval settings were applied and read back. Hosted Windows and Apple
-Silicon tests pass, including the native Mac Vision fixture. SP-036/PR #10
-addresses Linux compilation/runtime ABI and Intel runtime builds; device/public
-installer certification remains separate.
+and fork approval settings were applied and read back. SP-036/PR #10 closes Linux
+compilation/runtime ABI and Intel runtime-build gaps. Hosted Windows, Apple Silicon,
+Intel Mac and Ubuntu 24.04 each pass 69 Rust tests, with native Vision fixtures on
+both Mac architectures (run 37198309905). Protected PR #10 carries this baseline;
+device/public installer certification remains separate.
 
 ## What works (verified)
 
@@ -39,8 +40,8 @@ installer certification remains separate.
 - Mac AXSelectedText-only capture, explicit permission onboarding and bounded
   offline Swift/Vision OCR helper implemented. Standalone adapter Rust metadata
   checks pass for Apple Silicon/Intel; protocol and permission UI tests pass on
-  Windows. Hosted Apple Silicon Rust/Swift build and native Vision fixture now pass;
-  Intel builds and real-device permission/export/signing checks remain pending.
+  Windows. Hosted Apple Silicon and Intel Rust/Swift builds and native Vision fixtures
+  pass; real-device permission/export/signing checks remain pending.
   Both native Mac CI jobs are prepared; SP-035 sets up the public GitHub repository
   and required native CI. Report the actual runs separately from device support.
 - Linux OCR now uses Tauri's installed resource directory and rejects missing,
@@ -100,7 +101,8 @@ registry vswhom-sys compiles successfully. The original recovery remains local;
 
 - Per-span diff highlighting and its screen-reader alternative (SP-017).
 - Dismissible first-run onboarding and remaining native error taxonomy (SP-018).
-- macOS implementation needs actual Mac compile/link/permission/device evidence;
+- macOS compilation/model/native OCR checks pass on both architectures; interactive
+  permission, installer and device evidence remain open;
   Linux AT-SPI capture remains a stub.
 - Wayland portal shortcuts (contract only, needs real-compositor tests).
 - Release signing run + device-matrix pass (workflow and checklist ready).
@@ -112,6 +114,6 @@ registry vswhom-sys compiles successfully. The original recovery remains local;
 - Independent privacy review, Windows performance measurements and real app
   compatibility checks remain release gates. Public website hosting/domain setup
   is deferred at the user's request. Windows has an unsigned installer candidate;
-  Mac/Linux builds/device evidence remain pending. See `docs/release/PLATFORM_STATUS.md`
+  Mac/Linux installer/device evidence remain pending. See `docs/release/PLATFORM_STATUS.md`
   and `docs/release/BUILD_CANDIDATES.md`. Complete dependency license inventory and
   required license texts are still a public-redistribution gate.

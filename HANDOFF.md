@@ -1,6 +1,6 @@
 # Nymkeep handoff — 2026-10-04 (SP-035)
 
-## Public source and contributor setup (SP-035 done; SP-036 in progress)
+## Public source and contributor setup (SP-035/036 native checks done)
 
 User authorized publication to klippers-dev/Nymkeep, dev/stage/main branches,
 contribution guidance and repository protections. Existing MIT license retained.
@@ -38,7 +38,12 @@ and cached the Intel runtime, then exposed missing RE2/model-package archives at
 Rust link time. Packaging now requires both, explicitly builds upstream's excluded
 RE2 target and reconfigures restored caches when the build recipe changes. Rust
 and Swift deployment targets are aligned at 13.3. Tooling tests still pass (12).
-Intel validation and protected PR promotion are pending. Initial bootstrap may
+CI 37198309905 now passes all four targets (69 Rust/model tests each), native
+Vision fixtures on Apple Silicon and Intel, frontend/audit and Required checks.
+The complete Intel runtime cache was saved; code/export formatting and 31 local
+documentation links are verified. README, current state, task/test/platform
+records and website copy reflect the passing checks without a support claim.
+Protected PR #10 carries this tested baseline. Initial bootstrap may
 land the verified repair on main, then sync dev/stage through protected PRs to
 seed a default-branch runtime cache; normal contributions retain dev → stage → main.
 Nine

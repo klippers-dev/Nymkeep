@@ -2,8 +2,9 @@
 
 SP-035/036 follow-up: GitHub source/contribution links and independent-maintainer
 copy are added without changing the established visual system. Platform copy
-records hosted Windows, Apple Silicon and Ubuntu 24.04 checks; Intel validation
-is pending. Site tests (16), production build and changed-file formatting pass.
+records passing hosted Windows, Apple Silicon, Intel Mac and Ubuntu 24.04 checks,
+with native Vision OCR fixtures on both Mac architectures (CI 37198309905).
+Site tests (16), production build and changed-file formatting pass.
 The live footer fits the review viewport without horizontal overflow. Direct
 installer links remain gated on a verified public release; hosting is deferred.
 
