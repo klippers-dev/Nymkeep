@@ -9,6 +9,8 @@
 
 pub mod boxes;
 pub mod capture;
+#[cfg(any(target_os = "linux", test))]
+mod linux_math;
 #[cfg(target_os = "macos")]
 mod macos;
 #[cfg(any(target_os = "macos", test))]
