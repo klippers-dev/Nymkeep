@@ -99,6 +99,13 @@ jobs:
         if: runner.os == 'macOS'
         working-directory: .release-work/candidate/src-tauri
         run: cargo test --locked -j 2 --target ${{ matrix.target }} --test screenshot_workflow -- --ignored --test-threads=1
+      - name: Linux native OCR and selection fixtures
+        if: runner.os == 'Linux'
+        working-directory: .release-work/candidate
+        run: |
+          sudo apt-get install -y xvfb openbox dbus-x11 python3-gi gir1.2-gtk-3.0
+          cargo test --manifest-path src-tauri/Cargo.toml --locked -j 2 --target ${{ matrix.target }} --test screenshot_workflow -- --ignored --test-threads=1
+          bash scripts/verify-linux-capture.sh ${{ matrix.target }}
       - uses: tauri-apps/tauri-action@1deb371b0cd8bd54025b384f1cd735e725c4060f # v1.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

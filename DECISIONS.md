@@ -185,3 +185,21 @@ the build when its recipe changes; Rust and Swift use the same 13.3 minimum.
 Linux native CI/candidate builds use Ubuntu 24.04 so glibc/libstdc++ match the
 current prebuilt runtime's ABI. Older Linux distributions are not inferred
 supported; capture/compositor/device verification remains open.
+
+## ADR-016: Bounded Linux selection-only accessibility capture
+
+Linux Secure Capture uses the local AT-SPI D-Bus accessibility bus. It reads
+focus/state/role metadata and only the single nonempty selection from the focused,
+visible control. Password controls, multiple selections, stale focus, invalid
+offsets, NUL-containing text and selections beyond the existing 100 KB limit are
+rejected. It never reads an entire document, accessible names/values, clipboard
+contents or application text without a selection. Missing accessibility uses the
+existing explicitly labeled clipboard fallback.
+
+Bus connections must use Unix sockets. Capture has a total deadline and bounded
+tree traversal, with no raw text in errors, logs or persistence. The adapter does
+not enable accessibility services or request system permissions silently. Protocol
+fixtures and an isolated synthetic GTK/X11 check establish implementation evidence;
+GNOME/KDE Wayland and real application certification remain separate gates.
+Protect/Restore remain offline. Wayland global shortcuts still require the portal
+adapter and real-compositor evidence before a support claim.

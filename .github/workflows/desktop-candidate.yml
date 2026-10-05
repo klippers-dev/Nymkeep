@@ -87,6 +87,13 @@ jobs:
         run: |
           cargo fmt --check
           cargo test --locked -j 2 --target ${{ matrix.target }}
+      - name: Linux native OCR and selection fixtures
+        if: runner.os == 'Linux'
+        working-directory: .release-work/candidate
+        run: |
+          sudo apt-get install -y xvfb openbox dbus-x11 python3-gi gir1.2-gtk-3.0
+          cargo test --manifest-path src-tauri/Cargo.toml --locked -j 2 --target ${{ matrix.target }} --test screenshot_workflow -- --ignored --test-threads=1
+          bash scripts/verify-linux-capture.sh ${{ matrix.target }}
       - name: Build unsigned candidate
         working-directory: .release-work/candidate
         run: npm run tauri -- build --target ${{ matrix.target }} --config src-tauri/tauri.candidate.conf.json -- --locked -j 2
