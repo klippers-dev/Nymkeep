@@ -60,6 +60,8 @@ const sources = [
   "src-tauri/build.rs",
   "src-tauri/THIRD_PARTY_NOTICES.txt",
   "src-tauri/licenses",
+  "vendor/glib",
+  "vendor/glib-backport.json",
   "src-tauri/tauri.conf.json",
   "src-tauri/tauri.windows.conf.json",
   "src-tauri/tauri.macos.conf.json",

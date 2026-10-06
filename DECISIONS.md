@@ -203,3 +203,20 @@ fixtures and an isolated synthetic GTK/X11 check establish implementation eviden
 GNOME/KDE Wayland and real application certification remain separate gates.
 Protect/Restore remain offline. Wayland global shortcuts still require the portal
 adapter and real-compositor evidence before a support claim.
+
+## ADR-017: Auditable GLib safety backport for the GTK 0.18 graph
+
+The GTK dependency graph still requires glib 0.18.5, which is affected by
+RUSTSEC-2024-0429. Nymkeep vendors the exact crates.io archive, preserves its
+version and licenses, and applies only the two-line upstream safety fix from
+gtk-rs/gtk-rs-core PR #1343: a mutable out-pointer and mutable reference in
+VariantStrIter::impl_get. This is a shipped, reviewed dependency fix, distinct
+from the prohibited machine-local vswhom-sys recovery.
+
+Archive checksum, upstream commit, file hashes and the exact source diff are
+recorded and verified by release/source checks. No other registry patches are
+accepted. Linux tests exercise forward and backward iteration under release
+optimization; native CI remains mandatory. Version-based advisory scanners may
+continue to flag 0.18.5; document the mitigation without suppressing the advisory
+or claiming independent security clearance. Remove the backport when the GTK
+graph accepts an upstream fixed release. Offline behavior is unchanged.

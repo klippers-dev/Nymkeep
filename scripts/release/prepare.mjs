@@ -8,6 +8,7 @@ import {
 } from "node:fs/promises";
 import { dirname, isAbsolute, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
+import { verifyGlibBackport } from "./verify-glib.mjs";
 
 export const repository = resolve(
   dirname(fileURLToPath(import.meta.url)),
@@ -22,13 +23,15 @@ export function cleanManifest(source) {
   return sections
     .map((section) => {
       if (!section.startsWith("[patch.crates-io]")) return section;
-      const match = section.match(
+      const local = section.match(
         /^vswhom-sys\s*=\s*\{\s*path\s*=\s*"\.\.\/patches\/vswhom-sys"\s*\}\s*$/m,
       );
-      if (!match)
-        throw new Error("Unrecognized registry patch; review before staging.");
+      const shipped = section.match(
+        /^glib\s*=\s*\{\s*path\s*=\s*"\.\.\/vendor\/glib"\s*\}\s*$/m,
+      );
       const remaining = section
-        .replace(match[0], "")
+        .replace(local?.[0] ?? "__NO_LOCAL_PATCH__", "")
+        .replace(shipped?.[0] ?? "__NO_SHIPPED_PATCH__", "")
         .replace("[patch.crates-io]", "")
         .trim();
       if (
@@ -40,7 +43,11 @@ export function cleanManifest(source) {
         throw new Error(
           "Unexpected extra registry patch; review before staging.",
         );
-      return "";
+      if (!local && !shipped)
+        throw new Error("Unrecognized registry patch; review before staging.");
+      return shipped
+        ? '[patch.crates-io]\nglib = { path = "../vendor/glib" }\n\n'
+        : "";
     })
     .join("")
     .replace(
@@ -136,6 +143,8 @@ export async function prepareRelease(
     "src-tauri/tauri.candidate.conf.json",
     "src-tauri/THIRD_PARTY_NOTICES.txt",
     "src-tauri/licenses",
+    "vendor/glib",
+    "vendor/glib-backport.json",
   ];
   // Parse/sanitize before creating output. No recovery, credentials or old binaries are copied.
   const manifest = cleanManifest(
@@ -144,6 +153,8 @@ export async function prepareRelease(
   const lock = cleanLock(
     await readFile(resolve(root, "src-tauri/Cargo.lock"), "utf8"),
   );
+  if (await lstat(resolve(root, "vendor/glib-backport.json")).catch(() => null))
+    await verifyGlibBackport(root);
   await mkdir(destination, { recursive: true });
   for (const path of files) {
     const source = resolve(root, path);

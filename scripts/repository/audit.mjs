@@ -3,6 +3,8 @@ import { lstat, readFile, readdir } from "node:fs/promises";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { repository } from "../release/prepare.mjs";
+import { cleanManifest } from "../release/prepare.mjs";
+import { verifyGlibBackport } from "../release/verify-glib.mjs";
 
 export function forbiddenPath(path) {
   return (
@@ -25,11 +27,15 @@ export function inspectText(path, source) {
     problems.push("private-key material");
   if (/\bgh[pousr]_[A-Za-z0-9]{36,}\b/.test(source))
     problems.push("credential-like token");
-  if (
-    path === "src-tauri/Cargo.toml" &&
-    /\[patch\.crates-io\]|\.\.\/patches\//.test(source)
-  )
+  if (path === "src-tauri/Cargo.toml" && /\.\.\/patches\//.test(source))
     problems.push("machine-local registry patch");
+  if (path === "src-tauri/Cargo.toml" && /\[patch\.crates-io\]/.test(source)) {
+    try {
+      cleanManifest(source);
+    } catch {
+      problems.push("unreviewed registry patch");
+    }
+  }
   if (
     path === "src-tauri/Cargo.lock" &&
     /name = "vswhom-sys"\r?\nversion = "0\.1\.3"\r?\n(?:dependencies|\r?\n)/.test(
@@ -81,6 +87,8 @@ export async function auditSource(root, files) {
         failures.push(`${path}: ${problem}`);
   }
   if (failures.length) throw new Error(failures.join("\n"));
+  if (files.includes("vendor/glib-backport.json"))
+    await verifyGlibBackport(root);
   return { files: files.length, bytes };
 }
 

@@ -5,6 +5,13 @@ runtime notices are in licenses/. The target-specific DEPENDENCIES inventory
 preserves resolved Rust/production JavaScript license texts and copyrights.
 Review native bundled libraries and vendor redistribution terms before publication.
 
+Linux GLib 0.18.5: MIT, upstream license included in DEPENDENCIES.txt.
+The shipped source backports gtk-rs/gtk-rs-core PR #1343 for RUSTSEC-2024-0429.
+Original archive hashes and the exact two-line fix are recorded in
+vendor/glib-backport.json in the public Nymkeep source repository.
+https://github.com/klippers-dev/Nymkeep
+https://github.com/gtk-rs/gtk-rs-core/pull/1343
+
 Tauri and its Rust/JavaScript plugins: MIT OR Apache-2.0
 https://github.com/tauri-apps/tauri
 https://github.com/tauri-apps/plugins-workspace
