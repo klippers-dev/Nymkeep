@@ -82,11 +82,21 @@ jobs:
           npm test -- --maxWorkers=1
           node --test scripts/release/*.test.mjs
           npm run build
+      - name: Bundle dependency license inventory
+        working-directory: .release-work/candidate
+        run: node scripts/release/licenses.mjs ${{ matrix.target }}
       - name: Rust checks
         working-directory: .release-work/candidate/src-tauri
         run: |
           cargo fmt --check
           cargo test --locked -j 2 --target ${{ matrix.target }}
+      - name: Linux native OCR and selection fixtures
+        if: runner.os == 'Linux'
+        working-directory: .release-work/candidate
+        run: |
+          sudo apt-get install -y xvfb openbox dbus-x11 at-spi2-core libatk-adaptor python3-gi gir1.2-gtk-3.0
+          cargo test --manifest-path src-tauri/Cargo.toml --locked -j 2 --target ${{ matrix.target }} --test screenshot_workflow -- --ignored --test-threads=1
+          bash scripts/verify-linux-capture.sh ${{ matrix.target }}
       - name: Build unsigned candidate
         working-directory: .release-work/candidate
         run: npm run tauri -- build --target ${{ matrix.target }} --config src-tauri/tauri.candidate.conf.json -- --locked -j 2

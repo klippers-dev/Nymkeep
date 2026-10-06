@@ -87,7 +87,7 @@ test("source audit rejects recovery, credentials and unexpected binary files wit
   assert.ok(!forbiddenPath("src-tauri/models/manifest.json"));
   assert.ok(!forbiddenPath("src-tauri/tests/fixtures/synthetic-note.png"));
   assert.deepEqual(inspectText("src-tauri/Cargo.toml", "[patch.crates-io]"), [
-    "machine-local registry patch",
+    "unreviewed registry patch",
   ]);
   const root = await mkdtemp(join(tmpdir(), "nymkeep-audit-"));
   try {

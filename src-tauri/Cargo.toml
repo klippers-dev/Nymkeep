@@ -42,12 +42,27 @@ windows = { version = "0.62", features = ["Media_Ocr", "Graphics_Imaging", "Stor
 winapi = { version = "0.3", features = ["winuser"] }
 windows-future = "0.3"
 
+[target.'cfg(target_os = "linux")'.dependencies]
+zbus = "=5.19.0"
+futures-lite = "=2.6.1"
+async-io = "=2.6.0"
+
+[target.'cfg(target_os = "linux")'.dev-dependencies]
+glib = "=0.18.5"
+
 [dev-dependencies]
 tauri = { version = "2", features = ["test"] }
 
+[patch.crates-io]
+glib = { path = "../vendor/glib" }
+
 [profile.release]
-codegen-units = 1
-lto = true
+codegen-units = 8
+lto = "thin"
 opt-level = 3
 panic = "abort"
 strip = true
+
+# Exercise the GLib out-pointer backport under optimization in ordinary CI tests.
+[profile.dev.package.glib]
+opt-level = 3

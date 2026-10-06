@@ -99,6 +99,8 @@ jobs:
         run: |
           npm ci
           npm run build
+      - name: Bundle dependency license inventory
+        run: node scripts/release/licenses.mjs ${{ matrix.target }}
       - name: Rust checks
         working-directory: src-tauri
         run: |
@@ -108,6 +110,12 @@ jobs:
         if: runner.os == 'macOS'
         working-directory: src-tauri
         run: cargo test --locked -j 2 --target ${{ matrix.target }} --test screenshot_workflow -- --ignored --test-threads=1
+      - name: Linux native OCR and selection fixtures
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get install -y xvfb openbox dbus-x11 at-spi2-core libatk-adaptor python3-gi gir1.2-gtk-3.0
+          cargo test --manifest-path src-tauri/Cargo.toml --locked -j 2 --target ${{ matrix.target }} --test screenshot_workflow -- --ignored --test-threads=1
+          bash scripts/verify-linux-capture.sh ${{ matrix.target }}
   required:
     name: Required checks
     if: always()

@@ -185,3 +185,38 @@ the build when its recipe changes; Rust and Swift use the same 13.3 minimum.
 Linux native CI/candidate builds use Ubuntu 24.04 so glibc/libstdc++ match the
 current prebuilt runtime's ABI. Older Linux distributions are not inferred
 supported; capture/compositor/device verification remains open.
+
+## ADR-016: Bounded Linux selection-only accessibility capture
+
+Linux Secure Capture uses the local AT-SPI D-Bus accessibility bus. It reads
+focus/state/role metadata and only the single nonempty selection from the focused,
+visible control. Password controls, multiple selections, stale focus, invalid
+offsets, NUL-containing text and selections beyond the existing 100 KB limit are
+rejected. It never reads an entire document, accessible names/values, clipboard
+contents or application text without a selection. Missing accessibility uses the
+existing explicitly labeled clipboard fallback.
+
+Bus connections must use Unix sockets. Capture has a total deadline and bounded
+tree traversal, with no raw text in errors, logs or persistence. The adapter does
+not enable accessibility services or request system permissions silently. Protocol
+fixtures and an isolated synthetic GTK/X11 check establish implementation evidence;
+GNOME/KDE Wayland and real application certification remain separate gates.
+Protect/Restore remain offline. Wayland global shortcuts still require the portal
+adapter and real-compositor evidence before a support claim.
+
+## ADR-017: Auditable GLib safety backport for the GTK 0.18 graph
+
+The GTK dependency graph still requires glib 0.18.5, which is affected by
+RUSTSEC-2024-0429. Nymkeep vendors the exact crates.io archive, preserves its
+version and licenses, and applies only the two-line upstream safety fix from
+gtk-rs/gtk-rs-core PR #1343: a mutable out-pointer and mutable reference in
+VariantStrIter::impl_get. This is a shipped, reviewed dependency fix, distinct
+from the prohibited machine-local vswhom-sys recovery.
+
+Archive checksum, upstream commit, file hashes and the exact source diff are
+recorded and verified by release/source checks. No other registry patches are
+accepted. Linux tests exercise forward and backward iteration under release
+optimization; native CI remains mandatory. Version-based advisory scanners may
+continue to flag 0.18.5; document the mitigation without suppressing the advisory
+or claiming independent security clearance. Remove the backport when the GTK
+graph accepts an upstream fixed release. Offline behavior is unchanged.
