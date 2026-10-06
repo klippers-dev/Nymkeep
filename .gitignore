@@ -30,6 +30,8 @@ dist-ssr
 artifacts/
 src-tauri/binaries/nymkeep-ocr-*
 src-tauri/runtime/windows/
+src-tauri/licenses/DEPENDENCIES.json
+src-tauri/licenses/DEPENDENCIES.txt
 
 # Never publish local SDK recovery, credentials or generated model downloads.
 patches/

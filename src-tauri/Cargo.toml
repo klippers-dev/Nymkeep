@@ -51,8 +51,8 @@ async-io = "=2.6.0"
 tauri = { version = "2", features = ["test"] }
 
 [profile.release]
-codegen-units = 1
-lto = true
+codegen-units = 8
+lto = "thin"
 opt-level = 3
 panic = "abort"
 strip = true

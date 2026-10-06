@@ -135,6 +135,7 @@ export async function prepareRelease(
     "src-tauri/tauri.linux.conf.json",
     "src-tauri/tauri.candidate.conf.json",
     "src-tauri/THIRD_PARTY_NOTICES.txt",
+    "src-tauri/licenses",
   ];
   // Parse/sanitize before creating output. No recovery, credentials or old binaries are copied.
   const manifest = cleanManifest(

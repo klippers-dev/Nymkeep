@@ -14,6 +14,7 @@ export function forbiddenPath(path) {
       path,
     ) ||
     /^src-tauri\/(binaries|runtime)\//i.test(path) ||
+    /^src-tauri\/licenses\/DEPENDENCIES\.(json|txt)$/i.test(path) ||
     /^src-tauri\/models\/(?!manifest\.json$|ocr-manifest\.json$)/i.test(path)
   );
 }
