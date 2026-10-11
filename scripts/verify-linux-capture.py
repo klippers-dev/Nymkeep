@@ -14,6 +14,8 @@ if os.environ.get("NYMKEEP_CAPTURE_ISOLATED") != "1":
 
 target = sys.argv[1] if len(sys.argv) > 1 else "x86_64-unknown-linux-gnu"
 result = 0
+# Gtk.Entry otherwise selects all text when focus arrives asynchronously.
+Gtk.Settings.get_default().set_property("gtk-entry-select-on-focus", False)
 
 
 def exercise(case):
@@ -43,8 +45,22 @@ def exercise(case):
         window.show_all()
         active.grab_focus()
         window.present()
+        active.select_region(0, 0)
 
     def check():
+        global result
+        print(f"Native selection fixture: {case}", flush=True)
+        focused = active if case == "background" else entry
+        if not window.is_active() or not focused.has_focus():
+            print("Synthetic fixture did not acquire native focus", flush=True)
+            result = 1
+            Gtk.main_quit()
+            return GLib.SOURCE_REMOVE
+        if case in ("empty", "background") and focused.get_selection_bounds():
+            print("Synthetic empty fixture unexpectedly has a selection", flush=True)
+            result = 1
+            Gtk.main_quit()
+            return GLib.SOURCE_REMOVE
         def worker():
             global result
             environment = dict(os.environ, NYMKEEP_CAPTURE_CASE=case)

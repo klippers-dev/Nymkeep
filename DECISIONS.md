@@ -215,8 +215,30 @@ from the prohibited machine-local vswhom-sys recovery.
 
 Archive checksum, upstream commit, file hashes and the exact source diff are
 recorded and verified by release/source checks. No other registry patches are
-accepted. Linux tests exercise forward and backward iteration under release
+accepted. Linux tests exercise forward and backward iteration under
 optimization; native CI remains mandatory. Version-based advisory scanners may
 continue to flag 0.18.5; document the mitigation without suppressing the advisory
 or claiming independent security clearance. Remove the backport when the GTK
 graph accepts an upstream fixed release. Offline behavior is unchanged.
+
+## ADR-018: Public release downloads and explicit signed update checks
+
+GitHub Releases stores versioned installers and updater assets. The website uses
+only the public stable release catalog, rejects draft/prerelease/unverified
+entries, and links directly to the approved platform asset. Website hosting is
+independent of installer storage; no user account or Git tooling is needed to
+download. Release metadata is public and contains no user content.
+
+The desktop application checks for updates only after the user selects Check for
+updates. It sends no text, screenshot, OCR result, mapping or custom rule. The
+stable HTTPS endpoint is the Nymkeep GitHub Releases latest.json asset; updates
+must pass the Tauri updater signature check against the bundled public key.
+Unsigned candidates disable updates. Users explicitly choose installation after
+reviewing the available version; mappings and sensitive drafts clear before
+installation/restart. Linux deb installations use a manual package update;
+AppImage, Windows NSIS and Mac app updates use their matching signed artifacts.
+
+CI builds drafts, validates version/target/asset/checksum metadata and prepares a
+download catalog. Public publication requires the existing signing, device,
+license and independent review gates. Failed or missing release metadata leaves
+downloads unavailable and never changes the offline Protect/Restore behavior.
