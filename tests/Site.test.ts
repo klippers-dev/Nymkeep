@@ -149,6 +149,11 @@ describe("marketing website", () => {
   it("keeps the unreleased installer state truthful without disabling the walkthrough", () => {
     run(code);
     expect(text("[data-release-status]")).toBe("Public release coming soon");
+    expect(
+      document.querySelector(
+        'a[href="https://github.com/klippers-dev/Nymkeep/releases"]',
+      ),
+    ).not.toBeNull();
     expect(el("[data-installer-link]").getAttribute("href")).toMatch(
       /^mailto:/,
     );

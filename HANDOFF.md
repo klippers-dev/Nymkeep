@@ -12,7 +12,7 @@ GitHub Releases stores installers/update assets; validated website discovery
 accepts only matching published stable catalogs. Draft/public workflows require
 latest mandatory CI, evidence-bound hashes, public signature verification and
 approved platforms. No signed publication was run. Linux fixture now activates
-its synthetic GTK window with xdotool; a fresh hosted candidate is required.
+its synthetic GTK window with xdotool; the full native fixture and package run pass.
 
 Changed groups: src/UpdateSettings.tsx, App/api/styles; updates.rs/lib/capability;
 site/downloads/release/index/styles; preview server; release catalog/config/tests
@@ -30,13 +30,19 @@ identified/fixed reset-before-mock ordering, and the full retry is green.
 Owner PDF: output/pdf/Nymkeep-Owner-Guide-Hinglish.pdf (ignored/local deliverable),
 16 pages with real website/frontend previews, flows, platform comparisons and
 15 clickable links. Browser capture at 1366px/390px has no overflow/page errors;
-native behavior is not simulated. Page rendering/visual checks are recorded in
-the final owner-guide completion note. PDF builders/PNGs remain in tmp/pdfs.
+native behavior is not simulated. All 16 pages were rendered with Poppler and
+visually reviewed; PDF text bounds and link annotations are checked.
+PDF builders/PNGs remain in tmp/pdfs.
 
-Assumptions/open risks: hosting remains deferred. PR #14 remains draft until new
-native CI/candidates pass. Previous aef7f89 CI is green; Windows and both Mac
-release-profile installers/payloads pass run 38164650718; Linux native OCR/PNG
-passes but selection-focus fixture blocks its package run. Actual device/GUI,
+Final hosted evidence: CI 38298789910 and candidates 38298785486 pass for native
+app commit 0ec3b56. All four release-profile jobs pass: Windows NSIS, ARM64/Intel
+Mac DMGs, Linux deb/AppImage, resources/notices and packaged Mac helper checks.
+Linux actual OCR/PNG and synthetic selected/empty/password/background-focus checks
+pass. Later site/docs-only follow-up adds an always-visible Releases fallback,
+refreshes status and passes 18/18 website tests without changing native app code.
+
+Assumptions/open risks: hosting remains deferred. PR #14 is reviewable; no public
+release was created and no signing credentials were accessed. Actual device/GUI,
 Wayland portals, signing/notarization, live signed upgrade, independent privacy,
 license/backport review and performance gates remain. No public installer exists.
 

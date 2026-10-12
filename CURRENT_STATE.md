@@ -1,17 +1,18 @@
 # Nymkeep CURRENT_STATE
 
-Updated: 2026-10-12. SP-038/039 are active on draft PR #14. Hosting/domain setup
+Updated: 2026-10-13. SP-038/039 implementation is on PR #14. Hosting/domain setup
 remains deferred. No public installer release is published.
 
 ## Latest evidence and remaining gates
 
-- CI 38164650803 is green on Windows, Apple Silicon, Intel Mac and Ubuntu 24.04
-  for aef7f89. Candidate run 38164650718 builds release-profile Windows NSIS and
-  both Mac DMGs, with extracted payload/model/license checks and actual packaged
-  Mac Vision OCR checks. These are unsigned review candidates.
-- Linux native OCR -> detection -> opaque PNG -> reread passes. The candidate's
-  selection fixture fails to acquire native GTK focus; its activation repair and
-  final package run remain open. AT-SPI selection-only capture is implemented.
+- CI 38298789910 is green on Windows, Apple Silicon, Intel Mac and Ubuntu 24.04
+  for 0ec3b56. Candidate run 38298785486 passes all four release-profile targets:
+  Windows NSIS, both Mac DMGs and Linux deb/AppImage, including extracted
+  payload/model/license checks and both packaged native Mac Vision helpers.
+  These are unsigned review candidates, not a public release.
+- Linux native OCR -> detection -> opaque PNG -> reread and the repaired native
+  synthetic selection/empty/password/background-focus fixtures pass.
+  AT-SPI selection-only capture is implemented.
   Hosted checks do not certify real X11/Wayland applications or compositors.
 - The exact two-line upstream GLib safety fix is vendored with archive/file-hash
   checks; optimized Linux iterator regression passes. Version-based advisory
@@ -22,9 +23,10 @@ remains deferred. No public installer release is published.
   and explicit Settings > Updates checks/install confirmation. Opening Settings
   never checks the network. Unsigned candidates disable updates; Debian packages
   update manually. No signed public upgrade transition has been tested.
-- The latest updater/catalog code is newer than aef7f89 and needs fresh CI.
-  Local Rust updater policy checks passed in a 78-test run; latest edits are being
-  rechecked. Fresh results belong in the task HANDOFF.
+- The updater/catalog code is included in green native CI for 0ec3b56.
+  Local clean Rust tests pass 78/78, frontend 71/71, tooling 21/21;
+  build/fmt and source audit pass. Later documentation/site-only changes retain
+  this native app code. Fresh results belong in the task HANDOFF.
 - Public launch still needs real-device installation/permissions/GUI coverage,
   OS signing/notarization, signed upgrade evidence, independent privacy/license
   review and performance measurements. No broad platform-support claim is made.

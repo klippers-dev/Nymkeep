@@ -1,7 +1,9 @@
 # Installer downloads and updates
 
-Status: implementation in progress on PR #14. No public installer release exists
-as of 2026-10-12. Hosting/domain setup remains deferred by the owner.
+Status: implementation and all four unsigned candidate jobs pass on PR #14
+(native app 0ec3b56, CI 38298789910, candidates 38298785486). Live signed upgrade
+and public release/device reviews remain open. No public installer release exists
+as of 2026-10-13. Hosting/domain setup remains deferred by the owner.
 
 ## The user journey
 
