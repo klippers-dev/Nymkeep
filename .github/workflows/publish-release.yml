@@ -1,0 +1,65 @@
+name: Publish reviewed stable release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing signed draft tag; requires checked-in APPROVAL.json evidence"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  checks: read
+
+concurrency:
+  group: publish-stable-release
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+      - name: Require tested main history and a stable tag
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          [[ "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]
+          git merge-base --is-ancestor "${RELEASE_TAG}^{commit}" origin/main
+          release_sha=$(git rev-parse "${RELEASE_TAG}^{commit}")
+          gh api "repos/$GITHUB_REPOSITORY/commits/$release_sha/check-runs" --jq '[.check_runs[] | select(.name == "Required checks" and .app.id == 15368)] | sort_by(.started_at) | last | .status == "completed" and .conclusion == "success"' | grep -qx true
+      - name: Verify draft assets, signatures and review evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.tag }}
+          NYMKEEP_UPDATE_PUBLIC_KEY: ${{ vars.NYMKEEP_UPDATE_PUBLIC_KEY }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y minisign
+          mkdir -p .release-work/release-assets
+          gh api "repos/$GITHUB_REPOSITORY/releases/tags/$RELEASE_TAG" > .release-work/release-meta.json
+          gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --dir .release-work/release-assets
+          node scripts/release/catalog.mjs --approved .release-work/release-meta.json .release-work/release-assets .release-work/approved-metadata docs/release/APPROVAL.json
+      - name: Publish only approved assets and their verified update feed
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: |
+          node --input-type=module -e '
+            import {readFileSync} from "node:fs";
+            import {execFileSync} from "node:child_process";
+            const metadata=JSON.parse(readFileSync(".release-work/release-meta.json"));
+            const keep=new Set(JSON.parse(readFileSync(".release-work/approved-metadata/keep-assets.json")));
+            for(const asset of metadata.assets) if(!keep.has(asset.name)) execFileSync("gh",["release","delete-asset",process.env.RELEASE_TAG,asset.name,"--repo",process.env.GITHUB_REPOSITORY,"--yes"],{stdio:"inherit"});
+          '
+          gh release upload "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" .release-work/approved-metadata/latest.json .release-work/approved-metadata/downloads.json .release-work/approved-metadata/SHA256SUMS.txt --clobber
+          gh release edit "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --notes-file .release-work/approved-metadata/release-body.md --draft=false --latest

@@ -1,4 +1,86 @@
-# Nymkeep handoff — 2026-10-04 (SP-035)
+# Nymkeep handoff - 2026-10-13 (SP-038/039 and owner guide)
+
+## Latest implementation and checks
+
+Added explicit local-status/check/install/restart updater commands and Settings
+UX. Unsigned builds cannot check, Debian packages retain manual updates, user
+confirmation is required, Tauri verifies signatures before install and session
+mapping cleanup happens after verification. Removed generic frontend updater
+check permission. ADR-018 records the network/privacy contract.
+
+GitHub Releases stores installers/update assets; validated website discovery
+accepts only matching published stable catalogs. Draft/public workflows require
+latest mandatory CI, evidence-bound hashes, public signature verification and
+approved platforms. No signed publication was run. Linux fixture now activates
+its synthetic GTK window with xdotool; a fresh hosted candidate is required.
+
+Changed groups: src/UpdateSettings.tsx, App/api/styles; updates.rs/lib/capability;
+site/downloads/release/index/styles; preview server; release catalog/config/tests
+and publication workflows; Linux fixture/dependency setup; architecture/status
+and docs/release/DOWNLOADS_AND_UPDATES.md. Private credentials remain untouched.
+
+Commands/results: clean genuine-SDK staged `cargo test -j 2` 78/78 pass; staged
+`cargo fmt --check` passes after synchronizing formatted lib.rs; frontend Vitest
+71/71 pass; production npm build passes; release/repository tooling 21/21 pass,
+including a subsequent catalog test after path hardening. Public-source audit
+passes 380 files / 6,019,436 bytes before this handoff update; staged diff check
+passes. A first frontend run hit a worker startup timeout; a subsequent run
+identified/fixed reset-before-mock ordering, and the full retry is green.
+
+Owner PDF: output/pdf/Nymkeep-Owner-Guide-Hinglish.pdf (ignored/local deliverable),
+16 pages with real website/frontend previews, flows, platform comparisons and
+15 clickable links. Browser capture at 1366px/390px has no overflow/page errors;
+native behavior is not simulated. Page rendering/visual checks are recorded in
+the final owner-guide completion note. PDF builders/PNGs remain in tmp/pdfs.
+
+Assumptions/open risks: hosting remains deferred. PR #14 remains draft until new
+native CI/candidates pass. Previous aef7f89 CI is green; Windows and both Mac
+release-profile installers/payloads pass run 38164650718; Linux native OCR/PNG
+passes but selection-focus fixture blocks its package run. Actual device/GUI,
+Wayland portals, signing/notarization, live signed upgrade, independent privacy,
+license/backport review and performance gates remain. No public installer exists.
+
+## Previous handoff - 2026-10-04 (SP-035)
+
+## Completed publication and protected baseline
+
+Public repository: https://github.com/klippers-dev/Nymkeep. PRs #10 (native CI),
+#11 (dependency-security disclosure), #12 (main → dev) and #13 (main → stage)
+are merged. Main 647766f, dev 62cad05 and stage 41932bd are all protected and
+share tree f1ec86ea22c519e74e3d8535ecc688aa1e54e7d0. Bootstrap is complete;
+normal contributions follow dev → stage → main.
+
+Final checks: clean main CI 37199991399, documentation CI 37201666055, final
+main CI 37202436984, dev PR CI 37202442885 and stage PR CI 37202468221 pass all
+mandatory jobs. Each native matrix passes 69 Rust/model tests on Windows x64,
+Apple Silicon, Intel Mac and Ubuntu 24.04, plus native Vision fixtures on both
+Mac architectures. Frontend 65, tooling 12, production build, Rust fmt and
+changed-file Prettier pass; final public audit is 173 files / 3,579,506 bytes.
+Owner-only PR review exception was used only after required checks passed. A
+first dev merge was rejected with Required checks expected while other shared
+head runs were pending; retry succeeded after every relevant run passed.
+
+Settings read-back: required CI/history has no bypass actors; owner review is
+PR-only; version tags are owner-controlled. Secret scanning/push protection,
+private reporting, dependency alerts/updates, read-only Actions tokens and
+all-external fork approval remain enabled. CODEOWNERS has no errors; GitHub
+community profile is 100%. The glib medium advisory remains open (SP-037).
+
+Changed files are listed below under SP-035/036/037. Commands include npm test,
+npm run test:tooling, npm run build, cargo test --locked -j 2, cargo fmt --check,
+Prettier, source audit, git push/fetch/fast-forward and gh PR/settings read-back.
+Local clean Git checkout: D:/Nymkeep/.release-work/public-git-2026-10-04 (main,
+with local dev/stage also fast-forwarded). Reuse/preserve this Git checkout;
+do not remove it when cleaning build scratch. Original workspace recovery
+patch/config remains intact and outside public Git.
+
+Open release gates: signed/public installers, actual Mac AX/GUI/device checks,
+Linux capture/compositor/OCR-export checks and glib remediation/reachability
+review, complete dependency notices and independent privacy review. Hosting and
+installer URLs remain deferred. No signing keys, passwords, license credentials,
+private user content or user clipboard were accessed. Website source/contribution
+links and verified native status are ready for local review at
+http://127.0.0.1:4173/#screenshots.
 
 ## Dependency security triage (SP-037)
 

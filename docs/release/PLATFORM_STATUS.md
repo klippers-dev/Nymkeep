@@ -1,4 +1,18 @@
-# Desktop release status — 2026-10-04
+# Desktop release status - 2026-10-12
+
+Latest evidence: CI 38164650803 passes all four native targets for aef7f89.
+Candidate run 38164650718 passes release-profile Windows NSIS, Apple Silicon DMG
+and Intel DMG, including extracted payload/model/license checks and packaged Mac
+Vision OCR fixtures. Linux native OCR/PNG passes, but its selection-focus fixture
+blocks the final package run; a fixture activation repair awaits verification.
+AT-SPI selection-only capture is implemented. The exact upstream GLib fix is
+vendored and hash-verified; independent review and the advisory remain open.
+
+Newer updater/catalog work requires fresh CI. No public installer exists. Real
+device, signing/notarization, signed upgrade, privacy/license/performance checks
+remain launch gates. See `DOWNLOADS_AND_UPDATES.md`. No Wayland support claim.
+
+## Historical baseline below - 2026-10-04
 
 The shared Tauri/Rust application is implemented; this is not evidence of a
 shipping build on every OS. Public website hosting and domain setup are deferred

@@ -1,7 +1,37 @@
 # Nymkeep CURRENT_STATE
 
-Updated: 2026-10-04. Clean Windows installer candidate and macOS implementation
-(SP-033/034), following screenshot/website verification (SP-030/031/032).
+Updated: 2026-10-12. SP-038/039 are active on draft PR #14. Hosting/domain setup
+remains deferred. No public installer release is published.
+
+## Latest evidence and remaining gates
+
+- CI 38164650803 is green on Windows, Apple Silicon, Intel Mac and Ubuntu 24.04
+  for aef7f89. Candidate run 38164650718 builds release-profile Windows NSIS and
+  both Mac DMGs, with extracted payload/model/license checks and actual packaged
+  Mac Vision OCR checks. These are unsigned review candidates.
+- Linux native OCR -> detection -> opaque PNG -> reread passes. The candidate's
+  selection fixture fails to acquire native GTK focus; its activation repair and
+  final package run remain open. AT-SPI selection-only capture is implemented.
+  Hosted checks do not certify real X11/Wayland applications or compositors.
+- The exact two-line upstream GLib safety fix is vendored with archive/file-hash
+  checks; optimized Linux iterator regression passes. Version-based advisory
+  remains open; independent security review remains required.
+- Complete native dependency inventories and license texts are bundled;
+  independent redistribution/native-vendor review is still a release gate.
+- ADR-018 implements GitHub Releases storage, validated website platform catalogs
+  and explicit Settings > Updates checks/install confirmation. Opening Settings
+  never checks the network. Unsigned candidates disable updates; Debian packages
+  update manually. No signed public upgrade transition has been tested.
+- The latest updater/catalog code is newer than aef7f89 and needs fresh CI.
+  Local Rust updater policy checks passed in a 78-test run; latest edits are being
+  rechecked. Fresh results belong in the task HANDOFF.
+- Public launch still needs real-device installation/permissions/GUI coverage,
+  OS signing/notarization, signed upgrade evidence, independent privacy/license
+  review and performance measurements. No broad platform-support claim is made.
+
+See `docs/release/DOWNLOADS_AND_UPDATES.md` for the storage/update contract.
+
+## Historical baseline - 2026-10-04 (superseded where noted above)
 
 SP-035: audited MIT source is public at https://github.com/klippers-dev/Nymkeep.
 main/dev/stage and owner-only release tags are protected; mandatory CI,

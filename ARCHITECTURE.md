@@ -19,7 +19,8 @@
 - **Platform** (`src-tauri/src/platform/`): selected-text capture. Windows uses UI
   Automation TextPattern selections. macOS reads only AXSelectedText from the focused
   control with explicit Accessibility consent; status checks never prompt. Linux
-  capture remains a stub. Missing/unavailable selections use the labeled clipboard fallback.
+  uses bounded selection-only AT-SPI over the local Unix accessibility bus (ADR-016).
+  Missing/unavailable selections use the labeled clipboard fallback.
 - **Shell**: tray menu, global shortcuts (Ctrl+C-style two-key defaults, rebindable,
   persisted, collision rollback), clipboard read/write, OS toasts (counts only),
   autostart, signed-updater wiring.
@@ -60,6 +61,14 @@ side. Image masking is permanent and has no Restore operation. No image/OCR
 content is sent over the network. See ADR-011 for the privacy contract.
 
 ## Public contracts
+
+Updates (ADR-018): `updates.rs` exposes explicit check/install/restart commands
+with a fixed GitHub Releases HTTPS feed, versioned repository assets and mandatory
+Tauri artifact signatures. Opening Settings reads only local status. Unsigned
+candidates disable checks; Debian packages update manually. Drafts clear on install
+confirmation; native mappings clear after verification before installation.
+Update requests contain no user content. Website discovery reads public GitHub
+release metadata independently of offline content processing.
 - `Protection { text, count, mappings, kinds, nerActive }` (camelCase JSON).
 - `Restoration { text, known, unknown, unknownTokens }`.
 - `PrivacyRules { always, never, moneyDates }`.

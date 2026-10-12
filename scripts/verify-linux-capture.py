@@ -7,7 +7,8 @@ import threading
 import gi
 
 gi.require_version("Gtk", "3.0")
-from gi.repository import GLib, Gtk
+gi.require_version("GdkX11", "3.0")
+from gi.repository import GLib, Gtk, GdkX11
 
 if os.environ.get("NYMKEEP_CAPTURE_ISOLATED") != "1":
     raise SystemExit("This fixture requires an isolated display and D-Bus session.")
@@ -78,7 +79,20 @@ def exercise(case):
         threading.Thread(target=worker, daemon=True).start()
         return GLib.SOURCE_REMOVE
 
-    GLib.timeout_add(1500, check)
+    def activate():
+        global result
+        try:
+            subprocess.run(["xdotool", "windowactivate", "--sync", str(window.get_window().get_xid())],
+                           check=True, timeout=5, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        except (subprocess.SubprocessError, OSError):
+            print("Could not activate the isolated synthetic window", flush=True)
+            result = 1
+            Gtk.main_quit()
+            return GLib.SOURCE_REMOVE
+        GLib.timeout_add(300, check)
+        return GLib.SOURCE_REMOVE
+
+    GLib.timeout_add(500, activate)
     Gtk.main()
     window.destroy()
     if background is not None:

@@ -3,8 +3,28 @@ import { readFileSync, existsSync } from "node:fs";
 import { resolve } from "node:path";
 
 const html = readFileSync(resolve("site/index.html"), "utf8");
-const code = readFileSync(resolve("site/site.js"), "utf8");
+const code =
+  readFileSync(resolve("site/site.js"), "utf8") +
+  "\n" +
+  readFileSync(resolve("site/downloads.js"), "utf8");
 const config = readFileSync(resolve("site/release.js"), "utf8");
+const installerUrl =
+  "https://github.com/klippers-dev/Nymkeep/releases/download/v0.1.0/Nymkeep_0.1.0_x64-setup.exe";
+const catalog = () => ({
+  schema: 1,
+  version: "0.1.0",
+  verified: true,
+  releaseUrl: "https://github.com/klippers-dev/Nymkeep/releases/tag/v0.1.0",
+  platforms: [
+    {
+      id: "windows-x86_64",
+      name: "Nymkeep_0.1.0_x64-setup.exe",
+      url: installerUrl,
+      bytes: 20_000_000,
+      sha256: "a".repeat(64),
+    },
+  ],
+});
 const run = (source: string) =>
   new Function("document", "window", "URL", source)(document, window, URL);
 const el = (selector: string) => document.querySelector<HTMLElement>(selector)!;
@@ -12,6 +32,14 @@ const text = (selector: string) =>
   el(selector).textContent?.replace(/\s+/g, " ").trim();
 
 beforeEach(() => {
+  Object.defineProperty(navigator, "platform", {
+    configurable: true,
+    value: "Win32",
+  });
+  Object.defineProperty(window, "fetch", {
+    configurable: true,
+    value: vi.fn().mockResolvedValue({ ok: false }),
+  });
   delete document.documentElement.dataset.theme;
   Object.defineProperty(window, "IntersectionObserver", {
     configurable: true,
@@ -30,6 +58,83 @@ beforeEach(() => {
 });
 
 describe("marketing website", () => {
+  it("discovers only a published release whose uploaded assets match the catalog", async () => {
+    const value = catalog();
+    const release = {
+      draft: false,
+      prerelease: false,
+      tag_name: "v0.1.0",
+      published_at: "2026-10-12T00:00:00Z",
+      body: `Synthetic release notes\n<!-- NYMKEEP_DOWNLOADS_V1\n${JSON.stringify(value)}\n-->`,
+      assets: [
+        {
+          name: value.platforms[0].name,
+          state: "uploaded",
+          size: value.platforms[0].bytes,
+          browser_download_url: installerUrl,
+          digest: `sha256:${value.platforms[0].sha256}`,
+        },
+      ],
+    };
+    const ready = () =>
+      (window as unknown as { NYMKEEP_DOWNLOADS_READY: Promise<void> })
+        .NYMKEEP_DOWNLOADS_READY;
+    for (const candidate of [
+      { ...release, draft: true },
+      { ...release, assets: [{ ...release.assets[0], size: 1 }] },
+    ]) {
+      vi.mocked(window.fetch).mockResolvedValue({
+        ok: true,
+        json: async () => candidate,
+      } as Response);
+      run(code);
+      await ready();
+      expect(text("[data-release-status]")).toBe("Public release coming soon");
+    }
+    vi.mocked(window.fetch).mockResolvedValue({
+      ok: true,
+      json: async () => release,
+    } as Response);
+    run(code);
+    await ready();
+    expect(el("[data-installer-link]").getAttribute("href")).toBe(installerUrl);
+    expect(window.fetch).toHaveBeenLastCalledWith(
+      expect.stringContaining("api.github.com/repos/klippers-dev/Nymkeep"),
+      expect.objectContaining({
+        credentials: "omit",
+        referrerPolicy: "no-referrer",
+      }),
+    );
+  });
+  it("asks Mac users to choose their architecture without guessing Apple Silicon", () => {
+    Object.defineProperty(navigator, "platform", {
+      configurable: true,
+      value: "MacIntel",
+    });
+    const value = catalog();
+    value.platforms = [
+      {
+        ...value.platforms[0],
+        id: "darwin-aarch64",
+        name: "Nymkeep_0.1.0_aarch64.dmg",
+        url: installerUrl.replace(
+          "Nymkeep_0.1.0_x64-setup.exe",
+          "Nymkeep_0.1.0_aarch64.dmg",
+        ),
+      },
+    ];
+    run(
+      `window.NYMKEEP_RELEASE = ${JSON.stringify({ catalog: value, discover: false })};`,
+    );
+    run(code);
+    expect(el("[data-installer-link]").getAttribute("href")).toBe(
+      "#download-options",
+    );
+    expect(text("[data-installer-link]")).toContain(
+      "Choose your Mac installer",
+    );
+    expect(text("[data-platform-label]")).toContain("Apple Silicon or Intel");
+  });
   it("switches themes with an accessible label and no persistent storage", () => {
     run(code);
     const theme = el(".theme-toggle");
@@ -101,25 +206,22 @@ describe("marketing website", () => {
     Object.defineProperty(window, "NYMKEEP_RELEASE", {
       configurable: true,
       value: {
-        url: "https://downloads.example.com/nymkeep.exe",
-        version: "0.1.0",
-        fileLabel: "Windows installer",
+        catalog: catalog(),
+        discover: false,
       },
     });
     run(code);
     document
       .querySelectorAll("[data-release-cta], [data-installer-link]")
       .forEach((link) => {
-        expect(link.getAttribute("href")).toBe(
-          "https://downloads.example.com/nymkeep.exe",
-        );
+        expect(link.getAttribute("href")).toBe(installerUrl);
         expect(link.textContent).toContain("Download Windows");
         expect(link.querySelector(".icon use")?.getAttribute("href")).toBe(
           "#nk-arrow-external",
         );
       });
     expect(text("[data-release-status]")).toBe("Nymkeep 0.1.0 is available");
-    expect(text("[data-release-faq]")).toMatch(/^Yes\./);
+    expect(text("[data-release-faq]")).toContain("Settings → Updates");
     expect(text("[data-download-description]")).not.toContain("preparing");
   });
 
@@ -131,7 +233,13 @@ describe("marketing website", () => {
   ])("rejects invalid or unsafe release links: %s", (url) => {
     Object.defineProperty(window, "NYMKEEP_RELEASE", {
       configurable: true,
-      value: { url, version: "0.1.0" },
+      value: {
+        catalog: {
+          ...catalog(),
+          platforms: [{ ...catalog().platforms[0], url }],
+        },
+        discover: false,
+      },
     });
     run(code);
     expect(text("[data-release-status]")).toBe("Public release coming soon");

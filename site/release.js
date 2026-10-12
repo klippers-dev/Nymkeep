@@ -1,7 +1,7 @@
-// Update only after verifying a signed, public Windows installer. No secrets.
-// With an empty URL the website clearly shows the pending release state.
+// Public stable releases are discovered through GitHub's public API.
+// Only the reviewed catalog emitted by the publication workflow enables downloads.
+// catalog can contain that same validated catalog for a fully static deployment.
 window.NYMKEEP_RELEASE = Object.freeze({
-  url: "",
-  version: "",
-  fileLabel: "Windows 11, 64-bit installer",
+  discover: true,
+  catalog: null,
 });

@@ -37,6 +37,14 @@ export type ShotDetect = {
 export type ShotStatus = { available: boolean; backend: string };
 export type ShotImage = { pngBase64: string; width: number; height: number };
 export type Session = { count: number; expiresInSeconds: number | null };
+export type UpdateStatus = {
+  currentVersion: string;
+  configured: boolean;
+  manualOnly: boolean;
+  availableVersion: string | null;
+  restartRequired: boolean;
+  message: string;
+};
 export type CaptureStatus = {
   platform: string;
   backend: string;
@@ -46,6 +54,10 @@ export type CaptureStatus = {
 };
 export const desktop = isTauri();
 export const api = {
+  updateStatus: () => invoke<UpdateStatus>("update_status"),
+  checkUpdate: () => invoke<UpdateStatus>("check_update"),
+  installUpdate: () => invoke<void>("install_update"),
+  restartUpdate: () => invoke<void>("restart_update"),
   protect: (text: string, manualTerms: string[]) =>
     invoke<Protection>("protect_text", { text, manualTerms }),
   restore: (text: string) => invoke<Restoration>("restore_text", { text }),
