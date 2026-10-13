@@ -11,4 +11,4 @@ text, private images, mappings or credentials. Security reports follow
 
 Nymkeep is independently maintained by Klippers. Help and contribution review
 follow maintainer availability; there is no guaranteed support SLA. General
-questions can go to **contact.klippers@gmail.com**.
+questions can go to **contactklippers@gmail.com**.
