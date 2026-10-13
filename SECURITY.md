@@ -8,7 +8,7 @@ older preview candidates are not supported security releases.
 
 Use [GitHub's private vulnerability form](https://github.com/klippers-dev/Nymkeep/security/advisories/new)
 when private reporting is enabled. If the form is unavailable, contact
-**contact.klippers@gmail.com** with a short description and ask for a suitable
+**contactklippers@gmail.com** with a short description and ask for a suitable
 disclosure channel before sending sensitive details. Do not disclose an exploit,
 private screenshot, original text, session mappings or credentials in a public
 issue. Use synthetic reproduction data.
