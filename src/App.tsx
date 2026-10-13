@@ -32,7 +32,7 @@ const defaultKeys: Shortcuts = {
 };
 const BRAND = {
   byline: "A product by Klippers",
-  email: "contact.klippers@gmail.com",
+  email: "contactklippers@gmail.com",
   site: "https://theklippers.com",
   version: "0.1.0",
   // Fill these in to activate the Support block. Empty = button stays hidden.
