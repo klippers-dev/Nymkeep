@@ -17,6 +17,7 @@ import type {
   CaptureStatus,
 } from "./api";
 import ScreenshotView from "./ScreenshotView";
+import UpdateSettings from "./UpdateSettings";
 import { Icon, Keys, NymkeepMark, ShortcutRecorder } from "./components";
 import type { IconName } from "./components";
 import { openUrl } from "@tauri-apps/plugin-opener";
@@ -32,11 +33,11 @@ const defaultKeys: Shortcuts = {
 };
 const BRAND = {
   byline: "A product by Klippers",
-  email: "contact.klippers@gmail.com",
+  email: "contactklippers@gmail.com",
   site: "https://theklippers.com",
   version: "0.1.0",
   // Fill these in to activate the Support block. Empty = button stays hidden.
-  repo: "",
+  repo: "https://github.com/klippers-dev/Nymkeep",
   follow: "",
   sponsor: "",
 };
@@ -92,6 +93,7 @@ export default function App() {
   const [termErrors, setTermErrors] = useState({ always: "", never: "" });
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const [shotReset, setShotReset] = useState(0);
+  const [installing, setInstalling] = useState(false);
 
   useEffect(() => {
     if (!desktop || view !== "settings") return;
@@ -220,7 +222,7 @@ export default function App() {
   }, [clearDrafts, hideOriginals, refreshSession, retry]);
 
   async function run(label: string, work: () => Promise<void>) {
-    if (busyRef.current || !desktop) return;
+    if (busyRef.current || installing || !desktop) return;
     busyRef.current = true;
     setBusy(label);
     setMessage(null);
@@ -240,6 +242,7 @@ export default function App() {
     }
   }
   function navigate(next: View) {
+    if (installing) return;
     setView(next);
     setMessage(null);
     setConfirmClear(false);
@@ -335,7 +338,7 @@ export default function App() {
       setTerms((prev) => ({ ...prev, [list]: "" }));
     });
   }
-  const disabled = !!busy || !desktop;
+  const disabled = !!busy || installing || !desktop;
   const settingsDisabled = disabled || !ready;
   const isProtect = view === "protect";
   const draft = isProtect ? input : answer;
@@ -1376,6 +1379,10 @@ export default function App() {
                 </div>
               </div>
             </section>
+            <UpdateSettings
+              beforeInstall={clearDrafts}
+              setInstalling={setInstalling}
+            />
             <section
               className="settings-section"
               aria-labelledby="about-heading"
@@ -1417,15 +1424,12 @@ export default function App() {
                   <div>
                     <strong>Support Klippers</strong>
                     <p>
-                      Klippers is an independent team of five. We build products
-                      like Nymkeep alongside our day jobs. We want to quit those
-                      jobs and do this full-time.
+                      Nymkeep is built by independent maintainers. Its source,
+                      privacy decisions and contribution guide are public.
                     </p>
                     <p>
-                      If our work earns it, back us with a star, a follow, or a
-                      sponsorship. Tooling subscriptions and development
-                      hardware help just as much. Supporters keep Klippers
-                      independent and its software affordable.
+                      Report an issue, suggest an improvement or contribute a
+                      fix. A GitHub star helps other people find the project.
                     </p>
                   </div>
                 </div>

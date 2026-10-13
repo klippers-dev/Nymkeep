@@ -1,7 +1,16 @@
 Nymkeep development candidate
 
-The following major components are used by Nymkeep. This candidate's full
-dependency license inventory must be checked before public redistribution.
+The following major components are used by Nymkeep. Full upstream terms and
+runtime notices are in licenses/. The target-specific DEPENDENCIES inventory
+preserves resolved Rust/production JavaScript license texts and copyrights.
+Review native bundled libraries and vendor redistribution terms before publication.
+
+Linux GLib 0.18.5: MIT, upstream license included in DEPENDENCIES.txt.
+The shipped source backports gtk-rs/gtk-rs-core PR #1343 for RUSTSEC-2024-0429.
+Original archive hashes and the exact two-line fix are recorded in
+vendor/glib-backport.json in the public Nymkeep source repository.
+https://github.com/klippers-dev/Nymkeep
+https://github.com/gtk-rs/gtk-rs-core/pull/1343
 
 Tauri and its Rust/JavaScript plugins: MIT OR Apache-2.0
 https://github.com/tauri-apps/tauri
@@ -19,6 +28,12 @@ https://github.com/pykeio/ort
 BERT-small PII detection model: Apache-2.0
 https://huggingface.co/onnx-community/bert-small-pii-detection-ONNX
 The model manifest records the source and SHA-256 for every bundled model file.
+
+Linux PP-OCRv6 Small detector/recognizer and dictionary: Apache-2.0
+https://huggingface.co/PaddlePaddle/PP-OCRv6_small_det_onnx
+https://huggingface.co/PaddlePaddle/PP-OCRv6_small_rec_onnx
+https://github.com/RapidAI/RapidOCR
+The OCR manifest records the source and SHA-256 for every bundled pack file.
 
 Windows OCR, Microsoft Edge WebView2 and macOS Vision/Accessibility are vendor
 operating-system/runtime components; their vendor terms apply.

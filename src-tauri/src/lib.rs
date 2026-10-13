@@ -2,6 +2,7 @@ pub mod core;
 pub mod ner;
 pub mod platform;
 pub mod shots;
+pub mod updates;
 
 use core::{Core, Mapping, PrivacyRules, Protection, Restoration, SessionStatus};
 use shots::boxes::PixelBox;
@@ -10,6 +11,29 @@ use std::sync::Mutex;
 use tauri::{AppHandle, Emitter, Manager, State};
 
 pub struct AppCore(pub Mutex<Core>);
+
+#[tauri::command]
+fn update_status(app: AppHandle) -> updates::UpdateStatus {
+    updates::status(&app)
+}
+#[tauri::command]
+async fn check_update(
+    app: AppHandle,
+    state: State<'_, updates::UpdateState>,
+) -> Result<updates::UpdateStatus, String> {
+    updates::check(&app, &state).await
+}
+#[tauri::command]
+async fn install_update(
+    app: AppHandle,
+    state: State<'_, updates::UpdateState>,
+) -> Result<(), String> {
+    updates::install(&app, &state).await
+}
+#[tauri::command]
+fn restart_update(app: AppHandle, state: State<'_, updates::UpdateState>) -> Result<(), String> {
+    updates::restart(&app, &state)
+}
 
 fn default_quick() -> String {
     "Alt+J".to_string()
@@ -814,6 +838,7 @@ pub fn run() {
             None,
         ))
         .manage(AppCore(Mutex::new(Core::new())))
+        .manage(updates::UpdateState::default())
         .manage(ShortcutState(Mutex::new(ShortcutStrings::default())))
         .manage(Mutex::new(shots::ShotState::new()))
         .invoke_handler(tauri::generate_handler![
@@ -828,6 +853,10 @@ pub fn run() {
             set_rules,
             ner_status,
             get_shortcuts,
+            update_status,
+            check_update,
+            install_update,
+            restart_update,
             set_shortcuts,
             get_autostart,
             set_autostart,

@@ -57,6 +57,14 @@ async function protectDraft() {
 
 beforeEach(() => {
   vi.resetAllMocks();
+  mock.updateStatus.mockResolvedValue({
+    currentVersion: "0.1.0",
+    configured: false,
+    manualOnly: false,
+    availableVersion: null,
+    restartRequired: false,
+    message: "Updates become available in a signed public release.",
+  });
   mock.rules.mockResolvedValue({ always: [], never: [], moneyDates: false });
   mock.shortcuts.mockResolvedValue({
     protect: "Alt+C",

@@ -1434,6 +1434,22 @@ td code {
     padding: 8px 10px;
   }
 }
+.update-confirmation {
+  margin-top: 16px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--secondary);
+}
+.update-confirmation p {
+  margin-bottom: 12px;
+}
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
 @media (prefers-color-scheme: dark) {
   :root {
     color-scheme: dark;

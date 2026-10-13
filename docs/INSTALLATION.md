@@ -1,8 +1,13 @@
 # Installing Nymkeep
 
 **There is no public installer release yet.** Windows has an unsigned internal
-review candidate. macOS and Linux have separate build/device gates; see
+review candidate. Both Mac architectures and Linux now also have verified
+unsigned installer candidates; real-device/signing/review gates remain. See
 [PLATFORM_STATUS.md](release/PLATFORM_STATUS.md).
+
+Installer storage and explicit signed update behavior are explained in
+[Downloads and updates](release/DOWNLOADS_AND_UPDATES.md). Unsigned candidates
+do not auto-update into the first signed public release; install that manually.
 
 ## When the first verified release is published
 

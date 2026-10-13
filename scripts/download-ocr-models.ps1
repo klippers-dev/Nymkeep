@@ -24,4 +24,6 @@ foreach ($name in $manifest.files.PSObject.Properties.Name) {
     }
     Write-Output "OK $name"
 }
+# Development/native fixtures use the same directory layout as installed resources.
+Copy-Item -LiteralPath (Join-Path $modelsDir 'ocr-manifest.json') -Destination (Join-Path $modelsDir 'ocr/ocr-manifest.json') -Force
 Write-Output "All OCR model files verified."

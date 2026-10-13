@@ -1,7 +1,49 @@
 # Nymkeep CURRENT_STATE
 
-Updated: 2026-10-04. Clean Windows installer candidate and macOS implementation
-(SP-033/034), following screenshot/website verification (SP-030/031/032).
+Updated: 2026-10-14. SP-038/039 implementation is on PR #14. SP-040 is complete:
+the marketing website is public at https://nymkeep.vercel.app/ on Vercel.
+Public HTTPS/hash/header and desktop/mobile/keyboard/CSP checks pass. GitHub's
+repository homepage points to the site. Domain purchase remains separate.
+No signed public installer release is published. See docs/release/WEBSITE_HOSTING.md.
+SP-041 corrects contactklippers@gmail.com in the live website/app/support/security
+source. The small dev-based PR #16 is ready for owner review; no merge was done.
+SP-042/043 recurring repository and daily image/animation routines are ACTIVE.
+X publication access is not yet verified; initial assets are drafts, not posts.
+
+## Latest evidence and remaining gates
+
+- CI 38298789910 is green on Windows, Apple Silicon, Intel Mac and Ubuntu 24.04
+  for 0ec3b56. Candidate run 38298785486 passes all four release-profile targets:
+  Windows NSIS, both Mac DMGs and Linux deb/AppImage, including extracted
+  payload/model/license checks and both packaged native Mac Vision helpers.
+  These are unsigned review candidates, not a public release.
+- Linux native OCR -> detection -> opaque PNG -> reread and the repaired native
+  synthetic selection/empty/password/background-focus fixtures pass.
+  AT-SPI selection-only capture is implemented.
+  Hosted checks do not certify real X11/Wayland applications or compositors.
+- The exact two-line upstream GLib safety fix is vendored with archive/file-hash
+  checks; optimized Linux iterator regression passes. Version-based advisory
+  remains open; independent security review remains required.
+- Complete native dependency inventories and license texts are bundled;
+  independent redistribution/native-vendor review is still a release gate.
+- ADR-018 implements GitHub Releases storage, validated website platform catalogs
+  and explicit Settings > Updates checks/install confirmation. Opening Settings
+  never checks the network. Unsigned candidates disable updates; Debian packages
+  update manually. No signed public upgrade transition has been tested.
+- The updater/catalog code is included in green native CI for 0ec3b56.
+  Local clean Rust tests pass 78/78, frontend 71/71, tooling 24/24;
+  build/fmt and source audit pass. Later documentation/site-only changes retain
+  this native app code. Fresh results belong in the task HANDOFF.
+- Website source 4b7aa11 passes all required CI in 38453514372, including
+  Windows, Apple Silicon, Intel Mac and Linux. Initial model-host queue failures
+  were resolved by rerunning failed jobs; no app code changed for that retry.
+- Public launch still needs real-device installation/permissions/GUI coverage,
+  OS signing/notarization, signed upgrade evidence, independent privacy/license
+  review and performance measurements. No broad platform-support claim is made.
+
+See `docs/release/DOWNLOADS_AND_UPDATES.md` for the storage/update contract.
+
+## Historical baseline - 2026-10-04 (superseded where noted above)
 
 SP-035: audited MIT source is public at https://github.com/klippers-dev/Nymkeep.
 main/dev/stage and owner-only release tags are protected; mandatory CI,

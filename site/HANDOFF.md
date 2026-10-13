@@ -1,4 +1,80 @@
-# Website final handoff: 2026-10-04, SP-032
+# Website contact follow-up: 2026-10-14, SP-041
+
+All current website contact/release enquiry links and footer text use
+contactklippers@gmail.com. Source 48d4564 is deployed on the existing verified
+Vercel project as dpl_DEVTaYefMaZwQwT8PXDohoM3hg7M, retaining
+https://nymkeep.vercel.app/. The owner explicitly authorized immediate correction.
+
+Fresh isolated prepare/deploy and public verify.mjs pass: 12 asset hashes,
+security headers, six private/missing routes, unauthenticated access and canonical/
+sitemap. Public browser assertions verify every mailto and absence of the old
+spelling. Responsive/theme/keyboard/image/fallback/404 checks pass without page
+errors, CSP violations or overflow. Evidence is in
+.release-work/site-public-qa-2026-10-14-email. App production build passes;
+combined source CI 38476660993 frontend 71/tooling 24/build/audit passes.
+
+The same four-file address correction is isolated on dev-based PR #16, commit
+3ca9fe3, ready for owner review/merge. Frontend 65/tooling 12/build/source audit
+pass there. No protected branch merge, signing change or installer publication
+was performed. Recurring maintenance/social setup is described in
+docs/OPERATING_ROUTINES.md; no private inputs or analytics were added to the site.
+
+## Previous website public handoff: 2026-10-14, SP-040
+
+https://nymkeep.vercel.app/ is public on the verified owner Vercel nymkeep project.
+Final deployment: dpl_mBaZ6J9zumygRXE1P8QGG7cxDHya, website source 4b7aa11.
+Canonical URL, robots and sitemap use the verified production host. GitHub's
+repository homepage now links to it; opening the Codex review tab was queued.
+
+Commands: isolated prepare.mjs with --provider vercel/--canonical-url, task-local
+Vercel CLI 64.0.1 production deploy, verify.mjs, public Playwright browser checks
+and gh repository homepage update/read-back. Twelve public assets match reviewed
+SHA-256 hashes, headers pass, six private/missing routes reject and access requires
+no login. Desktop/mobile/light/dark/keyboard/menu/focus/workflow/image/reduced-motion/
+404 checks pass at 360/390/768/1366 px with no overflow, page errors or CSP issues.
+Captures were visually reviewed. Fresh site tooling 3/3 and production build pass;
+CI 38453514372 passes all native/frontend/required jobs after a model-host retry.
+
+Changed publication docs: root/site README, state/task/handoff and
+docs/release/{DOWNLOADS_AND_UPDATES,WEBSITE_HOSTING}.md. Site assets and native app
+code are unchanged. The project is manually deployed from isolated stages;
+repository pushes do not auto-deploy. Repeat instructions are in WEBSITE_HOSTING.
+SP-040 is done; custom domain and signed public installer/device gates remain.
+No paid-plan change, domain purchase, private inputs or analytics were introduced.
+
+## Previous website hosting handoff: 2026-10-14, SP-040
+
+Publication is authorized; hosting account selection/access is pending. Vercel
+CLI login/team/project listing succeed; Cloudflare Wrangler is unauthenticated.
+No Nymkeep hosting project or public deployment has been created.
+
+`scripts/site/prepare.mjs` builds a fresh isolated Cloudflare/Vercel package from
+the nine explicit marketing assets, with headers, cache rules, robots and 404.
+Its hash inventory remains outside the upload. `scripts/site/verify.mjs` checks
+actual public HTTPS/access, asset hashes, headers and private/missing routes.
+See README.md and ADR-019 for deployment commands and the isolation contract.
+
+Verification: 71 frontend, 24 release/repository/site tooling and 78 Rust tests
+pass; production build, Rust fmt and changed-script/package Prettier pass. Local
+packaged-site browser checks and visual desktop/mobile/404 review pass, including
+360/390/768/1366 widths, light/dark, fictional walkthrough, image comparison,
+menu/Escape/focus, pending installer/Releases fallback and styled HTTP 404.
+No horizontal overflow, page errors or CSP violations. Fresh packages/inventories
+are .release-work/site-{cloudflare,vercel}-2026-10-14-v2 in the workspace.
+
+Remaining: selected authenticated account/project, public deployment and HTTPS
+verification, then canonical/sitemap from the verified host and owner review.
+The website discovers public GitHub release metadata only; there are no private
+inputs/uploads, analytics or detector calls. Installer links stay gated on a
+verified signed public release. Domain purchase and app signing remain separate.
+
+Source is pushed as 4b7aa11 on PR #14. Fresh hosted frontend/tooling/build/source
+audit passes in CI 38453514372. Its unchanged native matrix is not green:
+three jobs stop at the model host's queue error before app tests; Intel remains
+active. Local review preview is running at http://127.0.0.1:4173/ and the Codex
+browser tab open is queued. These latest run notes are local handoff evidence.
+
+## Previous website final handoff: 2026-10-04, SP-032
 
 SP-035/036 follow-up: GitHub source/contribution links and independent-maintainer
 copy are added without changing the established visual system. Platform copy

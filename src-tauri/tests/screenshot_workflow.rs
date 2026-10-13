@@ -1,8 +1,8 @@
 //! Native OCR integration check against fixed synthetic data.
-//! Run explicitly on Windows with an OCR language or macOS with the built Vision helper:
+//! Run on Windows with an OCR language, macOS with Vision, or Linux with the verified OCR pack:
 //! cargo test --test screenshot_workflow -- --ignored
 
-#[cfg(any(windows, target_os = "macos"))]
+#[cfg(any(windows, target_os = "macos", target_os = "linux"))]
 #[test]
 #[ignore = "requires native OCR; run during platform verification"]
 fn synthetic_note_is_detected_and_permanently_redacted() {

@@ -26,6 +26,17 @@ test("release manifest strips only the known local patch and rejects unknown pat
   assert.throws(() =>
     cleanManifest(before.replace("../patches/vswhom-sys", "../unknown")),
   );
+  const shipped = before.replace(
+    "[profile.release]",
+    'glib = { path = "../vendor/glib" }\n[profile.release]',
+  );
+  const release = cleanManifest(shipped);
+  assert.ok(release.includes('glib = { path = "../vendor/glib" }'));
+  assert.ok(!release.includes("vswhom-sys"));
+  assert.equal(cleanManifest(release), release);
+  assert.throws(() =>
+    cleanManifest(shipped.replace("../vendor/glib", "../vendor/unknown")),
+  );
   assert.throws(() =>
     cleanManifest(
       before.replace(

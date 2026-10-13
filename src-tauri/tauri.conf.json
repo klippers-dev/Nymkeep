@@ -43,7 +43,8 @@
       "models/config.json": "models/config.json",
       "models/vocab.txt": "models/vocab.txt",
       "models/manifest.json": "models/manifest.json",
-      "THIRD_PARTY_NOTICES.txt": "THIRD_PARTY_NOTICES.txt"
+      "THIRD_PARTY_NOTICES.txt": "THIRD_PARTY_NOTICES.txt",
+      "licenses": "licenses"
     },
     "icon": [
       "icons/32x32.png",

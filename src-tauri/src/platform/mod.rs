@@ -7,6 +7,8 @@
 
 #[cfg(target_os = "linux")]
 mod linux;
+#[cfg(any(target_os = "linux", test))]
+mod linux_selection;
 #[cfg(target_os = "macos")]
 mod macos;
 #[cfg(windows)]
@@ -44,11 +46,11 @@ pub fn capture_status() -> CaptureStatus {
         backend: if cfg!(windows) {
             "windows-uia"
         } else {
-            "clipboard-fallback"
+            "linux-atspi"
         },
         permission_required: false,
         trusted: cfg!(windows),
-        implemented: cfg!(windows),
+        implemented: cfg!(any(windows, target_os = "linux")),
     }
 }
 

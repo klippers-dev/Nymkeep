@@ -185,3 +185,86 @@ the build when its recipe changes; Rust and Swift use the same 13.3 minimum.
 Linux native CI/candidate builds use Ubuntu 24.04 so glibc/libstdc++ match the
 current prebuilt runtime's ABI. Older Linux distributions are not inferred
 supported; capture/compositor/device verification remains open.
+
+## ADR-016: Bounded Linux selection-only accessibility capture
+
+Linux Secure Capture uses the local AT-SPI D-Bus accessibility bus. It reads
+focus/state/role metadata and only the single nonempty selection from the focused,
+visible control. Password controls, multiple selections, stale focus, invalid
+offsets, NUL-containing text and selections beyond the existing 100 KB limit are
+rejected. It never reads an entire document, accessible names/values, clipboard
+contents or application text without a selection. Missing accessibility uses the
+existing explicitly labeled clipboard fallback.
+
+Bus connections must use Unix sockets. Capture has a total deadline and bounded
+tree traversal, with no raw text in errors, logs or persistence. The adapter does
+not enable accessibility services or request system permissions silently. Protocol
+fixtures and an isolated synthetic GTK/X11 check establish implementation evidence;
+GNOME/KDE Wayland and real application certification remain separate gates.
+Protect/Restore remain offline. Wayland global shortcuts still require the portal
+adapter and real-compositor evidence before a support claim.
+
+## ADR-017: Auditable GLib safety backport for the GTK 0.18 graph
+
+The GTK dependency graph still requires glib 0.18.5, which is affected by
+RUSTSEC-2024-0429. Nymkeep vendors the exact crates.io archive, preserves its
+version and licenses, and applies only the two-line upstream safety fix from
+gtk-rs/gtk-rs-core PR #1343: a mutable out-pointer and mutable reference in
+VariantStrIter::impl_get. This is a shipped, reviewed dependency fix, distinct
+from the prohibited machine-local vswhom-sys recovery.
+
+Archive checksum, upstream commit, file hashes and the exact source diff are
+recorded and verified by release/source checks. No other registry patches are
+accepted. Linux tests exercise forward and backward iteration under
+optimization; native CI remains mandatory. Version-based advisory scanners may
+continue to flag 0.18.5; document the mitigation without suppressing the advisory
+or claiming independent security clearance. Remove the backport when the GTK
+graph accepts an upstream fixed release. Offline behavior is unchanged.
+
+## ADR-018: Public release downloads and explicit signed update checks
+
+GitHub Releases stores versioned installers and updater assets. The website uses
+only the public stable release catalog, rejects draft/prerelease/unverified
+entries, and links directly to the approved platform asset. Website hosting is
+independent of installer storage; no user account or Git tooling is needed to
+download. Release metadata is public and contains no user content.
+
+The desktop application checks for updates only after the user selects Check for
+updates. It sends no text, screenshot, OCR result, mapping or custom rule. The
+stable HTTPS endpoint is the Nymkeep GitHub Releases latest.json asset; updates
+must pass the Tauri updater signature check against the bundled public key.
+Unsigned candidates disable updates. Users explicitly choose installation after
+reviewing the available version; mappings and sensitive drafts clear before
+installation/restart. Linux deb installations use a manual package update;
+AppImage, Windows NSIS and Mac app updates use their matching signed artifacts.
+
+CI builds drafts, validates version/target/asset/checksum metadata and prepares a
+download catalog. Public publication requires the existing signing, device,
+license and independent review gates. Failed or missing release metadata leaves
+downloads unavailable and never changes the offline Protect/Restore behavior.
+
+## ADR-019: Isolated public marketing deployment
+
+Deploy only an explicit allowlist of marketing HTML/CSS/JS and synthetic brand
+assets, from a fresh static staging directory. The desktop frontend output,
+models, native binaries, SDK recovery, local documents, credentials and source
+checkout metadata must never be included. A deployment inventory binds each
+public file to SHA-256 for review and post-deployment comparison.
+
+Use the owner's selected authenticated static hosting account (Cloudflare Pages
+or Vercel); verify the account/project/environment before publication and reuse
+an existing matching project. No paid subscription, domain registration or
+unrelated project change is implied. Preview and public website publication are
+separate from signed installer publication under ADR-018.
+
+The website exposes public product information only, adds no private-text/image
+inputs, analytics or cookies, and contacts only GitHub's public release API for
+installer discovery. Security headers restrict scripts/assets to the site and
+connections to that API. Hosting providers receive normal web-request metadata;
+desktop content processing remains offline. Missing release metadata keeps
+downloads unavailable with an explicit GitHub Releases fallback.
+
+Public status copy must preserve device/signing/review gates. A deployment counts
+as verified only after HTTPS assets, headers, release discovery/fallback and
+responsive/keyboard behavior have been checked; a generated URL alone is not
+evidence of a successful public site.

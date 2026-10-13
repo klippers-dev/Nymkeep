@@ -9,6 +9,7 @@ const files = new Map([
   ["/styles.css", ["styles.css", "text/css; charset=utf-8"]],
   ["/site.js", ["site.js", "text/javascript; charset=utf-8"]],
   ["/release.js", ["release.js", "text/javascript; charset=utf-8"]],
+  ["/downloads.js", ["downloads.js", "text/javascript; charset=utf-8"]],
   ["/assets/nymkeep-mark.svg", ["assets/nymkeep-mark.svg", "image/svg+xml"]],
   ["/assets/shortcut-keys.jpg", ["assets/shortcut-keys.jpg", "image/jpeg"]],
   [
@@ -37,7 +38,7 @@ const server = http.createServer(async (request, response) => {
       "Cache-Control": "no-store",
       "X-Content-Type-Options": "nosniff",
       "Content-Security-Policy":
-        "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'",
+        "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src https://api.github.com; object-src 'none'; base-uri 'none'; frame-ancestors 'none'",
     });
     response.end(request.method === "HEAD" ? undefined : data);
   } catch {

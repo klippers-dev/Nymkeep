@@ -13,6 +13,7 @@
     <link rel="icon" type="image/svg+xml" href="assets/nymkeep-mark.svg" />
     <link rel="stylesheet" href="styles.css" />
     <script src="release.js" defer></script>
+    <script src="downloads.js" defer></script>
     <script src="site.js" defer></script>
   </head>
   <body id="top">
@@ -659,21 +660,21 @@
           </article>
           <article>
             <h3>macOS</h3>
-            <p class="platform-state">Native implementation added</p>
+            <p class="platform-state">Both installer candidates built</p>
             <p>
               Selection capture, local Vision OCR and permission controls are
               implemented. Apple Silicon and Intel native build and OCR checks
-              pass. Device checks, signing and notarization remain before
-              release.
+              pass, and both DMG payloads are verified. Device checks, signing
+              and notarization remain before release.
             </p>
           </article>
           <article>
             <h3>Linux</h3>
             <p class="platform-state">Platform work remains</p>
             <p>
-              Ubuntu 24.04 build and model checks pass. Selection capture,
-              native OCR/export and X11/Wayland integration still need device
-              and compositor tests.
+              Ubuntu 24.04 build, local OCR and PNG export checks pass.
+              Synthetic selection/focus checks and both installer payloads pass.
+              X11/Wayland need real device and compositor checks.
             </p>
           </article>
         </div>
@@ -686,7 +687,7 @@
       >
         <div class="download-panel">
           <div class="download-copy">
-            <p class="eyebrow">Nymkeep for Windows</p>
+            <p class="eyebrow">Nymkeep for your desktop</p>
             <h2 id="download-heading" data-release-heading>
               Your next paste<br />could be a little more private.
             </h2>
@@ -694,7 +695,7 @@
               We are preparing the first public desktop release. The verified
               installer will be linked here when it is ready.
             </p>
-            <div class="platform-label">
+            <div class="platform-label" data-platform-label>
               <span class="windows-mark" aria-hidden="true"
                 ><i></i><i></i><i></i><i></i></span
               >Windows 11
@@ -712,7 +713,7 @@
             </p>
             <a
               class="btn btn-primary btn-block"
-              href="mailto:contact.klippers@gmail.com?subject=Nymkeep%20release%20enquiry"
+              href="mailto:contactklippers@gmail.com?subject=Nymkeep%20release%20enquiry"
               data-installer-link
               >Ask about the release
               <svg
@@ -726,6 +727,22 @@
             <p class="release-fine" data-release-meta>
               Questions go straight to the Klippers team.
             </p>
+            <div
+              id="download-options"
+              class="download-options"
+              data-download-options
+              hidden
+              aria-label="Available installers"
+            ></div>
+            <p class="release-fine">
+              Already installed? Open Settings → Updates. You choose when to
+              check and install.
+            </p>
+            <a
+              class="text-link"
+              href="https://github.com/klippers-dev/Nymkeep/releases"
+              >View all releases on GitHub</a
+            >
           </div>
         </div>
       </section>
@@ -734,7 +751,7 @@
         <div class="faq-intro">
           <h2 id="faq-heading">A few things<br />worth knowing.</h2>
           <p>Privacy tools should be easy to understand.</p>
-          <a class="text-link" href="mailto:contact.klippers@gmail.com"
+          <a class="text-link" href="mailto:contactklippers@gmail.com"
             >Talk to the team
             <svg
               class="icon"
@@ -921,8 +938,8 @@
           /><span>Nymkeep</span></a
         >
         <p>Your work. Your tools. Your details.</p>
-        <a href="mailto:contact.klippers@gmail.com"
-          >contact.klippers@gmail.com</a
+        <a href="mailto:contactklippers@gmail.com"
+          >contactklippers@gmail.com</a
         >
       </div>
       <div class="footer-bottom">

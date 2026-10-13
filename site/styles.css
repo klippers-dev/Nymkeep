@@ -1619,3 +1619,33 @@ kbd {
     transition: none !important;
   }
 }
+.download-options:not([hidden]) {
+  display: grid;
+  gap: 0;
+  margin-block: 24px;
+  text-align: left;
+}
+.download-option {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px 16px;
+  padding: 16px 0;
+  border-top: 1px solid var(--line);
+}
+.download-option > span,
+.download-checksum {
+  font-size: 13px;
+  color: var(--muted);
+}
+.download-checksum {
+  grid-column: 1 / -1;
+  min-width: 0;
+}
+.download-checksum summary {
+  cursor: pointer;
+}
+.download-checksum code {
+  display: block;
+  margin-top: 8px;
+  overflow-wrap: anywhere;
+}

@@ -1,4 +1,275 @@
-# Nymkeep handoff — 2026-10-04 (SP-035)
+# Nymkeep handoff - 2026-10-14 (SP-041/042/043)
+
+## Results and changed files
+
+Corrected the canonical contact address to contactklippers@gmail.com in
+src/App.tsx, site/index.html, SUPPORT.md and SECURITY.md. Created small dev-based
+PR #16 (3ca9fe3), attached it to this chat and marked it ready for owner review.
+Applied the same correction to PR #14 as 48d4564 for the currently hosted source.
+No merge or auto-merge was performed. The live website now serves the corrected
+address from dpl_DEVTaYefMaZwQwT8PXDohoM3hg7M on the existing Vercel project.
+
+Created three ACTIVE thread follow-ups and read their stored schedules back:
+nymkeep-twice-weekly-repository-review (Monday/Thursday 10:00 IST),
+nymkeep-daily-x-image (daily 11:00 IST), nymkeep-daily-x-animation (daily 19:00 IST).
+Audits create tested PRs into dev for the owner to review/merge; no protection
+bypass, merge, deployment or installer publication is authorized by that routine.
+Existing unrelated automations/profile branding were preserved.
+
+Added docs/OPERATING_ROUTINES.md and updated status/tasks/site handoff/hosting
+record. Initial original branded PNG and MP4/captions are in
+output/social/2026-10-14-initial, with a reusable local renderer and publication
+ledger under output/social. The ledger records 2 drafts and 0 published posts.
+
+## Validation and commands
+
+- Public Vercel stage prepare with canonical URL, CLI 64.0.1 production deploy,
+  verify.mjs and public Playwright QA pass. Twelve asset hashes/security headers/
+  six private probes pass; every live mailto uses the canonical address and the
+  dotted spelling is absent. Desktop/mobile/theme/keyboard/image/404 checks pass
+  at 360/390/768/1366 px with zero overflow, page errors or CSP violations.
+- Local npm production build passes. Initial full fork-based frontend run could
+  not start workers. Focused threads run passes 41 checks, with one existing
+  permission test timing out at five seconds; its isolated retry passes. No
+  production/test assertion was changed to address that resource-timing issue.
+- Exact combined source 48d4564 hosted frontend CI passes 71 tests, 24 tooling,
+  build and source audit (385 files) in 38476660993. Windows, ARM Mac and Linux
+  native jobs pass; Intel remains in progress at this observation.
+- PR #16 CI 38476331471 passes 65 frontend/12 tooling/build/source audit (173
+  files), Windows/ARM Mac/Linux native jobs; Intel remains pending at observation.
+  Native code is unchanged from its respective previously verified base; no
+  native/device integration fixture or signing key was accessed locally.
+- Social renderer exports 240 frames at 24 fps. ffprobe verifies H.264/yuv420p,
+  1280x720, ten seconds; FFmpeg fully decodes without errors. Image and representative
+  video frames were visually reviewed; captions/alt text are saved and bounded.
+  Assets are drafts, not screenshots of a shipped installer or published posts.
+
+## Remaining access and operating limits
+
+Klippers X publishing cannot be verified yet. Metricool was discovered but is
+not connected. The browser-control runtime fails with a missing kernel-assets
+path before opening any account page; this is not evidence of expired X login.
+An older Klippers workflow names @atklippers, but current target/account access
+must be verified. The owner was asked once for the exact profile/connection.
+Daily routines prepare media while blocked and publish only through a verified
+brand account, recording real post IDs/URLs and deduplicating uncertain writes.
+No X post, DM, reply, paid subscription, credit purchase or advertisement was sent.
+
+Local scheduled work needs this computer on and the app running; it is not an
+always-on server. GitHub protected-branch merges remain the owner's action.
+Signed public installers, actual-device support/privacy/license/performance
+gates remain separate. Source audits and diff checks precede publication of the
+operating documentation; CLI/cache/media scratch remains outside public uploads.
+
+## Previous handoff - 2026-10-14 (SP-040 public website)
+
+## Result and changes
+
+The owner selected the connected Vercel account. https://nymkeep.vercel.app/ is
+public and verified without authentication. Created only the matching nymkeep
+project in the verified owner scope, deployed the isolated reviewed website
+package, then added the actual canonical URL/sitemap and redeployed that same
+project. Final deployment dpl_mBaZ6J9zumygRXE1P8QGG7cxDHya serves website source
+4b7aa11. GitHub repository homepage is updated. The Codex public review tab open
+was queued. No paid-plan/domain change or app release was made.
+
+Changed documentation: README.md, CURRENT_STATE.md, TASKS.md, site/README.md,
+site/HANDOFF.md, docs/release/{DOWNLOADS_AND_UPDATES,WEBSITE_HOSTING}.md and this
+handoff. No native/frontend app code changed. Prepared assets, hash inventories,
+CLI cache and browser proofs remain ignored/local.
+
+## Verification and commands
+
+- Vercel whoami/team/project listing verified the scope. CLI 42.3.0 upload was
+  rejected as outdated; pinned task-local CLI 64.0.1 deployed successfully.
+- `node scripts/site/prepare.mjs --provider vercel --output
+  .release-work/site-vercel-2026-10-14-public --canonical-url
+  https://nymkeep.vercel.app/`: final isolated package generated.
+- Vercel `deploy --prod --yes --scope karan-singhs-projects-b4d634ef` from that
+  linked stage: READY and production alias https://nymkeep.vercel.app.
+- `node scripts/site/verify.mjs https://nymkeep.vercel.app/
+  .release-work/site-vercel-2026-10-14-public.inventory.json`: 12 public hashes,
+  security headers and 6 private/missing-route probes pass without credentials.
+- Public Playwright checks and visual capture review pass: 360/390/768/1366 px,
+  light/dark, keyboard/menu/Escape/focus, fictional workflow, decoded image pair,
+  reduced motion, pending release fallback and real styled HTTP 404. Zero page
+  errors, CSP violations or overflow. Requests are only this host and GitHub API.
+  Evidence: .release-work/site-public-qa-2026-10-14/report.json and PNGs.
+- Fresh site tooling 3/3 and npm production build pass. Earlier unchanged app
+  suites are 78 Rust, 71 frontend and 24 tooling, with Rust fmt passing.
+- CI 38453514372 for 4b7aa11 is now green in every required job (Windows, Apple
+  Silicon, Intel Mac, Linux and frontend/source audit). Initial model-host queue
+  failures were resolved with `gh run rerun ... --failed`; no app code changed.
+- `gh repo edit ... --homepage https://nymkeep.vercel.app/` and read-back pass.
+- Publication documentation source audit passes all 385 tracked files; staged
+  diff checks are clean. The record adds no application or deployed-asset change.
+
+## Assumptions and remaining gates
+
+SP-040 is complete. The project currently uses manual isolated CLI publication;
+repository pushes do not auto-deploy. The first site source remains on reviewable
+PR #14; protected branch promotion is separate. Future website edits repeat the
+same staging/project/verification flow documented in WEBSITE_HOSTING.md.
+No signed public installers/live upgrade or real-device support certification
+is claimed. Installer signing/device/privacy/license/performance gates remain.
+CLI install reported disk-space warnings but exited successfully and both real
+uploads/verification pass. An unused task-cache cleanup was blocked by automatic
+approval policy; no cache was deleted and publication completed without cleanup.
+
+## Previous handoff - 2026-10-14 (SP-040 hosting preparation)
+
+## Result and changed files
+
+Website publication is authorized. Added an isolated static deployment builder
+for Cloudflare Pages and Vercel, with an exact marketing-asset allowlist, provider
+headers, cache rules, robots and a styled 404. SHA-256 inventories stay outside
+the upload directory. An HTTPS verifier checks public access, deployed asset
+hashes, security headers and private/missing-route rejection. Desktop code and
+the release/signing gates are unchanged. ADR-019 records this hosting boundary.
+
+Changed files: scripts/site/{prepare,verify}.mjs and their tests, package.json,
+.gitignore, DECISIONS.md, TASKS.md, CURRENT_STATE.md, site/README.md,
+site/HANDOFF.md, docs/release/DOWNLOADS_AND_UPDATES.md and this handoff.
+
+## Commands and verification
+
+- Clean genuine-SDK stage: `cargo test -j 2` passes 78 tests and
+  `cargo fmt --check` passes. Explicit native-device tests were not rerun.
+- `node node_modules/vitest/vitest.mjs run --maxWorkers=1 --pool=forks`:
+  71/71 pass. An initial run hit worker startup timeouts under concurrent I/O;
+  the complete retry passed after resource pressure cleared.
+- `node .tooling/package/bin/npm-cli.js run build`: TypeScript/Vite pass.
+- `node --test scripts/release/*.test.mjs scripts/repository/*.test.mjs
+  scripts/site/*.test.mjs`: 24/24 pass. The three site tooling tests also pass
+  after the final cache-rule adjustment. Changed script/package Prettier passes.
+- `node scripts/site/prepare.mjs --provider <cloudflare|vercel> --output
+  .release-work/site-<provider>-2026-10-14-v2`: both isolated packages built.
+- Packaged-site Playwright checks pass at 360/390/768/1366 px: no overflow,
+  theme and fictional Protect/reply/Restore, image comparison, mobile menu/
+  Escape/focus return, pending installer/Releases fallback and actual styled
+  HTTP 404. Zero page errors and CSP violations. Desktop/mobile/404 captures
+  were visually checked. This is local package evidence, not public HTTPS.
+- Sanitized source export succeeds. Public checkout audit passes all 384 tracked
+  files, and staged diff checks are clean. Never upload this workspace or native dist.
+
+Local packages and inventories: .release-work/site-cloudflare-2026-10-14-v2
+and site-vercel-2026-10-14-v2. Cloudflare uploads only public/; Vercel receives
+the prepared directory. QA report/captures: .release-work/site-qa-2026-10-14.
+
+## Account access and remaining work
+
+Vercel CLI authentication and team/project listing succeed; no Nymkeep project
+exists. Cloudflare Wrangler explicitly reports unauthenticated. Both browser
+control runtimes fail to initialize with a missing kernel-assets path; no account
+dashboard was changed. The owner was asked to select connected Vercel or connect
+Cloudflare. No hosting project, deployment, subscription or domain was created.
+
+After that account decision/access: verify the matching project, deploy the
+isolated package, run scripts/site/verify.mjs against the actual public HTTPS
+URL, repeat browser checks and open it for review. Add canonical/sitemap only
+using the returned verified host. Cloudflare Direct Upload and Git Integration
+are separate initial project choices; do not promise an automatic conversion.
+Paid plans/domain purchases and signed installer publication remain separate.
+SP-040 is still in progress; no public installer or live signed upgrade is claimed.
+
+Source follow-up: commit 4b7aa11 is pushed on PR #14. The checkout is clean.
+Fresh CI 38453514372 passes frontend/tooling/build/source audit; Windows,
+Apple Silicon and Linux stop before app tests with the model host response
+"maximum queue size reached". Intel is still restoring its runtime cache.
+GitHub currently rejects the individual failed-job rerun while the workflow is
+active; retry failed jobs after completion when the provider recovers. The native
+app code remains the previously passing 0ec3b56. This fresh matrix is not green.
+Local preview is running on 127.0.0.1:4173; opening its review tab was queued.
+
+## Previous handoff - 2026-10-13 (SP-038/039 and owner guide)
+
+## Latest implementation and checks
+
+Added explicit local-status/check/install/restart updater commands and Settings
+UX. Unsigned builds cannot check, Debian packages retain manual updates, user
+confirmation is required, Tauri verifies signatures before install and session
+mapping cleanup happens after verification. Removed generic frontend updater
+check permission. ADR-018 records the network/privacy contract.
+
+GitHub Releases stores installers/update assets; validated website discovery
+accepts only matching published stable catalogs. Draft/public workflows require
+latest mandatory CI, evidence-bound hashes, public signature verification and
+approved platforms. No signed publication was run. Linux fixture now activates
+its synthetic GTK window with xdotool; the full native fixture and package run pass.
+
+Changed groups: src/UpdateSettings.tsx, App/api/styles; updates.rs/lib/capability;
+site/downloads/release/index/styles; preview server; release catalog/config/tests
+and publication workflows; Linux fixture/dependency setup; architecture/status
+and docs/release/DOWNLOADS_AND_UPDATES.md. Private credentials remain untouched.
+
+Commands/results: clean genuine-SDK staged `cargo test -j 2` 78/78 pass; staged
+`cargo fmt --check` passes after synchronizing formatted lib.rs; frontend Vitest
+71/71 pass; production npm build passes; release/repository tooling 21/21 pass,
+including a subsequent catalog test after path hardening. Public-source audit
+passes 380 files / 6,019,436 bytes before this handoff update; staged diff check
+passes. A first frontend run hit a worker startup timeout; a subsequent run
+identified/fixed reset-before-mock ordering, and the full retry is green.
+
+Owner PDF: output/pdf/Nymkeep-Owner-Guide-Hinglish.pdf (ignored/local deliverable),
+16 pages with real website/frontend previews, flows, platform comparisons and
+15 clickable links. Browser capture at 1366px/390px has no overflow/page errors;
+native behavior is not simulated. All 16 pages were rendered with Poppler and
+visually reviewed; PDF text bounds and link annotations are checked.
+PDF builders/PNGs remain in tmp/pdfs.
+
+Final hosted evidence: CI 38298789910 and candidates 38298785486 pass for native
+app commit 0ec3b56. All four release-profile jobs pass: Windows NSIS, ARM64/Intel
+Mac DMGs, Linux deb/AppImage, resources/notices and packaged Mac helper checks.
+Linux actual OCR/PNG and synthetic selected/empty/password/background-focus checks
+pass. Later site/docs-only follow-up adds an always-visible Releases fallback,
+refreshes status and passes 18/18 website tests without changing native app code.
+
+Assumptions/open risks: hosting remains deferred. PR #14 is reviewable; no public
+release was created and no signing credentials were accessed. Actual device/GUI,
+Wayland portals, signing/notarization, live signed upgrade, independent privacy,
+license/backport review and performance gates remain. No public installer exists.
+
+## Previous handoff - 2026-10-04 (SP-035)
+
+## Completed publication and protected baseline
+
+Public repository: https://github.com/klippers-dev/Nymkeep. PRs #10 (native CI),
+#11 (dependency-security disclosure), #12 (main → dev) and #13 (main → stage)
+are merged. Main 647766f, dev 62cad05 and stage 41932bd are all protected and
+share tree f1ec86ea22c519e74e3d8535ecc688aa1e54e7d0. Bootstrap is complete;
+normal contributions follow dev → stage → main.
+
+Final checks: clean main CI 37199991399, documentation CI 37201666055, final
+main CI 37202436984, dev PR CI 37202442885 and stage PR CI 37202468221 pass all
+mandatory jobs. Each native matrix passes 69 Rust/model tests on Windows x64,
+Apple Silicon, Intel Mac and Ubuntu 24.04, plus native Vision fixtures on both
+Mac architectures. Frontend 65, tooling 12, production build, Rust fmt and
+changed-file Prettier pass; final public audit is 173 files / 3,579,506 bytes.
+Owner-only PR review exception was used only after required checks passed. A
+first dev merge was rejected with Required checks expected while other shared
+head runs were pending; retry succeeded after every relevant run passed.
+
+Settings read-back: required CI/history has no bypass actors; owner review is
+PR-only; version tags are owner-controlled. Secret scanning/push protection,
+private reporting, dependency alerts/updates, read-only Actions tokens and
+all-external fork approval remain enabled. CODEOWNERS has no errors; GitHub
+community profile is 100%. The glib medium advisory remains open (SP-037).
+
+Changed files are listed below under SP-035/036/037. Commands include npm test,
+npm run test:tooling, npm run build, cargo test --locked -j 2, cargo fmt --check,
+Prettier, source audit, git push/fetch/fast-forward and gh PR/settings read-back.
+Local clean Git checkout: D:/Nymkeep/.release-work/public-git-2026-10-04 (main,
+with local dev/stage also fast-forwarded). Reuse/preserve this Git checkout;
+do not remove it when cleaning build scratch. Original workspace recovery
+patch/config remains intact and outside public Git.
+
+Open release gates: signed/public installers, actual Mac AX/GUI/device checks,
+Linux capture/compositor/OCR-export checks and glib remediation/reachability
+review, complete dependency notices and independent privacy review. Hosting and
+installer URLs remain deferred. No signing keys, passwords, license credentials,
+private user content or user clipboard were accessed. Website source/contribution
+links and verified native status are ready for local review at
+http://127.0.0.1:4173/#screenshots.
 
 ## Dependency security triage (SP-037)
 

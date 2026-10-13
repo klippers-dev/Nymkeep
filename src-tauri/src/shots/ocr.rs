@@ -306,10 +306,13 @@ impl LinuxOcr {
         }
         let dict_data =
             std::fs::read_to_string(dir.join("dict.txt")).map_err(|_| "missing dict.txt")?;
-        let dict: Vec<String> = dict_data.lines().map(|l| l.to_string()).collect();
+        let mut dict: Vec<String> = dict_data.lines().map(|l| l.to_string()).collect();
         if dict.is_empty() {
             return Err("dict.txt is empty".to_string());
         }
+        // PP-OCRv6's last class is space, after the file's dictionary entries.
+        // The model has 18710 classes: blank + 18708 entries + space.
+        dict.push(" ".to_string());
         let mut det = ort::session::Session::builder()
             .map_err(|e| e.to_string())?
             .commit_from_file(dir.join("det.onnx"))
@@ -338,11 +341,8 @@ impl LinuxOcr {
         rgb: &[u8],
         w: u32,
         h: u32,
-    ) -> Option<(ndarray::Array4<f32>, u32, u32, f32)> {
-        let max_side = 960u32;
-        let scale = (max_side as f32 / w.max(h) as f32).min(1.0);
-        let dw = ((w as f32 * scale) as u32).max(32);
-        let dh = ((h as f32 * scale) as u32).max(32);
+    ) -> Option<(ndarray::Array4<f32>, u32, u32, f32, f32)> {
+        let (dw, dh) = super::linux_math::detector_size(w, h);
         let img: image::RgbImage = image::imageops::resize(
             &image::RgbImage::from_raw(w, h, rgb.to_vec())?,
             dw,
@@ -355,13 +355,13 @@ impl LinuxOcr {
         for c in 0..3 {
             for y in 0..dh {
                 for x in 0..dw {
-                    let v = img.get_pixel(x, y)[c as usize] as f32 / 255.0;
+                    let v = img.get_pixel(x, y)[2 - c as usize] as f32 / 255.0;
                     data.push((v - mean[c]) / std[c]);
                 }
             }
         }
         let arr = ndarray::Array4::from_shape_vec((1, 3, dh as usize, dw as usize), data).ok()?;
-        Some((arr, dw, dh, scale))
+        Some((arr, dw, dh, dw as f32 / w as f32, dh as f32 / h as f32))
     }
 
     fn recognize(&self, png: &[u8]) -> Result<Vec<OcrWord>, String> {
@@ -373,7 +373,7 @@ impl LinuxOcr {
             return Err("unsupported image size".to_string());
         }
         let raw = img.into_raw();
-        let (map, dw, dh, scale) = self.det_tensor(&raw, w, h).ok_or("bad image")?;
+        let (map, dw, dh, scale_x, scale_y) = self.det_tensor(&raw, w, h).ok_or("bad image")?;
         let t = ort::value::TensorRef::from_array_view(&map).map_err(|_| "tensor failed")?;
         let boxes = {
             let mut det = self.det.lock().map_err(|_| "ocr busy")?;
@@ -390,10 +390,10 @@ impl LinuxOcr {
         };
         let mut words = Vec::new();
         for (bx, by, bw, bh) in boxes.into_iter().take(200) {
-            let fx = ((bx as f32 / scale) as u32).min(w.saturating_sub(1));
-            let fy = ((by as f32 / scale) as u32).min(h.saturating_sub(1));
-            let fw = ((bw as f32 / scale) as u32).max(4).min(w - fx);
-            let fh = ((bh as f32 / scale) as u32).max(4).min(h - fy);
+            let fx = ((bx as f32 / scale_x) as u32).min(w.saturating_sub(1));
+            let fy = ((by as f32 / scale_y) as u32).min(h.saturating_sub(1));
+            let fw = ((bw as f32 / scale_x).ceil() as u32).max(4).min(w - fx);
+            let fh = ((bh as f32 / scale_y).ceil() as u32).max(4).min(h - fy);
             if fw < 4 || fh < 4 {
                 continue;
             }
@@ -433,7 +433,7 @@ impl LinuxOcr {
         for c in 0..3 {
             for yy in 0..48 {
                 for xx in 0..rw {
-                    let v = resized.get_pixel(xx, yy)[c as usize] as f32 / 255.0;
+                    let v = resized.get_pixel(xx, yy)[2 - c as usize] as f32 / 255.0;
                     data.push((v - 0.5) / 0.5);
                 }
             }
@@ -447,42 +447,12 @@ impl LinuxOcr {
         } else {
             return None;
         };
-        let (_, data) = value.try_extract_tensor::<f32>().ok()?;
+        let (shape, data) = value.try_extract_tensor::<f32>().ok()?;
         let nl = self.dict.len() + 1;
-        if data.len() % nl != 0 {
+        if shape.len() != 3 || shape[0] != 1 || shape[2] != nl as i64 {
             return None;
         }
-        let steps = data.len() / nl;
-        let mut text = String::new();
-        let mut probs: Vec<f32> = Vec::new();
-        let mut prev = usize::MAX;
-        for s in 0..steps {
-            let off = s * nl;
-            let mut bi = 0usize;
-            let mut m = data[off];
-            for (i, v) in data[off..off + nl].iter().enumerate() {
-                if *v > m {
-                    m = *v;
-                    bi = i;
-                }
-            }
-            if bi != 0 && bi != prev {
-                if let Some(ch) = self.dict.get(bi - 1) {
-                    text.push_str(ch);
-                    let mut sum = 0.0f32;
-                    for v in &data[off..off + nl] {
-                        sum += (*v - m).exp();
-                    }
-                    probs.push(1.0 / sum);
-                }
-            }
-            prev = bi;
-        }
-        if text.is_empty() {
-            return None;
-        }
-        let conf = probs.iter().sum::<f32>() / probs.len() as f32;
-        Some((text, conf))
+        super::linux_math::decode_ctc(data, &self.dict)
     }
 }
 
@@ -527,11 +497,14 @@ fn det_boxes(data: &[f32], dw: u32, dh: u32) -> Vec<(u32, u32, u32, u32)> {
                 }
             }
             if area >= 20 {
+                let pad = super::linux_math::expansion(x1 - x0 + 1, y1 - y0 + 1);
+                let left = x0.saturating_sub(pad);
+                let top = y0.saturating_sub(pad);
                 out.push((
-                    x0.saturating_sub(1) as u32,
-                    y0.saturating_sub(1) as u32,
-                    ((x1 - x0 + 3).min(w - x0.saturating_sub(1))) as u32,
-                    ((y1 - y0 + 3).min(hgt - y0.saturating_sub(1))) as u32,
+                    left as u32,
+                    top as u32,
+                    (x1.saturating_add(pad + 1).min(w) - left) as u32,
+                    (y1.saturating_add(pad + 1).min(hgt) - top) as u32,
                 ));
             }
         }
