@@ -1,4 +1,30 @@
-# Website final handoff: 2026-10-04, SP-032
+# Website hosting handoff: 2026-10-14, SP-040
+
+Publication is authorized; hosting account selection/access is pending. Vercel
+CLI login/team/project listing succeed; Cloudflare Wrangler is unauthenticated.
+No Nymkeep hosting project or public deployment has been created.
+
+`scripts/site/prepare.mjs` builds a fresh isolated Cloudflare/Vercel package from
+the nine explicit marketing assets, with headers, cache rules, robots and 404.
+Its hash inventory remains outside the upload. `scripts/site/verify.mjs` checks
+actual public HTTPS/access, asset hashes, headers and private/missing routes.
+See README.md and ADR-019 for deployment commands and the isolation contract.
+
+Verification: 71 frontend, 24 release/repository/site tooling and 78 Rust tests
+pass; production build, Rust fmt and changed-script/package Prettier pass. Local
+packaged-site browser checks and visual desktop/mobile/404 review pass, including
+360/390/768/1366 widths, light/dark, fictional walkthrough, image comparison,
+menu/Escape/focus, pending installer/Releases fallback and styled HTTP 404.
+No horizontal overflow, page errors or CSP violations. Fresh packages/inventories
+are .release-work/site-{cloudflare,vercel}-2026-10-14-v2 in the workspace.
+
+Remaining: selected authenticated account/project, public deployment and HTTPS
+verification, then canonical/sitemap from the verified host and owner review.
+The website discovers public GitHub release metadata only; there are no private
+inputs/uploads, analytics or detector calls. Installer links stay gated on a
+verified signed public release. Domain purchase and app signing remain separate.
+
+## Previous website final handoff: 2026-10-04, SP-032
 
 SP-035/036 follow-up: GitHub source/contribution links and independent-maintainer
 copy are added without changing the established visual system. Platform copy

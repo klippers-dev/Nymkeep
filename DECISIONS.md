@@ -242,3 +242,29 @@ CI builds drafts, validates version/target/asset/checksum metadata and prepares 
 download catalog. Public publication requires the existing signing, device,
 license and independent review gates. Failed or missing release metadata leaves
 downloads unavailable and never changes the offline Protect/Restore behavior.
+
+## ADR-019: Isolated public marketing deployment
+
+Deploy only an explicit allowlist of marketing HTML/CSS/JS and synthetic brand
+assets, from a fresh static staging directory. The desktop frontend output,
+models, native binaries, SDK recovery, local documents, credentials and source
+checkout metadata must never be included. A deployment inventory binds each
+public file to SHA-256 for review and post-deployment comparison.
+
+Use the owner's selected authenticated static hosting account (Cloudflare Pages
+or Vercel); verify the account/project/environment before publication and reuse
+an existing matching project. No paid subscription, domain registration or
+unrelated project change is implied. Preview and public website publication are
+separate from signed installer publication under ADR-018.
+
+The website exposes public product information only, adds no private-text/image
+inputs, analytics or cookies, and contacts only GitHub's public release API for
+installer discovery. Security headers restrict scripts/assets to the site and
+connections to that API. Hosting providers receive normal web-request metadata;
+desktop content processing remains offline. Missing release metadata keeps
+downloads unavailable with an explicit GitHub Releases fallback.
+
+Public status copy must preserve device/signing/review gates. A deployment counts
+as verified only after HTTPS assets, headers, release discovery/fallback and
+responsive/keyboard behavior have been checked; a generated URL alone is not
+evidence of a successful public site.

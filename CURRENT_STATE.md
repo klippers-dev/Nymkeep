@@ -1,7 +1,10 @@
 # Nymkeep CURRENT_STATE
 
-Updated: 2026-10-13. SP-038/039 implementation is on PR #14. Hosting/domain setup
-remains deferred. No public installer release is published.
+Updated: 2026-10-14. SP-038/039 implementation is on PR #14. Website publication
+is authorized (SP-040); hosting account selection/access is being verified.
+Domain purchase is separate. No public installer release is published.
+Isolated Cloudflare/Vercel packages and local responsive/CSP checks pass.
+Vercel CLI is authenticated; Cloudflare is not. No public deployment exists yet.
 
 ## Latest evidence and remaining gates
 
@@ -24,7 +27,7 @@ remains deferred. No public installer release is published.
   never checks the network. Unsigned candidates disable updates; Debian packages
   update manually. No signed public upgrade transition has been tested.
 - The updater/catalog code is included in green native CI for 0ec3b56.
-  Local clean Rust tests pass 78/78, frontend 71/71, tooling 21/21;
+  Local clean Rust tests pass 78/78, frontend 71/71, tooling 24/24;
   build/fmt and source audit pass. Later documentation/site-only changes retain
   this native app code. Fresh results belong in the task HANDOFF.
 - Public launch still needs real-device installation/permissions/GUI coverage,

@@ -1,4 +1,60 @@
-# Nymkeep handoff - 2026-10-13 (SP-038/039 and owner guide)
+# Nymkeep handoff - 2026-10-14 (SP-040 hosting preparation)
+
+## Result and changed files
+
+Website publication is authorized. Added an isolated static deployment builder
+for Cloudflare Pages and Vercel, with an exact marketing-asset allowlist, provider
+headers, cache rules, robots and a styled 404. SHA-256 inventories stay outside
+the upload directory. An HTTPS verifier checks public access, deployed asset
+hashes, security headers and private/missing-route rejection. Desktop code and
+the release/signing gates are unchanged. ADR-019 records this hosting boundary.
+
+Changed files: scripts/site/{prepare,verify}.mjs and their tests, package.json,
+.gitignore, DECISIONS.md, TASKS.md, CURRENT_STATE.md, site/README.md,
+site/HANDOFF.md, docs/release/DOWNLOADS_AND_UPDATES.md and this handoff.
+
+## Commands and verification
+
+- Clean genuine-SDK stage: `cargo test -j 2` passes 78 tests and
+  `cargo fmt --check` passes. Explicit native-device tests were not rerun.
+- `node node_modules/vitest/vitest.mjs run --maxWorkers=1 --pool=forks`:
+  71/71 pass. An initial run hit worker startup timeouts under concurrent I/O;
+  the complete retry passed after resource pressure cleared.
+- `node .tooling/package/bin/npm-cli.js run build`: TypeScript/Vite pass.
+- `node --test scripts/release/*.test.mjs scripts/repository/*.test.mjs
+  scripts/site/*.test.mjs`: 24/24 pass. The three site tooling tests also pass
+  after the final cache-rule adjustment. Changed script/package Prettier passes.
+- `node scripts/site/prepare.mjs --provider <cloudflare|vercel> --output
+  .release-work/site-<provider>-2026-10-14-v2`: both isolated packages built.
+- Packaged-site Playwright checks pass at 360/390/768/1366 px: no overflow,
+  theme and fictional Protect/reply/Restore, image comparison, mobile menu/
+  Escape/focus return, pending installer/Releases fallback and actual styled
+  HTTP 404. Zero page errors and CSP violations. Desktop/mobile/404 captures
+  were visually checked. This is local package evidence, not public HTTPS.
+- Sanitized source export succeeds. Public checkout audit passes all 384 tracked
+  files, and staged diff checks are clean. Never upload this workspace or native dist.
+
+Local packages and inventories: .release-work/site-cloudflare-2026-10-14-v2
+and site-vercel-2026-10-14-v2. Cloudflare uploads only public/; Vercel receives
+the prepared directory. QA report/captures: .release-work/site-qa-2026-10-14.
+
+## Account access and remaining work
+
+Vercel CLI authentication and team/project listing succeed; no Nymkeep project
+exists. Cloudflare Wrangler explicitly reports unauthenticated. Both browser
+control runtimes fail to initialize with a missing kernel-assets path; no account
+dashboard was changed. The owner was asked to select connected Vercel or connect
+Cloudflare. No hosting project, deployment, subscription or domain was created.
+
+After that account decision/access: verify the matching project, deploy the
+isolated package, run scripts/site/verify.mjs against the actual public HTTPS
+URL, repeat browser checks and open it for review. Add canonical/sitemap only
+using the returned verified host. Cloudflare Direct Upload and Git Integration
+are separate initial project choices; do not promise an automatic conversion.
+Paid plans/domain purchases and signed installer publication remain separate.
+SP-040 is still in progress; no public installer or live signed upgrade is claimed.
+
+## Previous handoff - 2026-10-13 (SP-038/039 and owner guide)
 
 ## Latest implementation and checks
 

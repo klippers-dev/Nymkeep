@@ -3,7 +3,8 @@
 Status: implementation and all four unsigned candidate jobs pass on PR #14
 (native app 0ec3b56, CI 38298789910, candidates 38298785486). Live signed upgrade
 and public release/device reviews remain open. No public installer release exists
-as of 2026-10-13. Hosting/domain setup remains deferred by the owner.
+as of 2026-10-13. Website publication was authorized on 2026-10-14; hosting
+account access is being verified. Domain purchase remains a separate owner choice.
 
 ## The user journey
 

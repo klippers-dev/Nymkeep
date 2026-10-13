@@ -17,21 +17,54 @@ the section links; Escape closes it and returns focus. Native FAQ disclosures
 work with the keyboard. Without JavaScript, the initial sample, page content,
 release status, contact links and navigation remain available.
 
+## Prepare a public website deployment
+
+Only the allowlisted marketing files are deployed. Never upload the repository
+root, desktop `dist/`, SDK recovery, models or local documents. ADR-019 records
+the boundary. The builder uses Node built-ins; no dependency install/build of the
+desktop application is needed by the hosting provider.
+
+Run `npm run build:site -- --provider cloudflare --output .release-work/site-v1`
+for Cloudflare, or replace the provider with `vercel`. Always choose a fresh
+directory. Cloudflare receives its `public/` folder; Vercel receives the prepared
+directory, whose config serves only `public/`. Headers, robots and a styled 404
+are included. The inventory JSON stays outside the upload directory.
+
+Use `--canonical-url https://your-verified-host/` only after the actual public
+host is known; this also emits a sitemap. Verify the authenticated account and
+matching project before deployment. Authentication belongs in the provider CLI
+or dashboard, never source, chat or public environment files.
+
+After publication, run `node scripts/site/verify.mjs <actual-HTTPS-root-URL>
+<local-inventory-JSON>`. This checks reviewed asset hashes, public access,
+security headers and absence of private/missing routes. Then check desktop/mobile,
+theme, keyboard, fictional walkthrough and release fallback in a browser.
+Domain purchase, paid plans and installer publication are separate actions.
+
+For Cloudflare Pages, decide between Direct Upload and Git Integration when
+creating the project: an existing Direct Upload project cannot later switch to
+Git Integration. Repeat CLI/CI uploads remain possible. For Vercel, link/deploy
+the isolated prepared directory, not the repository root. Reuse the verified
+matching project for later updates; do not create a new project per deployment.
+See the official [Pages Direct Upload guide](https://developers.cloudflare.com/pages/get-started/direct-upload/)
+and [Vercel build configuration](https://vercel.com/docs/builds).
+
 ## Connect the desktop release later
 
 1. Complete the signing, device and privacy gates in
    `docs/release/RELEASE_CHECKLIST.md`. Do not distribute the machine-local SDK
    recovery or point this website at a local development executable.
-2. Verify the signed public installer and its permanent absolute HTTPS URL.
-3. Set `url`, `version` and `fileLabel` in `site/release.js`. No credentials belong
-   in this file. Until a valid URL and version are configured, the page keeps the
-   coming-soon state and provides a contact email instead of a fake download.
+2. Verify the signed public installers and their versioned GitHub Releases URLs.
+3. The publication workflow emits the reviewed platform catalog. `site/release.js`
+   enables public GitHub discovery; `downloads.js` validates release state, target,
+   filename, size and hash. No credentials belong in either file. Missing or invalid
+   metadata retains the pending state and an always-visible Releases fallback.
 4. Update the roadmap's pre-release wording and page description when the release
    actually ships. The script updates download buttons, release description,
    status, file metadata and availability FAQ together.
-5. Run `npm test` and `npm run build`, review the website, then publish the contents
-   of `site/` through the chosen hosting workflow. No hosting destination is
-   configured in this checkout; the current task is a local design review.
+5. Run the site/tooling checks and build a fresh isolated deployment. Installer
+   metadata is discovered per visit, so approved new app versions do not require
+   republishing the unchanged website. See `docs/release/DOWNLOADS_AND_UPDATES.md`.
 
 Public source and contribution links point to `https://github.com/klippers-dev/Nymkeep`.
 Future installer assets will be published on that repository's Releases page and
@@ -57,7 +90,8 @@ wording. OCR-independent manual masking, native image copy, PNG save and actual
 export preview are now implemented in the desktop app. See
 `../docs/FEATURE_VERIFICATION.md` for the evidence table and
 `../docs/release/PLATFORM_STATUS.md` for Windows/macOS/Linux release gates.
-Publishing and domain setup are deferred at the user's request. Revalidate when
+Website publishing was authorized on 2026-10-14; hosting account selection/access
+is being verified. Domain purchase remains separate. Revalidate when
 the desktop app changes; a green unit suite is not a complete device certification.
 
 To refresh the actual image output, explicitly run the ignored Windows test

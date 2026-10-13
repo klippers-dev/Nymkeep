@@ -8,9 +8,10 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "preview:site": "node scripts/preview-site.mjs",
+    "build:site": "node scripts/site/prepare.mjs",
     "tauri": "tauri",
     "test": "vitest run",
-    "test:tooling": "node --test scripts/release/*.test.mjs scripts/repository/*.test.mjs",
+    "test:tooling": "node --test scripts/release/*.test.mjs scripts/repository/*.test.mjs scripts/site/*.test.mjs",
     "audit:source": "node scripts/repository/audit.mjs"
   },
   "dependencies": {
