@@ -1,4 +1,67 @@
-# Nymkeep handoff - 2026-10-14 (SP-040 public website)
+# Nymkeep handoff - 2026-10-14 (SP-041/042/043)
+
+## Results and changed files
+
+Corrected the canonical contact address to contactklippers@gmail.com in
+src/App.tsx, site/index.html, SUPPORT.md and SECURITY.md. Created small dev-based
+PR #16 (3ca9fe3), attached it to this chat and marked it ready for owner review.
+Applied the same correction to PR #14 as 48d4564 for the currently hosted source.
+No merge or auto-merge was performed. The live website now serves the corrected
+address from dpl_DEVTaYefMaZwQwT8PXDohoM3hg7M on the existing Vercel project.
+
+Created three ACTIVE thread follow-ups and read their stored schedules back:
+nymkeep-twice-weekly-repository-review (Monday/Thursday 10:00 IST),
+nymkeep-daily-x-image (daily 11:00 IST), nymkeep-daily-x-animation (daily 19:00 IST).
+Audits create tested PRs into dev for the owner to review/merge; no protection
+bypass, merge, deployment or installer publication is authorized by that routine.
+Existing unrelated automations/profile branding were preserved.
+
+Added docs/OPERATING_ROUTINES.md and updated status/tasks/site handoff/hosting
+record. Initial original branded PNG and MP4/captions are in
+output/social/2026-10-14-initial, with a reusable local renderer and publication
+ledger under output/social. The ledger records 2 drafts and 0 published posts.
+
+## Validation and commands
+
+- Public Vercel stage prepare with canonical URL, CLI 64.0.1 production deploy,
+  verify.mjs and public Playwright QA pass. Twelve asset hashes/security headers/
+  six private probes pass; every live mailto uses the canonical address and the
+  dotted spelling is absent. Desktop/mobile/theme/keyboard/image/404 checks pass
+  at 360/390/768/1366 px with zero overflow, page errors or CSP violations.
+- Local npm production build passes. Initial full fork-based frontend run could
+  not start workers. Focused threads run passes 41 checks, with one existing
+  permission test timing out at five seconds; its isolated retry passes. No
+  production/test assertion was changed to address that resource-timing issue.
+- Exact combined source 48d4564 hosted frontend CI passes 71 tests, 24 tooling,
+  build and source audit (385 files) in 38476660993. Windows, ARM Mac and Linux
+  native jobs pass; Intel remains in progress at this observation.
+- PR #16 CI 38476331471 passes 65 frontend/12 tooling/build/source audit (173
+  files), Windows/ARM Mac/Linux native jobs; Intel remains pending at observation.
+  Native code is unchanged from its respective previously verified base; no
+  native/device integration fixture or signing key was accessed locally.
+- Social renderer exports 240 frames at 24 fps. ffprobe verifies H.264/yuv420p,
+  1280x720, ten seconds; FFmpeg fully decodes without errors. Image and representative
+  video frames were visually reviewed; captions/alt text are saved and bounded.
+  Assets are drafts, not screenshots of a shipped installer or published posts.
+
+## Remaining access and operating limits
+
+Klippers X publishing cannot be verified yet. Metricool was discovered but is
+not connected. The browser-control runtime fails with a missing kernel-assets
+path before opening any account page; this is not evidence of expired X login.
+An older Klippers workflow names @atklippers, but current target/account access
+must be verified. The owner was asked once for the exact profile/connection.
+Daily routines prepare media while blocked and publish only through a verified
+brand account, recording real post IDs/URLs and deduplicating uncertain writes.
+No X post, DM, reply, paid subscription, credit purchase or advertisement was sent.
+
+Local scheduled work needs this computer on and the app running; it is not an
+always-on server. GitHub protected-branch merges remain the owner's action.
+Signed public installers, actual-device support/privacy/license/performance
+gates remain separate. Source audits and diff checks precede publication of the
+operating documentation; CLI/cache/media scratch remains outside public uploads.
+
+## Previous handoff - 2026-10-14 (SP-040 public website)
 
 ## Result and changes
 

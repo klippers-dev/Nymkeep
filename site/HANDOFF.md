@@ -1,4 +1,25 @@
-# Website public handoff: 2026-10-14, SP-040
+# Website contact follow-up: 2026-10-14, SP-041
+
+All current website contact/release enquiry links and footer text use
+contactklippers@gmail.com. Source 48d4564 is deployed on the existing verified
+Vercel project as dpl_DEVTaYefMaZwQwT8PXDohoM3hg7M, retaining
+https://nymkeep.vercel.app/. The owner explicitly authorized immediate correction.
+
+Fresh isolated prepare/deploy and public verify.mjs pass: 12 asset hashes,
+security headers, six private/missing routes, unauthenticated access and canonical/
+sitemap. Public browser assertions verify every mailto and absence of the old
+spelling. Responsive/theme/keyboard/image/fallback/404 checks pass without page
+errors, CSP violations or overflow. Evidence is in
+.release-work/site-public-qa-2026-10-14-email. App production build passes;
+combined source CI 38476660993 frontend 71/tooling 24/build/audit passes.
+
+The same four-file address correction is isolated on dev-based PR #16, commit
+3ca9fe3, ready for owner review/merge. Frontend 65/tooling 12/build/source audit
+pass there. No protected branch merge, signing change or installer publication
+was performed. Recurring maintenance/social setup is described in
+docs/OPERATING_ROUTINES.md; no private inputs or analytics were added to the site.
+
+## Previous website public handoff: 2026-10-14, SP-040
 
 https://nymkeep.vercel.app/ is public on the verified owner Vercel nymkeep project.
 Final deployment: dpl_mBaZ6J9zumygRXE1P8QGG7cxDHya, website source 4b7aa11.

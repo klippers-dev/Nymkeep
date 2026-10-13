@@ -5,6 +5,10 @@ the marketing website is public at https://nymkeep.vercel.app/ on Vercel.
 Public HTTPS/hash/header and desktop/mobile/keyboard/CSP checks pass. GitHub's
 repository homepage points to the site. Domain purchase remains separate.
 No signed public installer release is published. See docs/release/WEBSITE_HOSTING.md.
+SP-041 corrects contactklippers@gmail.com in the live website/app/support/security
+source. The small dev-based PR #16 is ready for owner review; no merge was done.
+SP-042/043 recurring repository and daily image/animation routines are ACTIVE.
+X publication access is not yet verified; initial assets are drafts, not posts.
 
 ## Latest evidence and remaining gates
 

@@ -7,12 +7,17 @@ login. Cloudflare is not required. No domain purchase or paid-plan change was ma
 
 - Account scope: `karan-singhs-projects-b4d634ef`.
 - Project: `nymkeep`, ID `prj_Izl55PueDbYnScZ6VkgNIMilQTm6`.
-- Production deployment: `dpl_mBaZ6J9zumygRXE1P8QGG7cxDHya`.
-- [Deployment details](https://vercel.com/karan-singhs-projects-b4d634ef/nymkeep/mBaZ6J9zumygRXE1P8QGG7cxDHya).
-- Website source: `4b7aa111158fa2c43ede31d259ba62ab1435e1ac`, on PR #14.
+- Production deployment: `dpl_DEVTaYefMaZwQwT8PXDohoM3hg7M` (canonical contact correction).
+- [Deployment details](https://vercel.com/karan-singhs-projects-b4d634ef/nymkeep/DEVTaYefMaZwQwT8PXDohoM3hg7M).
+- Website source: `48d4564279eae949001d7a516921ae7440367c35`, on PR #14.
   The builder adds the verified canonical URL, robots and sitemap.
 - Vercel CLI 64.0.1 was used. The previous installed 42.3.0 was rejected by the
   deployment endpoint; no global CLI upgrade was made.
+
+The initial public deployment was dpl_mBaZ6J9zumygRXE1P8QGG7cxDHya from 4b7aa11.
+The owner explicitly requested immediate publication of the contact spelling
+correction. All live mailto links and visible contact text now use
+contactklippers@gmail.com, with no dotted spelling in the page.
 
 The production domain was checked with ordinary unauthenticated HTTPS requests,
 not a Vercel authentication bypass. Twelve public files match the local SHA-256
