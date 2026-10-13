@@ -1,10 +1,10 @@
 # Nymkeep CURRENT_STATE
 
-Updated: 2026-10-14. SP-038/039 implementation is on PR #14. Website publication
-is authorized (SP-040); hosting account selection/access is being verified.
-Domain purchase is separate. No public installer release is published.
-Isolated Cloudflare/Vercel packages and local responsive/CSP checks pass.
-Vercel CLI is authenticated; Cloudflare is not. No public deployment exists yet.
+Updated: 2026-10-14. SP-038/039 implementation is on PR #14. SP-040 is complete:
+the marketing website is public at https://nymkeep.vercel.app/ on Vercel.
+Public HTTPS/hash/header and desktop/mobile/keyboard/CSP checks pass. GitHub's
+repository homepage points to the site. Domain purchase remains separate.
+No signed public installer release is published. See docs/release/WEBSITE_HOSTING.md.
 
 ## Latest evidence and remaining gates
 
@@ -30,6 +30,9 @@ Vercel CLI is authenticated; Cloudflare is not. No public deployment exists yet.
   Local clean Rust tests pass 78/78, frontend 71/71, tooling 24/24;
   build/fmt and source audit pass. Later documentation/site-only changes retain
   this native app code. Fresh results belong in the task HANDOFF.
+- Website source 4b7aa11 passes all required CI in 38453514372, including
+  Windows, Apple Silicon, Intel Mac and Linux. Initial model-host queue failures
+  were resolved by rerunning failed jobs; no app code changed for that retry.
 - Public launch still needs real-device installation/permissions/GUI coverage,
   OS signing/notarization, signed upgrade evidence, independent privacy/license
   review and performance measurements. No broad platform-support claim is made.

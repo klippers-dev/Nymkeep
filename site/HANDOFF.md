@@ -1,4 +1,27 @@
-# Website hosting handoff: 2026-10-14, SP-040
+# Website public handoff: 2026-10-14, SP-040
+
+https://nymkeep.vercel.app/ is public on the verified owner Vercel nymkeep project.
+Final deployment: dpl_mBaZ6J9zumygRXE1P8QGG7cxDHya, website source 4b7aa11.
+Canonical URL, robots and sitemap use the verified production host. GitHub's
+repository homepage now links to it; opening the Codex review tab was queued.
+
+Commands: isolated prepare.mjs with --provider vercel/--canonical-url, task-local
+Vercel CLI 64.0.1 production deploy, verify.mjs, public Playwright browser checks
+and gh repository homepage update/read-back. Twelve public assets match reviewed
+SHA-256 hashes, headers pass, six private/missing routes reject and access requires
+no login. Desktop/mobile/light/dark/keyboard/menu/focus/workflow/image/reduced-motion/
+404 checks pass at 360/390/768/1366 px with no overflow, page errors or CSP issues.
+Captures were visually reviewed. Fresh site tooling 3/3 and production build pass;
+CI 38453514372 passes all native/frontend/required jobs after a model-host retry.
+
+Changed publication docs: root/site README, state/task/handoff and
+docs/release/{DOWNLOADS_AND_UPDATES,WEBSITE_HOSTING}.md. Site assets and native app
+code are unchanged. The project is manually deployed from isolated stages;
+repository pushes do not auto-deploy. Repeat instructions are in WEBSITE_HOSTING.
+SP-040 is done; custom domain and signed public installer/device gates remain.
+No paid-plan change, domain purchase, private inputs or analytics were introduced.
+
+## Previous website hosting handoff: 2026-10-14, SP-040
 
 Publication is authorized; hosting account selection/access is pending. Vercel
 CLI login/team/project listing succeed; Cloudflare Wrangler is unauthenticated.
@@ -23,6 +46,12 @@ verification, then canonical/sitemap from the verified host and owner review.
 The website discovers public GitHub release metadata only; there are no private
 inputs/uploads, analytics or detector calls. Installer links stay gated on a
 verified signed public release. Domain purchase and app signing remain separate.
+
+Source is pushed as 4b7aa11 on PR #14. Fresh hosted frontend/tooling/build/source
+audit passes in CI 38453514372. Its unchanged native matrix is not green:
+three jobs stop at the model host's queue error before app tests; Intel remains
+active. Local review preview is running at http://127.0.0.1:4173/ and the Codex
+browser tab open is queued. These latest run notes are local handoff evidence.
 
 ## Previous website final handoff: 2026-10-04, SP-032
 

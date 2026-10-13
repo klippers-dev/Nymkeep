@@ -3,8 +3,9 @@
 Status: implementation and all four unsigned candidate jobs pass on PR #14
 (native app 0ec3b56, CI 38298789910, candidates 38298785486). Live signed upgrade
 and public release/device reviews remain open. No public installer release exists
-as of 2026-10-13. Website publication was authorized on 2026-10-14; hosting
-account access is being verified. Domain purchase remains a separate owner choice.
+as of 2026-10-14. The website is public at https://nymkeep.vercel.app/ on Vercel;
+public HTTPS/assets/headers/browser checks pass. Domain purchase remains a
+separate owner choice. See [website hosting](WEBSITE_HOSTING.md).
 
 ## The user journey
 

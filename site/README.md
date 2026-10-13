@@ -5,6 +5,11 @@ window in `src/`. All assets are local; there are no analytics, third-party font
 forms, clipboard permissions, AI calls or detector calls. The clickable example
 uses fixed fictional fixtures and is explicitly labeled illustrative.
 
+Public website: **https://nymkeep.vercel.app/**, deployed on Vercel on 2026-10-14.
+Public HTTPS/hash/header and desktop/mobile/keyboard/CSP checks pass. See
+`../docs/release/WEBSITE_HOSTING.md` for the verified project and repeat deployment
+flow. Repository pushes do not automatically deploy this manually staged site.
+
 ## Review locally
 
 From the repository root, run `npm run preview:site` and open
@@ -90,8 +95,8 @@ wording. OCR-independent manual masking, native image copy, PNG save and actual
 export preview are now implemented in the desktop app. See
 `../docs/FEATURE_VERIFICATION.md` for the evidence table and
 `../docs/release/PLATFORM_STATUS.md` for Windows/macOS/Linux release gates.
-Website publishing was authorized on 2026-10-14; hosting account selection/access
-is being verified. Domain purchase remains separate. Revalidate when
+Website publishing was authorized and verified on Vercel on 2026-10-14.
+Domain purchase remains separate. Revalidate when
 the desktop app changes; a green unit suite is not a complete device certification.
 
 To refresh the actual image output, explicitly run the ignored Windows test

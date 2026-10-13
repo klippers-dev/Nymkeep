@@ -5,7 +5,7 @@ Nymkeep combines validated patterns, optional on-device name detection and local
 OCR in a Tauri desktop app. Text placeholders can be restored within the current
 session; screenshot redaction permanently replaces selected pixels in the export.
 
-[Contribute](CONTRIBUTING.md) · [Privacy](docs/PRIVACY.md) ·
+[Website](https://nymkeep.vercel.app/) · [Contribute](CONTRIBUTING.md) · [Privacy](docs/PRIVACY.md) ·
 [Architecture](ARCHITECTURE.md) · [Security](SECURITY.md) ·
 [Release status](docs/release/PLATFORM_STATUS.md)
 
@@ -18,7 +18,7 @@ Mac architectures. macOS device/signing evidence and Linux
 capture/Wayland work remain pending. Build targets do not establish supported platforms.
 
 Public installers will appear on [GitHub Releases](https://github.com/klippers-dev/Nymkeep/releases)
-and, after hosting, the Nymkeep website. You will be able to download and run the
+and the [Nymkeep website](https://nymkeep.vercel.app/) once a signed release is approved. You will be able to download and run the
 installer without Git, a compiler or a GitHub account. See the
 [installation guide](docs/INSTALLATION.md) and
 [release checklist](docs/release/RELEASE_CHECKLIST.md).

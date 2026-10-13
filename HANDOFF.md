@@ -1,4 +1,59 @@
-# Nymkeep handoff - 2026-10-14 (SP-040 hosting preparation)
+# Nymkeep handoff - 2026-10-14 (SP-040 public website)
+
+## Result and changes
+
+The owner selected the connected Vercel account. https://nymkeep.vercel.app/ is
+public and verified without authentication. Created only the matching nymkeep
+project in the verified owner scope, deployed the isolated reviewed website
+package, then added the actual canonical URL/sitemap and redeployed that same
+project. Final deployment dpl_mBaZ6J9zumygRXE1P8QGG7cxDHya serves website source
+4b7aa11. GitHub repository homepage is updated. The Codex public review tab open
+was queued. No paid-plan/domain change or app release was made.
+
+Changed documentation: README.md, CURRENT_STATE.md, TASKS.md, site/README.md,
+site/HANDOFF.md, docs/release/{DOWNLOADS_AND_UPDATES,WEBSITE_HOSTING}.md and this
+handoff. No native/frontend app code changed. Prepared assets, hash inventories,
+CLI cache and browser proofs remain ignored/local.
+
+## Verification and commands
+
+- Vercel whoami/team/project listing verified the scope. CLI 42.3.0 upload was
+  rejected as outdated; pinned task-local CLI 64.0.1 deployed successfully.
+- `node scripts/site/prepare.mjs --provider vercel --output
+  .release-work/site-vercel-2026-10-14-public --canonical-url
+  https://nymkeep.vercel.app/`: final isolated package generated.
+- Vercel `deploy --prod --yes --scope karan-singhs-projects-b4d634ef` from that
+  linked stage: READY and production alias https://nymkeep.vercel.app.
+- `node scripts/site/verify.mjs https://nymkeep.vercel.app/
+  .release-work/site-vercel-2026-10-14-public.inventory.json`: 12 public hashes,
+  security headers and 6 private/missing-route probes pass without credentials.
+- Public Playwright checks and visual capture review pass: 360/390/768/1366 px,
+  light/dark, keyboard/menu/Escape/focus, fictional workflow, decoded image pair,
+  reduced motion, pending release fallback and real styled HTTP 404. Zero page
+  errors, CSP violations or overflow. Requests are only this host and GitHub API.
+  Evidence: .release-work/site-public-qa-2026-10-14/report.json and PNGs.
+- Fresh site tooling 3/3 and npm production build pass. Earlier unchanged app
+  suites are 78 Rust, 71 frontend and 24 tooling, with Rust fmt passing.
+- CI 38453514372 for 4b7aa11 is now green in every required job (Windows, Apple
+  Silicon, Intel Mac, Linux and frontend/source audit). Initial model-host queue
+  failures were resolved with `gh run rerun ... --failed`; no app code changed.
+- `gh repo edit ... --homepage https://nymkeep.vercel.app/` and read-back pass.
+- Publication documentation source audit passes all 385 tracked files; staged
+  diff checks are clean. The record adds no application or deployed-asset change.
+
+## Assumptions and remaining gates
+
+SP-040 is complete. The project currently uses manual isolated CLI publication;
+repository pushes do not auto-deploy. The first site source remains on reviewable
+PR #14; protected branch promotion is separate. Future website edits repeat the
+same staging/project/verification flow documented in WEBSITE_HOSTING.md.
+No signed public installers/live upgrade or real-device support certification
+is claimed. Installer signing/device/privacy/license/performance gates remain.
+CLI install reported disk-space warnings but exited successfully and both real
+uploads/verification pass. An unused task-cache cleanup was blocked by automatic
+approval policy; no cache was deleted and publication completed without cleanup.
+
+## Previous handoff - 2026-10-14 (SP-040 hosting preparation)
 
 ## Result and changed files
 
@@ -53,6 +108,15 @@ using the returned verified host. Cloudflare Direct Upload and Git Integration
 are separate initial project choices; do not promise an automatic conversion.
 Paid plans/domain purchases and signed installer publication remain separate.
 SP-040 is still in progress; no public installer or live signed upgrade is claimed.
+
+Source follow-up: commit 4b7aa11 is pushed on PR #14. The checkout is clean.
+Fresh CI 38453514372 passes frontend/tooling/build/source audit; Windows,
+Apple Silicon and Linux stop before app tests with the model host response
+"maximum queue size reached". Intel is still restoring its runtime cache.
+GitHub currently rejects the individual failed-job rerun while the workflow is
+active; retry failed jobs after completion when the provider recovers. The native
+app code remains the previously passing 0ec3b56. This fresh matrix is not green.
+Local preview is running on 127.0.0.1:4173; opening its review tab was queued.
 
 ## Previous handoff - 2026-10-13 (SP-038/039 and owner guide)
 
